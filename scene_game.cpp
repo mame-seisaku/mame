@@ -31,6 +31,9 @@ void game_update()
         ++game_state;
     case 1:
         ///// パラメーターの設定 /////
+
+        // test
+
         ++game_state;
     case 2:
         ///// 通常時 /////
