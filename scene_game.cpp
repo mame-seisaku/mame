@@ -3,7 +3,10 @@
 /*****変数*****/
 int game_state;
 
+bool pause;
+
 Sprite* sprGame;
+Sprite* sprPause;
 
 Player player;
 
@@ -13,6 +16,7 @@ Player player;
 void game_init()
 {
     game_state = 0;
+    pause = false;
 }
 
 /// <summary>
@@ -23,6 +27,7 @@ void game_deinit()
     player.Dinit();
 
     safe_delete(sprGame);
+    safe_delete(sprPause);
 }
 
 /// <summary>
@@ -37,6 +42,7 @@ void game_update()
         player.Init();
 
         sprGame = sprite_load(L"./Data/Images/game.png");
+        sprPause = sprite_load(L"./Data/Images/pause.png");
 
         ++game_state;
     case 1:
@@ -49,8 +55,13 @@ void game_update()
         // 画面切り替え
         if (TRG(0) & PAD_SELECT)
         {
-            nextScene = SCENE::TITLE;
+            nextScene = SCENE::RESULT;
             break;
+        }
+        // ポーズ画面
+        if (TRG(0) & PAD_L1)
+        {
+            pause = pause ? false : true;
         }
 
         // プレイヤー更新処理
@@ -72,4 +83,10 @@ void game_render()
 
     // プレイヤー更新処理    
     player.Render();
+
+    // ポーズ画面
+    if (pause)
+    {
+        sprite_render(sprPause, 0, 0);
+    }
 }

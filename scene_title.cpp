@@ -44,7 +44,7 @@ void title_update()
         // âÊñ êÿÇËë÷Ç¶
         if (TRG(0) & PAD_START)
         {
-            nextScene = SCENE::GAME;
+            nextScene = SCENE::SELECT;
             break;
         }
 

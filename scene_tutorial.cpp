@@ -1,6 +1,9 @@
 #include "all.h"
 
+/*****•Ï”*****/
 int tutorial_state;
+
+Sprite* sprTutorial;
 
 void tutorial_init()
 {
@@ -9,7 +12,7 @@ void tutorial_init()
 
 void tutorial_deinit()
 {
-
+    safe_delete(sprTutorial);
 }
 
 void tutorial_update()
