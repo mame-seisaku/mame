@@ -1,7 +1,7 @@
 #include "all.h"
 
-int curScene    = SCENE_NONE;
-int nextScene   = SCENE_TITLE;
+int curScene = SCENE::NONE;
+int nextScene = SCENE::TITLE;
 
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
@@ -10,7 +10,7 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 
     // ランド関数
     srand((unsigned int)time(NULL));
-    
+
     // オーディオの初期設定
     audio_init();
 
@@ -23,24 +23,32 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
             // 現在のシーンに応じた初期設定処理
             switch (curScene)
             {
-            case SCENE_TITLE:
+            case SCENE::TITLE:
                 title_deinit();
                 break;
 
-            case SCENE_GAME:
+            case SCENE::GAME:
                 game_deinit();
+                break;
+                
+            case SCENE::TUTORIAL:
+                tutorial_deinit();
                 break;
             }
 
             // 次のシーンに追う下初期設定処理
             switch (nextScene)
             {
-            case SCENE_TITLE:
+            case SCENE::TITLE:
                 title_init();
                 break;
-                
-            case SCENE_GAME:
+
+            case SCENE::GAME:
                 game_init();
+                break;
+                
+            case SCENE::TUTORIAL:
+                tutorial_init();
                 break;
             }
 
@@ -57,14 +65,19 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
         // 現在のシーンに応じた更新・描画処理
         switch (curScene)
         {
-        case SCENE_TITLE:
+        case SCENE::TITLE:
             title_update();
             title_render();
             break;
 
-        case SCENE_GAME:
+        case SCENE::GAME:
             game_update();
             game_render();
+            break;
+
+        case SCENE::TUTORIAL:
+            tutorial_update();
+            tutorial_render();
             break;
         }
 
@@ -78,12 +91,16 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     // 現在のシーンに応じた終了処理を行う
     switch (curScene)
     {
-    case SCENE_TITLE:
+    case SCENE::TITLE:
         title_deinit();
         break;
-        
-    case SCENE_GAME:
+
+    case SCENE::GAME:
         game_deinit();
+        break;
+
+    case SCENE::TUTORIAL:
+        tutorial_deinit();
         break;
     }
 
