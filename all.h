@@ -13,7 +13,7 @@
 #include "scene_title.h"
 #include "scene_game.h"
 #include "scene_select.h"
-#include "tutorial.h"
+#include "scene_tutorial.h"
 
 using namespace GameLib;
 using namespace input;
