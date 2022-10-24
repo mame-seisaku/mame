@@ -49,7 +49,7 @@ void game_update()
         // âÊñ êÿÇËë÷Ç¶
         if (TRG(0) & PAD_SELECT)
         {
-            nextScene = SCENE_TITLE;
+            nextScene = SCENE::TITLE;
             break;
         }
 
