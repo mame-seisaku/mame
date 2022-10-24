@@ -6,6 +6,9 @@
 
 #include "common.h"
 #include "audio.h"
+#include "obj2d.h"
+
+#include "player.h"
 
 #include "scene_title.h"
 #include "scene_game.h"
