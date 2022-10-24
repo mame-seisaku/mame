@@ -9,9 +9,16 @@ using namespace GameLib;
 #define HEIGHT  (1080)
 
 // シーンラベル
-#define SCENE_NONE  -1
-#define SCENE_TITLE 0
-#define SCENE_GAME  1
+enum SCENE
+{
+    NONE = -1,
+    OPEN = 0,
+    TITLE,
+    SELECT,
+    GAME,
+    RESULT,
+    TUTORIAL,
+};
 
 // 関数ポインタ
 extern float(* const ToRadian)(float);// 角度をラジアンに

@@ -12,6 +12,8 @@
 
 #include "scene_title.h"
 #include "scene_game.h"
+#include "scene_select.h"
+#include "tutorial.h"
 
 using namespace GameLib;
 using namespace input;
