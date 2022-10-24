@@ -5,16 +5,25 @@ int tutorial_state;
 
 Sprite* sprTutorial;
 
+/// <summary>
+/// ‰Šúİ’è
+/// </summary>
 void tutorial_init()
 {
     tutorial_state = 0;
 }
 
+/// <summary>
+/// I—¹ˆ—
+/// </summary>
 void tutorial_deinit()
 {
     safe_delete(sprTutorial);
 }
 
+/// <summary>
+/// XVˆ—
+/// </summary>
 void tutorial_update()
 {
     switch (tutorial_state)
@@ -41,6 +50,9 @@ void tutorial_update()
     }
 }
 
+/// <summary>
+/// •`‰æˆ—
+/// </summary>
 void tutorial_render()
 {
     GameLib::clear(1, 1, 1);

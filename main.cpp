@@ -3,6 +3,12 @@
 int curScene = SCENE::NONE;
 int nextScene = SCENE::TITLE;
 
+// ファイル読み込み用
+struct Data
+{
+    int stage_max;
+};
+
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
     //ゲームライブラリの初期設定
@@ -10,6 +16,19 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 
     // ランド関数
     srand((unsigned int)time(NULL));
+
+    // ファイルデータ保存先変数
+    struct Data data;
+
+    // ファイル読み込み
+    std::ifstream ifs;
+    ifs.open("mame.bin", ios::binary);
+    if (ifs)
+    {
+        ifs.read((char*)&data.stage_max, sizeof(data));
+        ifs.close();
+    }
+    PossibleStage = data.stage_max;
 
     // オーディオの初期設定
     audio_init();
@@ -136,6 +155,15 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     case SCENE::RESULT:
         result_deinit();
         break;
+    }
+
+    //  ファイル書き出し
+    data.stage_max = PossibleStage;
+    std::ofstream ofs;
+    ofs.open("mame.bin", ios::binary);
+    if (ofs)
+    {
+        ofs.write((const char*)&data.stage_max, sizeof(data.stage_max));
     }
 
     // オーディオの終了処理

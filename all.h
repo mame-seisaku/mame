@@ -2,7 +2,9 @@
 #define ALL_H
 
 #include "../GameLib/game_lib.h"
-#include<sstream>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 
 #include "common.h"
 #include "audio.h"
@@ -18,5 +20,7 @@
 
 using namespace GameLib;
 using namespace input;
+using namespace std;
+
 
 #endif//ALL_H

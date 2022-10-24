@@ -7,6 +7,7 @@ VECTOR2 mousePos;   // マウスカーソルの位置
 
 Sprite* sprTitle;
 
+
 /// <summary>
 /// タイトルの初期設定
 /// </summary>
@@ -72,6 +73,7 @@ void title_update()
 #ifdef _DEBUG
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
+        debug::setString("PossibleStage:%d", PossibleStage);
 #endif
 
         break;

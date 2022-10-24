@@ -5,16 +5,25 @@ int result_state;
 
 Sprite* sprResult;
 
+/// <summary>
+/// ‰Šúİ’è
+/// </summary>
 void result_init()
 {
     result_state = 0;
 }
 
+/// <summary>
+/// I—¹ˆ—
+/// </summary>
 void result_deinit()
 {
     safe_delete(sprResult);
 }
 
+/// <summary>
+/// XVˆ—
+/// </summary>
 void result_update()
 {
     switch (result_state)
@@ -42,6 +51,9 @@ void result_update()
     }
 }
 
+/// <summary>
+/// •`‰æˆ—
+/// </summary>
 void result_render()
 {
     GameLib::clear(1, 1, 1);

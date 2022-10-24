@@ -3,12 +3,18 @@
 /*****変数*****/
 int game_state;
 
+int PossibleStage;
+
 bool pause;
 
 Sprite* sprGame;
 Sprite* sprPause;
 
 Player player;
+
+// extern 宣言
+extern int stage;
+
 
 /// <summary>
 /// ゲームの初期設定
@@ -47,6 +53,7 @@ void game_update()
         ++game_state;
     case 1:
         ///// パラメーターの設定 /////
+        PossibleStage = 1;
 
         ++game_state;
     case 2:
@@ -64,8 +71,12 @@ void game_update()
             pause = pause ? false : true;
         }
 
+        
+
+
         // プレイヤー更新処理
         player.Update();
+
 
 
         break;
