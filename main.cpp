@@ -6,7 +6,7 @@ int nextScene   = SCENE_TITLE;
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 {
     //ゲームライブラリの初期設定
-    GameLib::init(L"チーム制作２", 1920, 1080, false);
+    GameLib::init(L"チーム制作２", WIDTH, HEIGHT, true);
 
     // ランド関数
     srand((unsigned int)time(NULL));

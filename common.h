@@ -4,6 +4,10 @@
 #include "../GameLib/game_lib.h"
 using namespace GameLib;
 
+// 画面サイズ
+#define WIDTH   (1920)
+#define HEIGHT  (1080)
+
 // シーンラベル
 #define SCENE_NONE  -1
 #define SCENE_TITLE 0

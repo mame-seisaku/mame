@@ -3,6 +3,7 @@
 /*******変数********/
 int title_state;
 
+Sprite* sprTitle;
 
 /// <summary>
 /// タイトルの初期設定
@@ -17,7 +18,7 @@ void title_init()
 /// </summary>
 void title_deinit()
 {
-
+    safe_delete(sprTitle);
 }
 
 /// <summary>
@@ -29,6 +30,8 @@ void title_update()
     {
     case 0:
         ///// 初期設定 /////
+        sprTitle = sprite_load(L"./Data/Images/title.png");
+
         ++title_state;
     case 1:
         ///// パラメーターの設定 /////
@@ -37,6 +40,14 @@ void title_update()
         ++title_state;
     case 2:
         ///// 通常時 /////
+
+        // 画面切り替え
+        if (TRG(0) & PAD_START)
+        {
+            nextScene = SCENE_GAME;
+            break;
+        }
+
         break;
     }
 }
@@ -47,4 +58,6 @@ void title_update()
 void title_render()
 {
     GameLib::clear(0, 0, 0);
+
+    sprite_render(sprTitle, 0, 0);
 }
