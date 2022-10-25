@@ -3,16 +3,27 @@
 /*****変数*****/
 int game_state;
 
+int PossibleStage;
+
+bool pause; // ポーズ
+
 Sprite* sprGame;
+Sprite* sprPause;
 
 Player player;
+
+// extern 宣言
+extern int stage;
 
 /// <summary>
 /// ゲームの初期設定
 /// </summary>
 void game_init()
 {
+    stage_init();
+
     game_state = 0;
+    pause = false;
 }
 
 /// <summary>
@@ -23,6 +34,7 @@ void game_deinit()
     player.Dinit();
 
     safe_delete(sprGame);
+    safe_delete(sprPause);
 }
 
 /// <summary>
@@ -37,10 +49,12 @@ void game_update()
         player.Init();
 
         sprGame = sprite_load(L"./Data/Images/game.png");
+        sprPause = sprite_load(L"./Data/Images/pause.png");
 
         ++game_state;
     case 1:
         ///// パラメーターの設定 /////
+        PossibleStage = 1;
 
         ++game_state;
     case 2:
@@ -49,13 +63,25 @@ void game_update()
         // 画面切り替え
         if (TRG(0) & PAD_SELECT)
         {
-            nextScene = SCENE::TITLE;
+            nextScene = SCENE::RESULT;
             break;
         }
+        // ポーズ画面
+        if (TRG(0) & PAD_L1)
+        {
+            pause = pause ? false : true;
+        }
+
+        // ステージ
+        stage_update(stage);
+
 
         // プレイヤー更新処理
         player.Update();
 
+#ifdef _DEBUG
+        debug::setString("stage:%d", stage);
+#endif
 
         break;
     }
@@ -70,6 +96,15 @@ void game_render()
 
     sprite_render(sprGame, 0, 0);   // 背景
 
+    // ステージ
+    stage_render(stage);
+
     // プレイヤー更新処理    
     player.Render();
+
+    // ポーズ画面
+    if (pause)
+    {
+        sprite_render(sprPause, 0, 0);
+    }
 }

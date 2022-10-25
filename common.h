@@ -5,8 +5,8 @@
 using namespace GameLib;
 
 // 画面サイズ
-#define WIDTH   (1920)
-#define HEIGHT  (1080)
+#define WIDTH   (1536)
+#define HEIGHT  (824)
 
 // シーンラベル
 enum SCENE
