@@ -13,7 +13,7 @@ Sprite* sprPause;
 Player player;
 
 // extern 宣言
-extern int stage;
+extern int selectStage;
 
 /// <summary>
 /// ゲームの初期設定
@@ -73,14 +73,14 @@ void game_update()
         }
 
         // ステージ
-        stage_update(stage);
+        stage_update(selectStage);
 
 
         // プレイヤー更新処理
         player.Update();
 
 #ifdef _DEBUG
-        debug::setString("stage:%d", stage);
+        debug::setString("stage:%d", selectStage);
 #endif
 
         break;
@@ -97,7 +97,7 @@ void game_render()
     sprite_render(sprGame, 0, 0);   // 背景
 
     // ステージ
-    stage_render(stage);
+    stage_render(selectStage);
 
     // プレイヤー更新処理    
     player.Render();

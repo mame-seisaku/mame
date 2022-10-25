@@ -2,7 +2,7 @@
 
 /*****変数*****/
 
-obj2d stage0[STAGE0_MAX];
+stage stage0[STAGE0_MAX];
 
 Sprite* sprStage0;
 
@@ -30,12 +30,31 @@ void stage0_update()
     case 1:
         ///// パラメータの設定 /////
 
+        for (int i = 0; i < STAGE0_MAX; ++i)
+        {
+            stage0[i] = {};
+        }
+
+        // 床
         stage0[0].pos = { 768,764 };
         stage0[0].hsize = { 768, 64};
+        stage0[0].type = 0;
+        stage0[0].exist = true;
+        // 四角
         stage0[1].pos = { 585,625 };
         stage0[1].hsize = { 95, 75 };
+        stage0[1].type = 1;
+        stage0[1].exist = true;
+        // 扉
         stage0[2].pos = { 1430,640 };
         stage0[2].hsize = { 60, 60 };
+        stage0[2].type = 2;
+        stage0[2].exist = true;
+        // 左壁
+        stage0[3].pos = { 5,412 };
+        stage0[3].hsize = { 5,412 };
+        stage0[3].type = 0;
+        stage0[3].exist = true;
 
         ++stage_state[0];
     case 2:
@@ -54,6 +73,16 @@ void stage0_update()
         debug::setString("PossibleStage:%d", PossibleStage);
 #endif
 
+        // 位置にスピードを足す
+        //if (player.moveFlag)
+        //{
+            player.pos.y += player.speed.y;
+        //}
+        //else
+        //{
+        //    player.speed.y = 0;
+        //}
+
         // 上下のめり込みチェック
         for (int i = 0; i < STAGE0_MAX; ++i)
         {
@@ -69,6 +98,16 @@ void stage0_update()
                 player.speed.y = 0;
             }
         }
+
+        // 位置にスピードを足す
+        //if (player.moveFlag)
+        //{
+            player.pos.x += player.speed.x;
+        //}
+        //else
+        //{
+        //    player.speed.x = 0;
+        //}
 
         // 左右のめり込みチェック
         for (int i = 0; i < STAGE0_MAX; ++i)
@@ -86,7 +125,22 @@ void stage0_update()
             }
         } 
 
-
+        // 四角の色設定
+        for (int i = 0; i < STAGE0_MAX; ++i)
+        {
+            switch (stage0[i].type)
+            {
+            case 0:
+                stage0[i].color = { 1,1,1,1 };
+                break;
+            case 1:
+                stage0[i].color = { 1,0,0,1 };
+                break;
+            case 2:
+                stage0[i].color = { 0,1,0,1 };
+                break;
+            }
+        }
 
         break;
     }
@@ -101,8 +155,9 @@ void stage0_render()
     // プレイヤー
     primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
 
-    primitive::rect(stage0[0].pos, stage0[0].hsize * 2, stage0[0].hsize, 0, { 1,1,1,1 });
-    primitive::rect(stage0[1].pos, stage0[1].hsize * 2, stage0[1].hsize, 0, { 1,0,0,1 });
-    primitive::rect(stage0[2].pos, stage0[2].hsize * 2, stage0[2].hsize, 0, { 0,1,0,1 });
+    for (int i = 0; i < STAGE0_MAX; ++i)
+    {
+        primitive::rect(stage0[i].pos, stage0[i].hsize * 2, stage0[i].hsize, 0, { stage0[i].color.x,stage0[i].color.y,stage0[i].color.z,stage0[i].color.w });
+    }
 }
 

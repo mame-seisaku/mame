@@ -3,6 +3,8 @@
 // インクルード
 #include "obj2d.h"
 
+#define PLAYER_MOVE (10)
+
 class Player :public obj2d
 {
 public:
