@@ -21,5 +21,6 @@ public:
     void checkGround(); // ’n–Ê‚Æ‚Ì”»’è
 };
 
+extern Player player;
 
 #endif//PLAYER_H

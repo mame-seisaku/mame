@@ -15,6 +15,7 @@ public:
     VECTOR4 color;      // êF
 
     VECTOR2 speed;      // ë¨ìx
+    VECTOR2 hsize;      // í[
 };
 
 
