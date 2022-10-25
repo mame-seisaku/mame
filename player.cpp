@@ -34,8 +34,8 @@ void Player::Update()
         pos = { 100,200 };
         scale = { 1,1 };
         texPos = { 0,0 };
-        texSize = { 256,256 };
-        pivot = { 128,128 };
+        texSize = { 128,128 };
+        pivot = { 64,64 };
         angle = 0;
 
         ++state;
@@ -75,9 +75,9 @@ void Player::Move()
 
 void Player::checkGround()
 {
-    if (pos.y > 1000)
+    if (pos.y > 600)
     {
-        pos.y = 1000;
+        pos.y = 600;
         speed.y = 0;
     }
 }

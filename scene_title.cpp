@@ -3,7 +3,10 @@
 /*******変数********/
 int title_state;
 
+VECTOR2 mousePos;   // マウスカーソルの位置
+
 Sprite* sprTitle;
+
 
 /// <summary>
 /// タイトルの初期設定
@@ -37,16 +40,41 @@ void title_update()
         ///// パラメーターの設定 /////
         GameLib::setBlendMode(Blender::BS_ALPHA);
 
+        mousePos = {};
+
         ++title_state;
     case 2:
         ///// 通常時 /////
 
         // 画面切り替え
-        if (TRG(0) & PAD_START)
+        if (TRG(0) & PAD_R3)
         {
-            nextScene = SCENE::GAME;
-            break;
+            // スタート
+            if (mousePos.x > 615 && mousePos.y > 420 && mousePos.x < 825 && mousePos.y < 495)
+            {
+                nextScene = SCENE::SELECT;
+                break;
+            }
+            // チュートリアル
+            if (mousePos.x > 500 && mousePos.y > 600 && mousePos.x < 970 && mousePos.y < 670)
+            {
+                nextScene = SCENE::TUTORIAL;
+                break;
+            }
         }
+
+        // マウスカーソル
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = (float)(point.x);
+        mousePos.y = (float)(point.y);
+#ifdef _DEBUG
+        oss << "(x=" << point.x << " y=" << point.y << ")";
+        SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
+        debug::setString("PossibleStage:%d", PossibleStage);
+#endif
 
         break;
     }
