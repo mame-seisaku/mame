@@ -1,9 +1,6 @@
 #include "all.h"
 
-<<<<<<< HEAD
-int tutorial_state;
 
-=======
 /*****•Ï”*****/
 int tutorial_state;
 
@@ -12,19 +9,13 @@ Sprite* sprTutorial;
 /// <summary>
 /// ‰Šúİ’è
 /// </summary>
->>>>>>> 2ccefa9e3716e6aa28dc92d8de0ebaeab916b8d8
+
 void tutorial_init()
 {
     tutorial_state = 0;
 }
 
-<<<<<<< HEAD
-void tutorial_deinit()
-{
 
-}
-
-=======
 /// <summary>
 /// I—¹ˆ—
 /// </summary>
@@ -36,18 +27,12 @@ void tutorial_deinit()
 /// <summary>
 /// XVˆ—
 /// </summary>
->>>>>>> 2ccefa9e3716e6aa28dc92d8de0ebaeab916b8d8
+
 void tutorial_update()
 {
     switch (tutorial_state)
     {
     case 0:
-<<<<<<< HEAD
-        ++tutorial_state;
-    case 1:
-        ++tutorial_state;
-    case 2:
-=======
         ///// ‰Šú‰» /////
         sprTutorial = sprite_load(L"./Data/Images/tutorial.png");
 
@@ -65,16 +50,14 @@ void tutorial_update()
             break;
         }
 
->>>>>>> 2ccefa9e3716e6aa28dc92d8de0ebaeab916b8d8
+
         break;
     }
 }
 
-<<<<<<< HEAD
-void tutorial_render()
-{
 
-=======
+
+
 /// <summary>
 /// •`‰æˆ—
 /// </summary>
@@ -83,5 +66,4 @@ void tutorial_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(sprTutorial, 0, 0);
->>>>>>> 2ccefa9e3716e6aa28dc92d8de0ebaeab916b8d8
 }
