@@ -9,7 +9,7 @@ struct Data
     int stage_max;
 };
 
-int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
+int APIENTRY wWinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPWSTR,_In_ int)
 {
     //ゲームライブラリの初期設定
     GameLib::init(L"チーム制作２", WIDTH, HEIGHT, true);
@@ -18,7 +18,7 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     srand((unsigned int)time(NULL));
 
     // ファイルデータ保存先変数
-    struct Data data;
+    struct Data data = {};
 
     // ファイル読み込み
     std::ifstream ifs;
