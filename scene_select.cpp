@@ -3,7 +3,7 @@
 /*****変数*****/
 int select_state;
 
-int stage;
+int selectStage;
 
 Sprite* sprSelect;
 Sprite* sprLock;
@@ -44,7 +44,7 @@ void select_update()
     case 1:
         ///// パラメータの設定
 
-        stage = 0;
+        selectStage = 0;
 
         ++select_state;
     case 2:
@@ -159,7 +159,7 @@ void mouseClick(int s)
 {
     if (TRG(0) & PAD_R3)
     {
-        stage = s;
+        selectStage = s;
 
         // シーン切り替え
         nextScene = SCENE::GAME;

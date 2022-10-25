@@ -13,6 +13,13 @@ enum DIR
     RIGHT,
 };
 
+class stage :public obj2d
+{
+public:
+    int type;
+    bool exist;
+};
+
 // プロトタイプ宣言
 void stage_init();
 void stage_deinit();

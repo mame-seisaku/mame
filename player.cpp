@@ -47,7 +47,7 @@ void Player::Update()
         Move();
 
         // 地面の判定
-        checkGround();
+        //checkGround();
 
         break;
     }
@@ -63,15 +63,31 @@ void Player::Render()
 
 void Player::Move()
 {
+    // 入力移動
+    if (STATE(0) & PAD_LEFT)
+    {
+        if (!(STATE(0) & PAD_RIGHT))
+        {
+            player.speed.x = -PLAYER_MOVE;
+        }
+    }
+    else if (STATE(0) & PAD_RIGHT)
+    {
+        if (!(STATE(0) & PAD_LEFT))
+        {
+            player.speed.x = PLAYER_MOVE;
+        }
+    }
+    else
+    {
+        player.speed.x = 0;
+    }
+
+    // 重力操作
+    player.speed.y += GRAVITY;
+
+    // ジャンプ
     if (STATE(0) & PAD_UP)pos.y -= 10;
-    if (STATE(0) & PAD_DOWN)pos.y += 10;
-    if (STATE(0) & PAD_LEFT)pos.x -= 10;
-    if (STATE(0) & PAD_RIGHT)pos.x += 10;
-
-    // 重力
-    speed.y += GRAVITY;
-
-    pos += speed;
 }
 
 void Player::checkGround()

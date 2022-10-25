@@ -16,6 +16,8 @@ public:
 
     VECTOR2 speed;      // ‘¬“x
     VECTOR2 hsize;      // ’[
+
+    bool moveFlag;
 };
 
 
