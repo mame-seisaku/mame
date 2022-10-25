@@ -41,8 +41,8 @@ void stage0_update()
         // 床
         stage0[0].position = { 0,700 };
         stage0[0].pos = { 768,764 };
-        stage0[0].hsize = { 768, 64};
-        stage0[0].type = 0;
+        stage0[0].hsize = { 768, 64 };
+        stage0[0].type = 3;
         stage0[0].exist = true;
         // 四角
         stage0[1].position = { 0,700 };
@@ -61,8 +61,8 @@ void stage0_update()
         stage0[3].type = 0;
         stage0[3].exist = true;
         // アンチ
-        stage0[4].position = {70,630};
-        stage0[4].pos = {105,640};
+        stage0[4].position = { 70,630 };
+        stage0[4].pos = { 105,640 };
         stage0[4].hsize = { 35,10 };
         stage0[4].type = 0;
         stage0[4].exist = true;
@@ -70,7 +70,7 @@ void stage0_update()
         ++stage_state[0];
     case 2:
         ///// 通常時 /////
-        
+
         // マウスカーソル
 #ifdef _DEBUG
         std::ostringstream oss;                                 // 文字列ストリーム
@@ -87,7 +87,7 @@ void stage0_update()
         // 位置にスピードを足す
         //if (player.moveFlag)
         //{
-            player.pos.y += player.speed.y;
+        player.pos.y += player.speed.y;
         //}
         //else
         //{
@@ -99,6 +99,12 @@ void stage0_update()
         {
             if (hitCheck(&player, &stage0[i]))
             {
+                // ベルトコンベア
+                if (stage0[i].type == 3)
+                {
+                    player.pos.x += 10;
+                }
+
                 // めり込み対策		// 当たり判定
                 float dist;
                 if (player.speed.y >= 0)
@@ -113,7 +119,7 @@ void stage0_update()
         // 位置にスピードを足す
         //if (player.moveFlag)
         //{
-            player.pos.x += player.speed.x;
+        player.pos.x += player.speed.x;
         //}
         //else
         //{
@@ -134,7 +140,8 @@ void stage0_update()
                 player.pos.x += dist;
                 player.speed.x = 0;
             }
-        } 
+        }
+
 
         // 四角の色設定
         for (int i = 0; i < STAGE0_MAX; ++i)
@@ -149,6 +156,9 @@ void stage0_update()
                 break;
             case 2:
                 stage0[i].color = { 0,1,0,1 };
+                break;
+            case 3:
+                stage0[i].color = { 1,1,1,1 };
                 break;
             }
         }
