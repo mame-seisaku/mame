@@ -3,6 +3,7 @@
 
 #define STAGE_MAX   (10)
 
+extern int stage_state[STAGE_MAX];
 
 // プロトタイプ宣言
 void stage_init();

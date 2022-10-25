@@ -64,11 +64,19 @@ void select_update()
       
 
         // ‰æ–ÊØ‚è‘Ö‚¦
+        //ˆê—ñ–Ú
         if (mousePos.x > 95 && mousePos.y > 250 && mousePos.x < 260 && mousePos.y < 390)
         {
             mouseClick(0);
             break;
+        } 
+        if (mousePos.x > 295 && mousePos.y > 250 && mousePos.x < 490 && mousePos.y < 390)
+        {
+            mouseClick(1);
+            break;
         }
+
+
 
         if (TRG(0) & PAD_SELECT)
         {
