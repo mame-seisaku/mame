@@ -18,10 +18,8 @@
 #include "scene_game.h"
 #include "scene_select.h"
 #include "scene_tutorial.h"
-<<<<<<< HEAD
-=======
 #include "scene_result.h"
->>>>>>> 2ccefa9e3716e6aa28dc92d8de0ebaeab916b8d8
+
 
 using namespace GameLib;
 using namespace input;
