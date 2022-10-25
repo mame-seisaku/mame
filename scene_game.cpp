@@ -5,7 +5,7 @@ int game_state;
 
 int PossibleStage;
 
-bool pause;
+bool pause; // ポーズ
 
 Sprite* sprGame;
 Sprite* sprPause;
@@ -71,13 +71,21 @@ void game_update()
             pause = pause ? false : true;
         }
 
-        
+        // ステージ
+        switch (stage)
+        {
+        case 0:
+            //void stage0();
+            break;
+        }
 
 
         // プレイヤー更新処理
         player.Update();
 
-
+#ifdef _DEBUG
+        debug::setString("stage:%d", stage);
+#endif
 
         break;
     }

@@ -3,10 +3,13 @@
 /*****変数*****/
 int select_state;
 
-static int stage;
+int stage;
 
 Sprite* sprSelect;
 Sprite* sprLock;
+
+// extern宣言
+extern VECTOR2 mousePos;
 
 /// <summary>
 /// 初期設定
@@ -47,10 +50,24 @@ void select_update()
     case 2:
         ///// 通常時 /////
         
-        // 画面切り替え
-        if (TRG(0) & PAD_R3)
-        {
+        // マウスカーソル
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = point.x;
+        mousePos.y = point.y;
+#ifdef _DEBUG
+        oss << "(x=" << point.x << " y=" << point.y << ")";
+        SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
+#endif
+      
 
+        // 画面切り替え
+        if (mousePos.x > 95 && mousePos.y > 250 && mousePos.x < 260 && mousePos.y < 390)
+        {
+            mouseClick(0);
+            break;
         }
 
         if (TRG(0) & PAD_SELECT)
@@ -58,21 +75,8 @@ void select_update()
             nextScene = SCENE::TITLE;
             break;
         }
-        if (TRG(0) & PAD_START)
-        {
-            nextScene = SCENE::GAME;
-            break;
-        }
+        
 
-        // マウスカーソル
-#ifdef _DEBUG
-        std::ostringstream oss;                                 // 文字列ストリーム
-        POINT point;                                            // 位置用の変数を宣言する
-        GetCursorPos(&point);                                   // スクリーン座標を取得する
-        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
-        oss << "(x=" << point.x << " y=" << point.y << ")";
-        SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
-#endif
 
         break;
     }
@@ -136,5 +140,20 @@ void disp_key()
         sprite_render(sprLock, 1200.0f, 670.0f, 1.0f, 1.0f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
     case 16:
         sprite_render(sprLock, 1400.0f, 670.0f, 1.0f, 1.0f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
+    }
+}
+
+/// <summary>
+/// マウスクリック判定
+/// </summary>
+/// <param name="s">ステージ番号</param>
+void mouseClick(int s)
+{
+    if (TRG(0) & PAD_R3)
+    {
+        stage = s;
+
+        // シーン切り替え
+        nextScene = SCENE::GAME;
     }
 }

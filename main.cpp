@@ -22,7 +22,7 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 
     // ファイル読み込み
     std::ifstream ifs;
-    ifs.open("mame.bin", ios::binary);
+    ifs.open("mame.bin", std::ios::binary);
     if (ifs)
     {
         ifs.read((char*)&data.stage_max, sizeof(data));
@@ -160,7 +160,7 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
     //  ファイル書き出し
     data.stage_max = PossibleStage;
     std::ofstream ofs;
-    ofs.open("mame.bin", ios::binary);
+    ofs.open("mame.bin", std::ios::binary);
     if (ofs)
     {
         ofs.write((const char*)&data.stage_max, sizeof(data.stage_max));

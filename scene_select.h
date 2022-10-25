@@ -8,5 +8,6 @@ void select_update();
 void select_render();
 
 void disp_key();
+void mouseClick(int s);
 
 #endif//SELECT_H

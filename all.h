@@ -20,7 +20,6 @@
 
 using namespace GameLib;
 using namespace input;
-using namespace std;
 
 
 #endif//ALL_H
