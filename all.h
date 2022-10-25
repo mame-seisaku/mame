@@ -10,6 +10,8 @@
 #include "audio.h"
 #include "obj2d.h"
 
+#include "stage.h"
+#include "stage0.h"
 #include "player.h"
 
 #include "scene_title.h"

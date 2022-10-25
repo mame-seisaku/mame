@@ -15,12 +15,13 @@ Player player;
 // extern 宣言
 extern int stage;
 
-
 /// <summary>
 /// ゲームの初期設定
 /// </summary>
 void game_init()
 {
+    stage_init();
+
     game_state = 0;
     pause = false;
 }
@@ -72,12 +73,7 @@ void game_update()
         }
 
         // ステージ
-        switch (stage)
-        {
-        case 0:
-            //void stage0();
-            break;
-        }
+        stage_update(stage);
 
 
         // プレイヤー更新処理
@@ -99,6 +95,9 @@ void game_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(sprGame, 0, 0);   // 背景
+
+    // ステージ
+    stage_render(stage);
 
     // プレイヤー更新処理    
     player.Render();
