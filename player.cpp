@@ -34,10 +34,10 @@ void Player::Update()
         pos = { 100,200 };
         scale = { 1,1 };
         texPos = { 0,0 };
-        texSize = { 84,84 };
-        pivot = { 0,0 };
+        texSize = { 84,100 };
+        pivot = { 42,50 };
         angle = 0;
-        hsize = { 42,42 };
+        hsize = { 42,50 };
 
         ++state;
     case 2:
@@ -58,7 +58,7 @@ void Player::Update()
 /// </summary>
 void Player::Render()
 {
-    //sprite_render(sprPlayer, pos.x, pos.y, scale.x, scale.y, texPos.x, texPos.y, texSize.x, texSize.y, pivot.x, pivot.y, angle);
+    sprite_render(sprPlayer, pos.x, pos.y, scale.x, scale.y, texPos.x, texPos.y, texSize.x, texSize.y, pivot.x, pivot.y, angle);
 }
 
 void Player::Move()
@@ -87,7 +87,7 @@ void Player::Move()
     player.speed.y += GRAVITY;
 
     // ƒWƒƒƒ“ƒv
-    if (STATE(0) & PAD_UP)pos.y -= 10;
+    if (STATE(0) & PAD_UP)pos.y -= 15;
 }
 
 void Player::checkGround()

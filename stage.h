@@ -16,6 +16,7 @@ enum DIR
 class stage :public obj2d
 {
 public:
+    VECTOR2 position;
     int type;
     bool exist;
 };

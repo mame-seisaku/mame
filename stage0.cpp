@@ -5,6 +5,7 @@
 stage stage0[STAGE0_MAX];
 
 Sprite* sprStage0;
+Sprite* sprStage0Floor;
 
 extern VECTOR2 mousePos;
 
@@ -16,6 +17,7 @@ void stage0_init()
 void stage0_deinit()
 {
     safe_delete(sprStage0);
+    safe_delete(sprStage0Floor);
 }
 
 void stage0_update()
@@ -25,6 +27,7 @@ void stage0_update()
     case 0:
         ///// 初期設定 /////
         sprStage0 = sprite_load(L"./Data/Images/stage0.png");
+        sprStage0Floor = sprite_load(L"./Data/Images/03.png");
 
         ++stage_state[0];
     case 1:
@@ -36,11 +39,13 @@ void stage0_update()
         }
 
         // 床
+        stage0[0].position = { 0,700 };
         stage0[0].pos = { 768,764 };
         stage0[0].hsize = { 768, 64};
         stage0[0].type = 0;
         stage0[0].exist = true;
         // 四角
+        stage0[1].position = { 0,700 };
         stage0[1].pos = { 585,625 };
         stage0[1].hsize = { 95, 75 };
         stage0[1].type = 1;
@@ -55,6 +60,12 @@ void stage0_update()
         stage0[3].hsize = { 5,412 };
         stage0[3].type = 0;
         stage0[3].exist = true;
+        // アンチ
+        stage0[4].position = {70,630};
+        stage0[4].pos = {105,640};
+        stage0[4].hsize = { 35,10 };
+        stage0[4].type = 0;
+        stage0[4].exist = true;
 
         ++stage_state[0];
     case 2:
@@ -142,6 +153,17 @@ void stage0_update()
             }
         }
 
+        // 床スクロール
+        if (STATE(0) & PAD_TRG1)
+        {
+            stage0[0].position.x += 10;
+        }
+        // 範囲外
+        if (stage0[0].position.x > 0)
+        {
+            stage0[0].position.x = -1536;
+        }
+
         break;
     }
 }
@@ -155,9 +177,12 @@ void stage0_render()
     // プレイヤー
     primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
 
+    // 地形描画
     for (int i = 0; i < STAGE0_MAX; ++i)
     {
         primitive::rect(stage0[i].pos, stage0[i].hsize * 2, stage0[i].hsize, 0, { stage0[i].color.x,stage0[i].color.y,stage0[i].color.z,stage0[i].color.w });
     }
+
+    sprite_render(sprStage0Floor, stage0[0].position.x, stage0[0].position.y);
 }
 
