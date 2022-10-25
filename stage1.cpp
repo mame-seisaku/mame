@@ -1,6 +1,9 @@
 #include "all.h"
 
 /*****•Ï”*****/
+
+obj2d stage1[STAGE1_MAX];
+
 Sprite* spr2;
 
 /// <summary>
@@ -28,7 +31,7 @@ void stage1_update()
     {
     case 0:
         ///// ‰Šúİ’è /////
-        spr2 = sprite_load(L"./Data/Images/02.png");
+        spr2 = sprite_load(L"./Data/Images/stage0.png");
 
         ++stage_state[1];
     case 1:
@@ -36,6 +39,9 @@ void stage1_update()
         ++stage_state[1];
     case 2:
         ///// ’Êí /////
+
+
+
         break;
     }
 }
@@ -48,4 +54,6 @@ void stage1_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(spr2, 0, 0);
+
+    primitive::rect(player.pos, player.hsize * 2, player.hsize*0.005, 0, { 0,0,1,1 });
 }
