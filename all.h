@@ -13,6 +13,10 @@
 #include "stage.h"
 #include "stage0.h"
 #include "stage1.h"
+#include "stage2.h"
+#include "stage3.h"
+#include "stage4.h"
+#include "stage5.h"
 #include "player.h"
 
 #include "scene_title.h"

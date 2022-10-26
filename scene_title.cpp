@@ -47,7 +47,7 @@ void title_update()
         ///// 通常時 /////
 
         // 画面切り替え
-        if (TRG(0) & PAD_R3)
+        if (TRG(0) & PAD_L3)
         {
             // スタート
             if (mousePos.x > 615 && mousePos.y > 420 && mousePos.x < 825 && mousePos.y < 495)

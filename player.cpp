@@ -26,7 +26,8 @@ void Player::Update()
     {
     case 0:
         ///// 初期設定 /////
-        sprPlayer = sprite_load(L"./Data/Images/player.png");
+        //sprPlayer = sprite_load(L"./Data/Images/player.png");
+        sprPlayer = sprite_load(L"./Data/Images/player1.png");
 
         ++state;
     case 1:
@@ -38,6 +39,7 @@ void Player::Update()
         pivot = { 42,50 };
         angle = 0;
         hsize = { 42,50 };
+        elec = true;
 
         ++state;
     case 2:
@@ -48,6 +50,9 @@ void Player::Update()
 
         // 地面の判定
         //checkGround();
+
+        player.texPos.x = player.elec ? 0 : 84;
+
 
         break;
     }
@@ -64,18 +69,28 @@ void Player::Render()
 void Player::Move()
 {
     // 入力移動
-    if (STATE(0) & PAD_LEFT)
+    if (elec)   // プレイヤーの電気があったら動ける
     {
-        if (!(STATE(0) & PAD_RIGHT))
+        // ジャンプ
+        if (STATE(0) & PAD_UP)pos.y -= 15;
+    
+        if (STATE(0) & PAD_LEFT)
         {
-            player.speed.x = -PLAYER_MOVE;
+            if (!(STATE(0) & PAD_RIGHT))
+            {
+                player.speed.x = -PLAYER_MOVE;
+            }
         }
-    }
-    else if (STATE(0) & PAD_RIGHT)
-    {
-        if (!(STATE(0) & PAD_LEFT))
+        else if (STATE(0) & PAD_RIGHT)
         {
-            player.speed.x = PLAYER_MOVE;
+            if (!(STATE(0) & PAD_LEFT))
+            {
+                player.speed.x = PLAYER_MOVE;
+            }
+        }
+        else
+        {
+            player.speed.x = 0;
         }
     }
     else
@@ -86,8 +101,6 @@ void Player::Move()
     // 重力操作
     player.speed.y += GRAVITY;
 
-    // ジャンプ
-    if (STATE(0) & PAD_UP)pos.y -= 15;
 }
 
 void Player::checkGround()

@@ -1,6 +1,8 @@
 #ifndef SELECT_H
 #define SELECT_H
 
+extern int selectStage;
+
 // プロトタイプ宣言
 void select_init();
 void select_deinit();

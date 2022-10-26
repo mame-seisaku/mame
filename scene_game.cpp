@@ -20,8 +20,6 @@ extern int selectStage;
 /// </summary>
 void game_init()
 {
-    stage_init();
-
     game_state = 0;
     pause = false;
 }
@@ -72,8 +70,6 @@ void game_update()
             pause = pause ? false : true;
         }
 
-        // ステージ
-        stage_update(selectStage);
 
 
         // プレイヤー更新処理
@@ -96,8 +92,6 @@ void game_render()
 
     sprite_render(sprGame, 0, 0);   // 背景
 
-    // ステージ
-    stage_render(selectStage);
 
     // プレイヤー更新処理    
     player.Render();

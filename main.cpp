@@ -61,6 +61,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             case SCENE::RESULT:
                 result_deinit();
                 break;
+
+            case SCENE::STAGE0:
+                stage0_deinit();
+                break;
+
+            case SCENE::STAGE1:
+                stage1_deinit();
+                break;
+
+            case SCENE::STAGE2:
+                stage2_deinit();
+                break;
+
+            case SCENE::STAGE3:
+                stage3_deinit();
+                break;
+
+            case SCENE::STAGE4:
+                stage4_deinit();
+                break;
+
+            case SCENE::STAGE5:
+                stage5_deinit();
+                break;
             }
 
             // 次のシーンに追う下初期設定処理
@@ -84,6 +108,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::RESULT:
                 result_init();
+                break;
+
+            case SCENE::STAGE0:
+                stage0_init();
+                break;
+
+            case SCENE::STAGE1:
+                stage1_init();
+                break;
+
+            case SCENE::STAGE2:
+                stage2_init();
+                break;
+
+            case SCENE::STAGE3:
+                stage3_init();
+                break;
+
+            case SCENE::STAGE4:
+                stage4_init();
+                break;
+
+            case SCENE::STAGE5:
+                stage5_init();
                 break;
             }
 
@@ -124,6 +172,36 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             result_update();
             result_render();
             break;
+
+        case SCENE::STAGE0:
+            stage0_update();
+            stage0_render();
+            break;
+
+        case SCENE::STAGE1:
+            stage1_update();
+            stage1_render();
+            break;
+
+        case SCENE::STAGE2:
+            stage2_update();
+            stage2_render();
+            break;
+
+        case SCENE::STAGE3:
+            stage3_update();
+            stage3_render();
+            break;
+
+        case SCENE::STAGE4:
+            stage4_update();
+            stage4_render();
+            break;
+
+        case SCENE::STAGE5:
+            stage5_update();
+            stage5_render();
+            break;
         }
 
         // デバック用文字列の表示
@@ -154,6 +232,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     case SCENE::RESULT:
         result_deinit();
+        break;
+
+    case SCENE::STAGE0:
+        stage0_deinit();
+        break;
+
+    case SCENE::STAGE1:
+        stage1_deinit();
+        break;
+
+    case SCENE::STAGE2:
+        stage2_deinit();
+        break;
+
+    case SCENE::STAGE3:
+        stage3_deinit();
+        break;
+
+    case SCENE::STAGE4:
+        stage4_deinit();
+        break;
+
+    case SCENE::STAGE5:
+        stage5_deinit();
         break;
     }
 
