@@ -26,7 +26,8 @@ void Player::Update()
     {
     case 0:
         ///// 初期設定 /////
-        sprPlayer = sprite_load(L"./Data/Images/player.png");
+        //sprPlayer = sprite_load(L"./Data/Images/player.png");
+        sprPlayer = sprite_load(L"./Data/Images/player1.png");
 
         ++state;
     case 1:
@@ -34,10 +35,11 @@ void Player::Update()
         pos = { 100,200 };
         scale = { 1,1 };
         texPos = { 0,0 };
-        texSize = { 84,84 };
-        pivot = { 0,0 };
+        texSize = { 84,100 };
+        pivot = { 42,50 };
         angle = 0;
-        hsize = { 42,42 };
+        hsize = { 42,50 };
+        elec = true;
 
         ++state;
     case 2:
@@ -49,6 +51,9 @@ void Player::Update()
         // 地面の判定
         //checkGround();
 
+        player.texPos.x = player.elec ? 0 : 84;
+
+
         break;
     }
 }
@@ -58,24 +63,34 @@ void Player::Update()
 /// </summary>
 void Player::Render()
 {
-    //sprite_render(sprPlayer, pos.x, pos.y, scale.x, scale.y, texPos.x, texPos.y, texSize.x, texSize.y, pivot.x, pivot.y, angle);
+    sprite_render(sprPlayer, pos.x, pos.y, scale.x, scale.y, texPos.x, texPos.y, texSize.x, texSize.y, pivot.x, pivot.y, angle);
 }
 
 void Player::Move()
 {
     // 入力移動
-    if (STATE(0) & PAD_LEFT)
+    if (elec)   // プレイヤーの電気があったら動ける
     {
-        if (!(STATE(0) & PAD_RIGHT))
+        // ジャンプ
+        if (STATE(0) & PAD_UP)pos.y -= 15;
+    
+        if (STATE(0) & PAD_LEFT)
         {
-            player.speed.x = -PLAYER_MOVE;
+            if (!(STATE(0) & PAD_RIGHT))
+            {
+                player.speed.x = -PLAYER_MOVE;
+            }
         }
-    }
-    else if (STATE(0) & PAD_RIGHT)
-    {
-        if (!(STATE(0) & PAD_LEFT))
+        else if (STATE(0) & PAD_RIGHT)
         {
-            player.speed.x = PLAYER_MOVE;
+            if (!(STATE(0) & PAD_LEFT))
+            {
+                player.speed.x = PLAYER_MOVE;
+            }
+        }
+        else
+        {
+            player.speed.x = 0;
         }
     }
     else
@@ -86,8 +101,6 @@ void Player::Move()
     // 重力操作
     player.speed.y += GRAVITY;
 
-    // ジャンプ
-    if (STATE(0) & PAD_UP)pos.y -= 10;
 }
 
 void Player::checkGround()

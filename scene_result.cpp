@@ -47,6 +47,12 @@ void result_update()
             break;
         }
 
+        if (STATE(0) & PAD_START)
+        {
+            mouseClick(selectStage + 1);
+            break;
+        }
+
         break;
     }
 }

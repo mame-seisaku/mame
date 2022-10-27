@@ -157,11 +157,32 @@ void disp_key()
 /// <param name="s">ステージ番号</param>
 void mouseClick(int s)
 {
-    if (TRG(0) & PAD_R3)
+    if (TRG(0) & PAD_L3)
     {
         selectStage = s;
 
+
         // シーン切り替え
-        nextScene = SCENE::GAME;
+        switch (s)
+        {
+        case 0:
+            nextScene = SCENE::STAGE0;
+            break;
+        case 1:
+            nextScene = SCENE::STAGE1;
+            break;
+        case 2:
+            nextScene = SCENE::STAGE2;
+            break;
+        case 3:
+            nextScene = SCENE::STAGE3;
+            break;
+        case 4:
+            nextScene = SCENE::STAGE4;
+            break;
+        case 5:
+            nextScene = SCENE::STAGE5;
+            break;
+        }
     }
 }

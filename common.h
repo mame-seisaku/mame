@@ -18,6 +18,17 @@ enum SCENE
     GAME,
     RESULT,
     TUTORIAL,
+    STAGE0 = 6,
+    STAGE1,
+    STAGE2,
+    STAGE3,
+    STAGE4,
+    STAGE5,
+    STAGE6,
+    STAGE7,
+    STAGE8,
+    STAGE9,
+    STAGE10,
 };
 
 // ä÷êîÉ|ÉCÉìÉ^
