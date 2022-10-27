@@ -2,13 +2,17 @@
 
 /*****変数*****/
 
+
+
 stage stage0[STAGE0_MAX];
 
 Sprite* sprStage0;
 Sprite* sprStage0Floor;
 Sprite* sprBox;
+Sprite* sprElec;
 
 extern VECTOR2 mousePos;
+
 
 void stage0_init()
 {
@@ -22,6 +26,7 @@ void stage0_deinit()
     safe_delete(sprStage0);
     safe_delete(sprStage0Floor);
     safe_delete(sprBox);
+    safe_delete(sprElec);
 }
 
 void stage0_update()
@@ -36,10 +41,14 @@ void stage0_update()
         sprStage0 = sprite_load(L"./Data/Images/04.png");
         sprStage0Floor = sprite_load(L"./Data/Images/03.png");
         sprBox = sprite_load(L"./Data/Images/box.png");
+        sprElec = sprite_load(L"./Data/Images/elec.png");
 
         ++stage_state[0];
     case 1:
         ///// パラメータの設定 /////
+
+        // denkiyou
+        ElecPos = {};
 
         for (int i = 0; i < STAGE0_MAX; ++i)
         {
@@ -75,6 +84,9 @@ void stage0_update()
         stage0[4].type = 0;
         stage0[4].exist = true;
 
+        // 電気
+        Elec = {};
+
         ++stage_state[0];
     case 2:
         ///// 通常時 /////
@@ -98,17 +110,46 @@ void stage0_update()
         {
             if (TRG(0) & PAD_L3)
             {
-                stage0[0].elec = true;
+                SetElecMove();
+                
                 player.elec = false;
             }
             if (TRG(0) & PAD_R3)
             {
+                Elec.exist = false;
                 stage0[0].elec = false;
                 player.elec = true;
             }
         }
 
+        
+        // 電気の移動と、当たったか判定
+        if (Elec.exist) // 存在したら
+        {
+            // 移動
+            Elec.pos.x += Elec.moveVec.x;
+            Elec.pos.y += Elec.moveVec.y;
 
+            // 右下方向へ進む
+            if (Elec.moveVec.x > 0)
+            {
+                if (Elec.pos.x >= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                {
+                    Elec.exist = false;
+                    stage0[0].elec = true;
+                }
+            }
+            // 左下方向へ進む
+            else
+            {
+                if (Elec.pos.x <= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                {
+                    Elec.exist = false;
+                    stage0[0].elec = true;
+                }
+            }
+           
+        }
 
         // 位置にスピードを足す
         //if (player.moveFlag)
@@ -248,5 +289,8 @@ void stage0_render()
     // 箱
     sprite_render(sprBox, stage0[1].position.x, stage0[1].position.y);
 
+    // 電気
+    if(Elec.exist)
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 64, 64, 32, 32);
 }
 

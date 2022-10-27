@@ -17,6 +17,9 @@ public:
     VECTOR2 speed;      // 速度
     VECTOR2 hsize;      // 端
 
+    VECTOR2 moveVec;
+
+    bool exist;         // 存在するか
     bool elec;          // 電気
     bool moveFlag;
 };
