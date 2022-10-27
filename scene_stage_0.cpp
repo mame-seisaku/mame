@@ -3,6 +3,9 @@
 int stage_0_state;
 int stage_0_timer;
 
+extern Sprite* sprGame;
+extern Player player;
+
 void stage_0_init()
 {
 	stage_0_state = 0;
@@ -12,7 +15,7 @@ void stage_0_init()
 
 void stage_0_deinit()
 {
-
+	player.Dinit();
 }
 
 
@@ -23,8 +26,13 @@ void stage_0_update()
 	case 0:
 
 
+		stage_0_state++;
+
 	case 1:
 
+
+
+		stage_0_state++;
 
 	case 2:
 

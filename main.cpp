@@ -34,6 +34,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
             case SCENE::TUTORIAL:
                 tutorial_deinit();
                 break;
+
+            case SCENE::STAGE_0:
+                stage_0_deinit();
+                break;
             }
 
             // 次のシーンに追う下初期設定処理
@@ -49,6 +53,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
                 
             case SCENE::TUTORIAL:
                 tutorial_init();
+                break;
+
+            case SCENE::STAGE_0:
+                stage_0_init();
                 break;
             }
 
@@ -79,6 +87,11 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
             tutorial_update();
             tutorial_render();
             break;
+
+        case SCENE::STAGE_0:
+            stage_0_update();
+            stage_0_render();
+            break;
         }
 
         // デバック用文字列の表示
@@ -101,6 +114,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)
 
     case SCENE::TUTORIAL:
         tutorial_deinit();
+        break;
+
+    case SCENE::STAGE_0:
+        stage_0_deinit();
         break;
     }
 

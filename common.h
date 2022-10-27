@@ -18,6 +18,7 @@ enum SCENE
     GAME,
     RESULT,
     TUTORIAL,
+    STAGE_0,
 };
 
 // ŠÖ”ƒ|ƒCƒ“ƒ^
