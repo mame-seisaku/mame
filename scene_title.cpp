@@ -46,6 +46,7 @@ void title_update()
     case 2:
         ///// ’Êí /////
 
+
         // ‰æ–ÊØ‚è‘Ö‚¦
         if (TRG(0) & PAD_L3)
         {

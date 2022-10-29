@@ -92,11 +92,14 @@ void Player::Move()
         {
             player.speed.x = 0;
         }
+       
     }
     else
     {
         player.speed.x = 0;
     }
+
+    
 
     // d—Í‘€ì
     player.speed.y += GRAVITY;
