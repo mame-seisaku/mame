@@ -132,15 +132,6 @@ void stage3_update()
         {
             if (hitCheck(&player, &stage3[i]))
             {
-
-                //上に乗った時の移動
-                    //if (stop == false) {
-                if (stage3[i].type == 0 && stage3[i].elec)
-                {
-                    //player.pos.y += speed3.y;
-                }
-                //
-
                 // めり込み対策		// 当たり判定
                 float dist;
                 if (player.speed.y >= 0)
@@ -160,7 +151,9 @@ void stage3_update()
                     dist = check(&stage3[3], &stage3[0], DIR::UP);
                 stage3[3].pos.y += dist;
                 speed3.y = 0;
+                stage3[3].position.y += dist;
             }  
+           
         }
 
         //操作切り替え
@@ -221,5 +214,5 @@ void stage3_render()
     }
 
     // エレベータ
-    sprite_render(sprSyoukouki3, stage3[3].position.x, stage3[3].position.y);
+    sprite_render(sprSyoukouki3, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
 }
