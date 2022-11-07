@@ -10,6 +10,7 @@ Sprite* sprStage0;
 Sprite* sprStage0Floor;
 Sprite* sprBox;
 Sprite* sprElec;
+Sprite* sprDoor;
 
 extern VECTOR2 mousePos;
 
@@ -27,6 +28,7 @@ void stage0_deinit()
     safe_delete(sprStage0Floor);
     safe_delete(sprBox);
     safe_delete(sprElec);
+    safe_delete(sprDoor);
 }
 
 void stage0_update()
@@ -42,6 +44,7 @@ void stage0_update()
         sprStage0Floor = sprite_load(L"./Data/Images/03.png");
         sprBox = sprite_load(L"./Data/Images/box.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");
+        sprDoor = sprite_load(L"./Data/Images/door.png");
 
         ++stage_state[0];
     case 1:
@@ -68,8 +71,9 @@ void stage0_update()
         stage0[1].type = 1;
         stage0[1].exist = true;
         // 扉
+        stage0[2].position = { 1384,570 };
         stage0[2].pos = { 1430,640 };
-        stage0[2].hsize = { 60, 60 };
+        stage0[2].hsize = { 40, 60 };
         stage0[2].type = 2;
         stage0[2].exist = true;
         // 左壁
@@ -104,17 +108,21 @@ void stage0_update()
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
         debug::setString("PossibleStage:%d", PossibleStage);
+        debug::setString("player.elec:%d", player.elec);
 #endif
         // マウスでの憑依操作
         if (mousePos.x > 0 && mousePos.y > 700 && mousePos.x < 1536 && mousePos.y < 824)
         {
+            // 電気を飛ばす
             if (TRG(0) & PAD_L3)
             {
-                SetElecMove();
-                
-                player.elec = false;
+                // プレイヤーに電気があれば
+                if (!Elec.exist && player.elec) 
+                    SetElecMove();
+
             }
-            if (TRG(0) & PAD_R3)
+            // 電気回収
+            if (TRG(0) & PAD_R3 && !player.elec)
             {
                 Elec.exist = false;
                 stage0[0].elec = false;
@@ -127,14 +135,16 @@ void stage0_update()
         if (Elec.exist) // 存在したら
         {
             // 移動
-            Elec.pos.x += Elec.moveVec.x;
-            Elec.pos.y += Elec.moveVec.y;
+            Elec.pos.x += Elec.moveVec.x*2;
+            Elec.pos.y += Elec.moveVec.y*2;
 
             // 右下方向へ進む
             if (Elec.moveVec.x > 0)
             {
+                // 当たった
                 if (Elec.pos.x >= ElecPos.x && Elec.pos.y >= ElecPos.y)
                 {
+                    player.elec = false;    // プレイヤーの電気消す
                     Elec.exist = false;
                     stage0[0].elec = true;
                 }
@@ -142,8 +152,10 @@ void stage0_update()
             // 左下方向へ進む
             else
             {
+                // 当たった
                 if (Elec.pos.x <= ElecPos.x && Elec.pos.y >= ElecPos.y)
                 {
+                    player.elec = false;    // プレイヤーの電気消す
                     Elec.exist = false;
                     stage0[0].elec = true;
                 }
@@ -169,9 +181,11 @@ void stage0_update()
                 // 扉
                 if (stage0[i].type == 2)
                 {
+                    player.clear = true;
+                    break;
                     // シーン切り替え
-                    nextScene = SCENE::RESULT;
-                    return;
+                    //nextScene = SCENE::RESULT;
+                    //return;
                 }
 
                 // ベルトコンベア
@@ -209,9 +223,11 @@ void stage0_update()
                 // 扉
                 if (stage0[i].type == 2)
                 {
+                    player.clear = true;
+                    break;
                     // シーン切り替え
-                    nextScene = SCENE::RESULT;
-                    return;
+                    //nextScene = SCENE::RESULT;
+                    //return;
                 }
 
                 // めり込み対策		// 当たり判定
@@ -274,10 +290,6 @@ void stage0_render()
 
     sprite_render(sprStage0, 0, 0);
 
-    // プレイヤー
-    player.Render();
-    //primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
-
     // 地形描画
     for (int i = 0; i < STAGE0_MAX; ++i)
     {
@@ -288,9 +300,16 @@ void stage0_render()
     sprite_render(sprStage0Floor, stage0[0].position.x, stage0[0].position.y);
     // 箱
     sprite_render(sprBox, stage0[1].position.x, stage0[1].position.y);
+    // 扉
+    sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y);
 
     // 電気
     if(Elec.exist)
         sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 64, 64, 32, 32);
+
+
+    // プレイヤー
+    player.Render();
+    //primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
 }
 

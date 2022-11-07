@@ -11,6 +11,8 @@ public:
     int state;
     int timer;
 
+    bool clear;   // ƒNƒŠƒA
+
     Sprite* sprPlayer;
 
 public:
