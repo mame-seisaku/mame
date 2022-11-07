@@ -231,8 +231,6 @@ void stage1_update()
                         dist = check(&stage1[3], &stage1[1], DIR::LEFT);
                     stage1[3].pos.x += dist;
                     speed1.x = 0;
-                    stage1[3].elec = false;
-                    player.elec = true;
                 }
                 if (hitCheck(&stage1[3], &stage1[4]))
                 {
@@ -244,8 +242,6 @@ void stage1_update()
                         dist = check(&stage1[3], &stage1[4], DIR::LEFT);
                     stage1[3].pos.x += dist;
                     speed1.x = 0;
-                    stage1[3].elec = false;
-                    player.elec = true;
                 }
                 if (hitCheck(&stage1[3], &stage1[5]))
                 {
@@ -257,8 +253,6 @@ void stage1_update()
                         dist = check(&stage1[3], &stage1[5], DIR::LEFT);
                     stage1[3].pos.x += dist;
                     speed1.x = 0;
-                    stage1[3].elec = false;
-                    player.elec = true;
                 }
             }
         }
