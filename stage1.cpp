@@ -290,7 +290,7 @@ void stage1_render()
     // î†
     sprite_render(sprBox1, stage1[4].position.x, stage1[4].position.y);
     // ÉgÉçÉbÉR
-    sprite_render(sprTrolley, stage1[3].position.x, stage1[3].position.y);
+    sprite_render(sprTrolley, stage1[3].position.x, stage1[3].position.y,1,1, stage1[3].elec*177,0,177,177);
    
 #ifdef _DEBUG
     debug::setString("player%d", player.elec);
