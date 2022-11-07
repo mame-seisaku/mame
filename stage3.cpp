@@ -160,7 +160,7 @@ void stage3_update()
                     dist = check(&stage3[3], &stage3[0], DIR::UP);
                 stage3[3].pos.y += dist;
                 speed3.y = 0;
-            }
+            }  
         }
 
         //‘€ìØ‚è‘Ö‚¦

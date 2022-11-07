@@ -7,6 +7,7 @@ stage stage1[STAGE1_MAX];
 
 Sprite* spr1;
 Sprite* sprBox1;
+Sprite* sprTrolley;
 VECTOR2 speed1;
 
 
@@ -28,6 +29,7 @@ void stage1_deinit()
 {
     safe_delete(spr1);
     safe_delete(sprBox1);
+    safe_delete(sprTrolley);
 }
 
 /// <summary>
@@ -43,6 +45,7 @@ void stage1_update()
 
         spr1 = sprite_load(L"./Data/Images/stage0.png");
         sprBox1 = sprite_load(L"./Data/Images/box.png");
+        sprTrolley = sprite_load(L"./Data/Images/trolley.png");
 
         ++stage_state[1];
     case 1:
@@ -69,8 +72,9 @@ void stage1_update()
         stage1[2].type = 0;
         stage1[2].exist = true;
         //トロッコ
+        stage1[3].position = { 682,522 };
         stage1[3].pos = { 768,650 };
-        stage1[3].hsize = { 80, 50 };
+        stage1[3].hsize = { 90, 50 };
         stage1[3].type = 0;
         stage1[3].exist = true;
         // BOX
@@ -172,6 +176,8 @@ void stage1_update()
         }
         else if (stage1[3].elec == true) {
             stage1[3].pos.x += speed1.x;
+            stage1[3].position.x = stage1[3].pos.x-86;
+
         }
 
         // 左右のめり込みチェック
@@ -283,6 +289,8 @@ void stage1_render()
 
     // 箱
     sprite_render(sprBox1, stage1[4].position.x, stage1[4].position.y);
+    // トロッコ
+    sprite_render(sprTrolley, stage1[3].position.x, stage1[3].position.y);
    
 #ifdef _DEBUG
     debug::setString("player%d", player.elec);
