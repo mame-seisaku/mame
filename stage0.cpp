@@ -138,11 +138,12 @@ void stage0_update()
             Elec.pos.x += Elec.moveVec.x*2;
             Elec.pos.y += Elec.moveVec.y*2;
 
+           
             // 右下方向へ進む
             if (Elec.moveVec.x > 0)
             {
                 // 当たった
-                if (Elec.pos.x >= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                if (Elec.pos.x >= ElecPos.x || Elec.pos.y >= ElecPos.y)
                 {
                     player.elec = false;    // プレイヤーの電気消す
                     Elec.exist = false;
@@ -153,15 +154,16 @@ void stage0_update()
             else
             {
                 // 当たった
-                if (Elec.pos.x <= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                if (Elec.pos.x <= ElecPos.x || Elec.pos.y >= ElecPos.y)
                 {
                     player.elec = false;    // プレイヤーの電気消す
                     Elec.exist = false;
                     stage0[0].elec = true;
                 }
-            }
-           
+            }           
         }
+
+
 
         // 位置にスピードを足す
         //if (player.moveFlag)
@@ -268,7 +270,6 @@ void stage0_update()
             stage0[0].position.x += 10;
             stage0[1].position.x += 10;
             stage0[1].pos.x += 10;
-            player.texPos.x = 84;
         }
         else
         {

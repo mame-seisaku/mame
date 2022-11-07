@@ -51,7 +51,7 @@ void Player::Update()
         // ’n–Ê‚Ì”»’è
         //checkGround();
 
-        //player.texPos.x = player.elec ? 0 : 84;
+        player.texPos.x = player.elec ? 0 : 84;
 
 
         break;
