@@ -3,6 +3,8 @@
 // インクルード
 #include "obj2d.h"
 
+#define PLAYER_MOVE (10)
+
 class Player :public obj2d
 {
 public:
@@ -21,5 +23,6 @@ public:
     void checkGround(); // 地面との判定
 };
 
+extern Player player;
 
 #endif//PLAYER_H

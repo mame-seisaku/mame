@@ -5,8 +5,8 @@
 using namespace GameLib;
 
 // 画面サイズ
-#define WIDTH   (1920)
-#define HEIGHT  (1080)
+#define WIDTH   (1536)
+#define HEIGHT  (824)
 
 // シーンラベル
 enum SCENE
@@ -18,7 +18,21 @@ enum SCENE
     GAME,
     RESULT,
     TUTORIAL,
+<<<<<<< HEAD
     STAGE_0,
+=======
+    STAGE0 = 6,
+    STAGE1,
+    STAGE2,
+    STAGE3,
+    STAGE4,
+    STAGE5,
+    STAGE6,
+    STAGE7,
+    STAGE8,
+    STAGE9,
+    STAGE10,
+>>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
 };
 
 // 関数ポインタ
