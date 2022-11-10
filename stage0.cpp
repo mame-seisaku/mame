@@ -22,6 +22,8 @@ void stage0_deinit()
     safe_delete(sprStage0);
     safe_delete(sprStage0Floor);
     safe_delete(sprBox);
+
+    music::stop(game_bgm);
 }
 
 void stage0_update()
@@ -74,6 +76,8 @@ void stage0_update()
         stage0[4].hsize = { 35,10 };
         stage0[4].type = 0;
         stage0[4].exist = true;
+
+        music::play(game_bgm, true);
 
         ++stage_state[0];
     case 2:

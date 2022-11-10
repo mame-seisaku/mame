@@ -5,6 +5,7 @@
 /// </summary>
 void audio_init()
 {
+    music::load(game_bgm, L"./Data/Musics/game_bgm.wav", 0.5f);
 
 }
 

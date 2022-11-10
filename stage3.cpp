@@ -21,6 +21,8 @@ void stage3_deinit()
 {
 	safe_delete(spr3);
 	safe_delete(sprSyoukouki3);
+
+    music::stop(game_bgm);
 }
 
 void stage3_update()
@@ -64,6 +66,8 @@ void stage3_update()
         stage3[3].hsize = { 89, 50 };
         stage3[3].type = 0;
         stage3[3].exist = true;
+
+        music::play(game_bgm, true);
 
         ++stage_state[3];
     case 2:
