@@ -135,7 +135,6 @@ void stage3_update()
                 // ÇﬂÇËçûÇ›ëŒçÙ		// ìñÇΩÇËîªíË
                 float dist;
                 if (player.speed.y >= 0)
-
                     dist = check(&player, &stage3[i], DIR::DOWN);
                 else
                     dist = check(&player, &stage3[i], DIR::UP);
@@ -153,11 +152,15 @@ void stage3_update()
                 speed3.y = 0;
                 stage3[3].position.y += dist;
             }  
-           
+        }
+
+        //è„ è„å¿
+        if (stage3[3].pos.y < 200) {
+            stage3[3].pos.y = 200;
+            stage3[3].position.y = 60;
         }
 
         //ëÄçÏêÿÇËë÷Ç¶
-       
             player.pos.x += player.speed.x;
         
 
