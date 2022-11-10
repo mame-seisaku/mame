@@ -58,6 +58,10 @@ void stage1_update()
             stage1[i] = {};
         }
 
+        // type
+        // 1 トロッコ
+        // 2 とびら　
+
         // 床
         stage1[0].pos = { 768,764 };
         stage1[0].hsize = { 768, 64 };
@@ -74,10 +78,10 @@ void stage1_update()
         stage1[2].type = 0;
         stage1[2].exist = true;
         //トロッコ
-        stage1[3].position = { 682,522 };
-        stage1[3].pos = { 768,650 };
+        stage1[3].position = { 282,522 };
+        stage1[3].pos = { 368,650 };
         stage1[3].hsize = { 90, 50 };
-        stage1[3].type = 0;
+        stage1[3].type = 1; 
         stage1[3].exist = true;
         // BOX
         stage1[4].position = { 890,523 };
@@ -86,10 +90,16 @@ void stage1_update()
         stage1[4].type = 0;
         stage1[4].exist = true;
         // stop
-        stage1[5].pos = { 52,658 };
-        stage1[5].hsize = { 42, 42 };
+        stage1[5].pos = { 52,650 };
+        stage1[5].hsize = { 82, 50 };
         stage1[5].type = 0;
         stage1[5].exist = true;
+        // 扉
+        stage1[6].position = { 1384,570 };
+        stage1[6].pos = { 1430,640 };
+        stage1[6].hsize = { 40, 60 };
+        stage1[6].type = 2;
+        stage1[6].exist = true;
 
         // 電気
         Elec = {};
@@ -194,12 +204,10 @@ void stage1_update()
             {
 
                 //上に乗った時の移動
-                    //if (stop == false) {
-                if (stage1[i].type == 0 && stage1[i].elec)
+                if (stage1[i].type == 1 && stage1[i].elec)
                 {
                     player.pos.x += speed1.x;
                 }
-                //}
 
                 // めり込み対策		// 当たり判定
                 float dist;
@@ -214,13 +222,14 @@ void stage1_update()
         }
 
         //操作切り替え
-        if (player.elec == true) {
+        if (player.elec == true) 
+        {
             player.pos.x += player.speed.x;
         }
-        else if (stage1[3].elec == true) {
+        else if (stage1[3].elec == true) 
+        {
             stage1[3].pos.x += speed1.x;
             stage1[3].position.x = stage1[3].pos.x - 86;
-
         }
 
         // 左右のめり込みチェック

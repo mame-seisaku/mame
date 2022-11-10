@@ -71,9 +71,11 @@ void stage0_update()
         stage0[1].type = 1;
         stage0[1].exist = true;
         // 扉
-        stage0[2].position = { 1384,570 };
-        stage0[2].pos = { 1430,640 };
-        stage0[2].hsize = { 40, 60 };
+        stage0[2].position = { 1239,530 };
+        stage0[2].pos = { 1330,620 };
+        stage0[2].hsize = { 80, 89 };
+        stage0[2].texPos = {};
+        stage0[2].texSize = { 178,177 };
         stage0[2].type = 2;
         stage0[2].exist = true;
         // 左壁
@@ -110,6 +112,11 @@ void stage0_update()
         debug::setString("PossibleStage:%d", PossibleStage);
         debug::setString("player.elec:%d", player.elec);
 #endif
+
+        // 扉アニメ
+        anime(&stage0[2], 7, 10, false);
+
+
         // マウスでの憑依操作
         if (mousePos.x > 0 && mousePos.y > 700 && mousePos.x < 1536 && mousePos.y < 824)
         {
@@ -302,7 +309,7 @@ void stage0_render()
     // 箱
     sprite_render(sprBox, stage0[1].position.x, stage0[1].position.y);
     // 扉
-    sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y);
+    sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y, 1, 1, stage0[2].texPos.x, stage0[2].texPos.y, stage0[2].texSize.x, stage0[2].texSize.y);
 
     // 電気
     if(Elec.exist)

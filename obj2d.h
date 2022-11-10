@@ -22,6 +22,12 @@ public:
     bool exist;         // ë∂ç›Ç∑ÇÈÇ©
     bool elec;          // ìdãC
     bool moveFlag;
+
+    bool one;
+    bool end;
+    int anime;
+    int animeTimer;
+    int state;
 };
 
 
