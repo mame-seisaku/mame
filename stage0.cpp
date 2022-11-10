@@ -78,6 +78,7 @@ void stage0_update()
         stage0[2].texSize = { 178,177 };
         stage0[2].type = 2;
         stage0[2].exist = true;
+        stage0[2].open = false;
         // 左壁
         stage0[3].pos = { 5,412 };
         stage0[3].hsize = { 5,412 };
@@ -191,6 +192,7 @@ void stage0_update()
                 if (stage0[i].type == 2)
                 {
                     player.clear = true;
+                    stage0[i].open = true;
                     break;
                     // シーン切り替え
                     //nextScene = SCENE::RESULT;
@@ -233,6 +235,7 @@ void stage0_update()
                 if (stage0[i].type == 2)
                 {
                     player.clear = true;
+                    stage0[i].open = true;
                     break;
                     // シーン切り替え
                     //nextScene = SCENE::RESULT;
@@ -306,10 +309,10 @@ void stage0_render()
 
     // 床
     sprite_render(sprStage0Floor, stage0[0].position.x, stage0[0].position.y);
-    // 箱
-    sprite_render(sprBox, stage0[1].position.x, stage0[1].position.y);
     // 扉
     sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y, 1, 1, stage0[2].texPos.x, stage0[2].texPos.y, stage0[2].texSize.x, stage0[2].texSize.y);
+    // 箱
+    sprite_render(sprBox, stage0[1].position.x, stage0[1].position.y);
 
     // 電気
     if(Elec.exist)

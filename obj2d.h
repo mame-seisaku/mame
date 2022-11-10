@@ -23,8 +23,9 @@ public:
     bool elec;          // “d‹C
     bool moveFlag;
 
-    bool one;
-    bool end;
+    bool one;           // 
+    bool end;           // 
+    bool open;          // ”à‚Ì”»’è
     int anime;
     int animeTimer;
     int state;

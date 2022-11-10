@@ -25,16 +25,19 @@ void anime(obj2d* obj, int total, int flame, bool loop)
 		}
 		else
 		{
-			obj->anime = obj->animeTimer / flame;
-			if (obj->anime >= total - 1)obj->one = true;
-			if (obj->anime >= total)
+			if (obj->open)
 			{
-				obj->anime = total - 1;
-				obj->end = true;
-				return;
+				obj->anime = obj->animeTimer / flame;
+				if (obj->anime >= total - 1)obj->one = true;
+				if (obj->anime >= total)
+				{
+					obj->anime = total - 1;
+					obj->end = true;
+					return;
+				}
+				obj->texPos.x = obj->anime * obj->texSize.x;
+				++obj->animeTimer;
 			}
-			obj->texPos.x = obj->anime * obj->texSize.x;
-			++obj->animeTimer;
 		}
 		break;
 	}
