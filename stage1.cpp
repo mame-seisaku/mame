@@ -38,6 +38,8 @@ void stage1_deinit()
     safe_delete(sprElec);
     safe_delete(sprDoor);
 
+    safe_delete(sprTerrain);
+
     safe_delete(sprPause);
 }
 
@@ -52,12 +54,14 @@ void stage1_update()
         ///// 初期設定 /////
         player.Init();
 
-        spr1 = sprite_load(L"./Data/Images/stage0.png");
+        spr1 = sprite_load(L"./Data/Images/04.png");
         sprBox1 = sprite_load(L"./Data/Images/box.png");
         sprTrolley = sprite_load(L"./Data/Images/trolley.png");
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
+
+        sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
         sprPause = sprite_load(L"./Data/Images/pause.png");
 
@@ -93,8 +97,8 @@ void stage1_update()
         stage1[2].type = 0;
         stage1[2].exist = true;
         //トロッコ
-        stage1[3].position = { 282,522 };
-        stage1[3].pos = { 368,650 };
+        stage1[3].position = { 190,522 };
+        stage1[3].pos = { 277,650 };
         stage1[3].hsize = { 90, 50 };
         stage1[3].type = 1;
         stage1[3].exist = true;
@@ -106,7 +110,7 @@ void stage1_update()
         stage1[4].exist = true;
         // stop
         stage1[5].pos = { 52,650 };
-        stage1[5].hsize = { 82, 50 };
+        stage1[5].hsize = { 135, 50 };
         stage1[5].type = 0;
         stage1[5].exist = true;
 
@@ -159,6 +163,7 @@ void stage1_update()
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
             debug::setString("PossibleStage:%d", PossibleStage);
+            debug::setString("toroko:%f", stage1[3].pos.x);
 #endif
 
             // 扉アニメ
@@ -410,9 +415,24 @@ void stage1_render()
 #ifdef _DEBUG
     for (int i = 0; i < STAGE1_MAX; ++i)
     {
-        primitive::rect(stage1[i].pos, stage1[i].hsize * 2, stage1[i].hsize, 0, { 1,0,0,1 });
+        primitive::rect(stage1[i].pos, stage1[i].hsize * 2, stage1[i].hsize, 0, { 1,0,0, 0 });
     }
 #endif
+    for (int y = 0; y < 2; ++y)
+    {
+        for (int x = 0; x < 3; ++x)
+        {
+            sprite_render(sprTerrain, x * 64, 600 + (y * 35), 1, 1, 64, 0, 64, 64);
+        }
+    }
+    for (int y = 0; y < 2; ++y)
+    {
+        for (int x = 0; x < 24; ++x)
+        {
+            sprite_render(sprTerrain, 64 * x, 635 + (64 * (y + 1)), 1, 1, 64, 0, 64, 64);
+        }
+    }
+
 
     // 箱
     sprite_render(sprBox1, stage1[4].position.x, stage1[4].position.y);

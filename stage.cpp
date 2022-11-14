@@ -11,6 +11,8 @@ bool pause;
 
 Sprite* sprPause;
 
+Sprite* sprTerrain;
+
 /// <summary>
 /// •Ç‚Æ‚Ì“–‚½‚è”»’è
 /// </summary>

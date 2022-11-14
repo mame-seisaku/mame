@@ -38,6 +38,7 @@ void stage0_deinit()
     safe_delete(sprBelt);
     safe_delete(sprGear);
 
+    safe_delete(sprTerrain);
     safe_delete(sprPause);
 
     music::stop(0);
@@ -60,6 +61,8 @@ void stage0_update()
         sprBeltConveyor = sprite_load(L"./Data/Images/BeltConveyor.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
         sprGear = sprite_load(L"./Data/Images/gear.png");
+
+        sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
         sprPause = sprite_load(L"./Data/Images/pause.png");
 
@@ -106,9 +109,9 @@ void stage0_update()
         stage0[3].type = 0;
         stage0[3].exist = true;
         // アンチ
-        stage0[4].position = { 70,630 };
-        stage0[4].pos = { 105,640 };
-        stage0[4].hsize = { 35,10 };
+        stage0[4].position = { 70,640 };
+        stage0[4].pos = { 105,650 };
+        stage0[4].hsize = { 80,10 };
         stage0[4].type = 0;
         stage0[4].exist = true;
 
@@ -385,12 +388,22 @@ void stage0_render()
     sprite_render(sprStage0, 0, 0);
 
     // 地形描画
-//#ifdef _DEBUG
+#ifdef _DEBUG
     for (int i = 0; i < STAGE0_MAX; ++i)
     {
         primitive::rect(stage0[i].pos, stage0[i].hsize * 2, stage0[i].hsize, 0, { stage0[i].color.x,stage0[i].color.y,stage0[i].color.z,0 });
     }
-//#endif
+#endif
+    sprite_render(sprTerrain, 0, 640, 1, 1, 64, 0, 64, 64);
+    sprite_render(sprTerrain, 64, 640, 1, 1, 64, 0, 64, 64);
+    sprite_render(sprTerrain, 128, 640, 1, 1, 64, 0, 64, 64);
+    for (int y = 0; y < 2; ++y)
+    {
+        for (int x = 0; x < 24; ++x)
+        {
+            sprite_render(sprTerrain, 64 * x, 640 + (64 * (y + 1)), 1, 1, 64, 0, 64, 64);
+        }
+    }
 
     // 床
     for (int i = 0; i < 13; ++i)

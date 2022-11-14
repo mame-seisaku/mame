@@ -10,6 +10,7 @@ extern obj2d Elec;
 
 extern bool pause;
 extern Sprite* sprPause;
+extern Sprite* sprTerrain;
 
 enum DIR
 {

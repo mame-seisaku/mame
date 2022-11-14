@@ -19,9 +19,6 @@ enum SCENE
     GAME,
     RESULT,
     TUTORIAL,
-<<<<<<< HEAD
-    STAGE_0,
-=======
     STAGE0 = 6,
     STAGE1,
     STAGE2,
@@ -33,7 +30,6 @@ enum SCENE
     STAGE8,
     STAGE9,
     STAGE10,
->>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
 };
 
 // ä÷êîÉ|ÉCÉìÉ^
