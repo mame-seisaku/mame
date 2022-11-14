@@ -32,7 +32,6 @@ void stage0_deinit()
     safe_delete(sprStage0);
     safe_delete(sprStage0Floor);
     safe_delete(sprBox);
-
     safe_delete(sprElec);
     safe_delete(sprDoor);
     safe_delete(sprBeltConveyor);
@@ -43,8 +42,6 @@ void stage0_deinit()
     safe_delete(sprPause);
 
     music::stop(0);
-    music::stop(game_bgm);
-
 }
 
 void stage0_update()
@@ -118,9 +115,6 @@ void stage0_update()
         stage0[4].type = 0;
         stage0[4].exist = true;
 
-
-        music::play(game_bgm, true);
-
         player.clear = false;
 
         // ÉhÉAç≈å„
@@ -131,7 +125,6 @@ void stage0_update()
 
         Gangle = 0;
         GangleT = 0;
-
 
         ++stage_state[0];
     case 2:

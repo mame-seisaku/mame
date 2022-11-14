@@ -76,8 +76,13 @@ void select_update()
             break;
         }
 
+        if (mousePos.x > 479 && mousePos.y > 250 && mousePos.x < 657 && mousePos.y < 390)
+        {
+            mouseClick(2);
+            break;
+        }
 
-        if (mousePos.x > 650 && mousePos.y > 250 && mousePos.x < 850 && mousePos.y < 390)
+        if (mousePos.x > 677 && mousePos.y > 250 && mousePos.x < 850 && mousePos.y < 390)
         {
             mouseClick(3);
             break;

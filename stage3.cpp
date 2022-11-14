@@ -28,7 +28,7 @@ void stage3_deinit()
 	safe_delete(spr3);
 	safe_delete(sprSyoukouki3);
 
-
+    safe_delete(sprTerrain);
 
     safe_delete(sprPause);
 
@@ -43,11 +43,13 @@ void stage3_update()
         ///// 初期設定 /////
         player.Init();
 
-        spr3 = sprite_load(L"./Data/Images/stage0.png");
+        spr3 = sprite_load(L"./Data/Images/04.png");
         sprSyoukouki3 = sprite_load(L"./Data/Images/syoukouki2.png");
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
+
+        sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
         sprPause = sprite_load(L"./Data/Images/pause.png");
 
@@ -354,10 +356,17 @@ void stage3_render()
 
     sprite_render(spr3, 0, 0);
 
-
+    // 地形描画
     for (int i = 0; i < STAGE1_MAX; ++i)
     {
         primitive::rect(stage3[i].pos, stage3[i].hsize * 2, stage3[i].hsize, 0, { 1,0,0,1 });
+    }
+    for (int y = 0; y < 2; ++y)
+    {
+        for (int x = 0; x < 24; ++x)
+        {
+            sprite_render(sprTerrain, x * 64, 700 + (y * 64), 1, 1, 64, 0, 64, 64);
+        }
     }
 
     // エレベータ
