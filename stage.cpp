@@ -7,7 +7,9 @@ VECTOR2 ElecPos;
 
 obj2d Elec;
 
+bool pause;
 
+Sprite* sprPause;
 
 /// <summary>
 /// •Ç‚Æ‚Ì“–‚½‚è”»’è

@@ -8,6 +8,9 @@ extern VECTOR2 mousePos;
 extern VECTOR2 ElecPos;
 extern obj2d Elec;
 
+extern bool pause;
+extern Sprite* sprPause;
+
 enum DIR
 {
     DOWN,

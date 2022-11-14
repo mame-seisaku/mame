@@ -38,6 +38,8 @@ void stage0_deinit()
     safe_delete(sprBelt);
     safe_delete(sprGear);
 
+    safe_delete(sprPause);
+
     music::stop(0);
 }
 
@@ -48,22 +50,27 @@ void stage0_update()
     case 0:
         ///// 初期設定 /////
         player.Init();
-        
+
         //sprStage0     = sprite_load(L"./Data/Images/stage0.png");
-        sprStage0       = sprite_load(L"./Data/Images/04.png");
-        sprStage0Floor  = sprite_load(L"./Data/Images/03.png");
-        sprBox          = sprite_load(L"./Data/Images/box.png");
-        sprElec         = sprite_load(L"./Data/Images/elec.png");
-        sprDoor         = sprite_load(L"./Data/Images/door.png");
+        sprStage0 = sprite_load(L"./Data/Images/04.png");
+        sprStage0Floor = sprite_load(L"./Data/Images/03.png");
+        sprBox = sprite_load(L"./Data/Images/box.png");
+        sprElec = sprite_load(L"./Data/Images/elec.png");
+        sprDoor = sprite_load(L"./Data/Images/door.png");
         sprBeltConveyor = sprite_load(L"./Data/Images/BeltConveyor.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
         sprGear = sprite_load(L"./Data/Images/gear.png");
+
+        sprPause = sprite_load(L"./Data/Images/pause.png");
 
         ++stage_state[0];
     case 1:
         ///// パラメータの設定 /////
 
-        // denkiyou
+        // ポーズ
+        pause = false;
+
+        // 電気用
         ElecPos = {};
 
         for (int i = 0; i < STAGE0_MAX; ++i)
@@ -120,25 +127,6 @@ void stage0_update()
     case 2:
         ///// 通常時 /////
 
-        player.Update();
-
-        // マウスカーソル
-        std::ostringstream oss;                                 // 文字列ストリーム
-        POINT point;                                            // 位置用の変数を宣言する
-        GetCursorPos(&point);                                   // スクリーン座標を取得する
-        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
-        mousePos.x = (float)(point.x);
-        mousePos.y = (float)(point.y);
-#ifdef _DEBUG
-        oss << "(x=" << point.x << " y=" << point.y << ")";
-        SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
-        debug::setString("PossibleStage:%d", PossibleStage);
-#endif
-        debug::setString("player.elec:%d", player.elec);
-        debug::setString("ElecPos.x:%f,ElecPos.y:%f", ElecPos.x, ElecPos.y);
-        debug::setString("Elec.Pos.x:%f,Elec.Pos.y:%f", Elec.pos.x, Elec.pos.y);
-        debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
-
         // シーン切り替え
         if (door.end)
         {
@@ -146,227 +134,247 @@ void stage0_update()
             break;
         }
 
-        
-
-
-        // 扉アニメ
-        if(stage0[2].open)
-            anime(&stage0[2], 7, 10, false, 0);
-
-        // クリア判定
-        if (stage0[2].end && stage0[2].one && !door.close)
+        // ポーズ  F
+        if (TRG(0) & PAD_TRG4)
         {
-            player.clear = true;
-            door = stage0[2];
-            door.state = 0;
-            door.close = true;
+            pause = pause ? false : true;
         }
 
-        if (player.clear)
+        if (!pause)
         {
-            player.pos.x = 1290;    // ドアの位置に移動
-            // 電気を戻す
-            player.elec = true;     
-            for (int i = 0; i < STAGE0_MAX; ++i)
+            player.Update();
+
+            // マウスカーソル
+            std::ostringstream oss;                                 // 文字列ストリーム
+            POINT point;                                            // 位置用の変数を宣言する
+            GetCursorPos(&point);                                   // スクリーン座標を取得する
+            ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+            mousePos.x = (float)(point.x);
+            mousePos.y = (float)(point.y);
+#ifdef _DEBUG
+            oss << "(x=" << point.x << " y=" << point.y << ")";
+            SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
+            debug::setString("PossibleStage:%d", PossibleStage);
+#endif
+            debug::setString("player.elec:%d", player.elec);
+            debug::setString("ElecPos.x:%f,ElecPos.y:%f", ElecPos.x, ElecPos.y);
+            debug::setString("Elec.Pos.x:%f,Elec.Pos.y:%f", Elec.pos.x, Elec.pos.y);
+            debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+
+
+            // 扉アニメ
+            if (stage0[2].open)
+                anime(&stage0[2], 7, 10, false, 0);
+
+            // クリア判定
+            if (stage0[2].end && stage0[2].one && !door.close)
             {
-                stage0[i].elec = false;
+                player.clear = true;
+                door = stage0[2];
+                door.state = 0;
+                door.close = true;
             }
 
-            // 扉しまる
-            anime(&door, 7, 10, false, 0);
-        }
-
-        // マウスでの憑依操作
-        if (!player.clear)  // clearしていたら操作できない
-        {
-            // releseで位置が変わる
-            if (mousePos.x > 0 && mousePos.y > 700 && mousePos.x < 1536 && mousePos.y < 900)
+            if (player.clear)
             {
-                // 電気を飛ばす
-                if (TRG(0) & PAD_L3)
+                player.pos.x = 1290;    // ドアの位置に移動
+                // 電気を戻す
+                player.elec = true;
+                for (int i = 0; i < STAGE0_MAX; ++i)
                 {
-                    // プレイヤーに電気があれば
-                    if (!Elec.exist && player.elec)
+                    stage0[i].elec = false;
+                }
+
+                // 扉しまる
+                anime(&door, 7, 10, false, 0);
+            }
+
+            // マウスでの憑依操作
+            if (!player.clear)  // clearしていたら操作できない
+            {
+                // releseで位置が変わる
+                if (mousePos.x > 0 && mousePos.y > 700 && mousePos.x < 1536 && mousePos.y < 900)
+                {
+                    // 電気を飛ばす
+                    if (TRG(0) & PAD_L3)
                     {
-                        SetElecMove();
-                        Elec.type = stage0[0].type;
+                        // プレイヤーに電気があれば
+                        if (!Elec.exist && player.elec)
+                        {
+                            SetElecMove();
+                            Elec.type = stage0[0].type;
+                        }
+                    }
+                    // 電気回収
+                    if (TRG(0) & PAD_R3 && !player.elec)
+                    {
+                        Elec.exist = false;
+                        stage0[0].elec = false;
+                        player.elec = true;
+
+                        GangleT = 0;
+
+                        music::stop(0);
                     }
                 }
-                // 電気回収
-                if (TRG(0) & PAD_R3 && !player.elec)
-                {
-                    Elec.exist = false;
-                    stage0[0].elec = false;
-                    player.elec = true;
-
-                    GangleT = 0;
-
-                    music::stop(0);
-                }
             }
-        }
-        
-        // 電気の移動と、当たったか判定
-        if (Elec.exist) // 存在したら
-        {
-            // 移動
-            Elec.pos.x += Elec.moveVec.x*2;
-            Elec.pos.y += Elec.moveVec.y*2;
 
-           
-            // 右下方向へ進む
-            if (Elec.moveVec.x > 0)
+            // 電気の移動と、当たったか判定
+            if (Elec.exist) // 存在したら
             {
-                // 当たった
-                if (Elec.pos.x >= ElecPos.x || Elec.pos.y >= ElecPos.y)
+                // 移動
+                Elec.pos.x += Elec.moveVec.x * 2;
+                Elec.pos.y += Elec.moveVec.y * 2;
+
+
+                // 右下方向へ進む
+                if (Elec.moveVec.x > 0)
                 {
-                    player.elec = false;    // プレイヤーの電気消す
-                    Elec.exist = false;
-                    stage0[0].elec = true;
-                    
-                    GangleT = 120;
-                    
-                    if (Elec.type == stage0[0].type)
-                        music::play(0, true);
+                    // 当たった
+                    if (Elec.pos.x >= ElecPos.x || Elec.pos.y >= ElecPos.y)
+                    {
+                        player.elec = false;    // プレイヤーの電気消す
+                        Elec.exist = false;
+                        stage0[0].elec = true;
+
+                        GangleT = 120;
+
+                        if (Elec.type == stage0[0].type)
+                            music::play(0, true);
+                    }
+                }
+                // 左下方向へ進む
+                else
+                {
+                    // 当たった
+                    if (Elec.pos.x <= ElecPos.x || Elec.pos.y >= ElecPos.y)
+                    {
+                        player.elec = false;    // プレイヤーの電気消す
+                        Elec.exist = false;
+                        stage0[0].elec = true;
+
+                        GangleT = 120;
+                    }
                 }
             }
-            // 左下方向へ進む
+
+
+
+            // 位置にスピードを足す
+            //if (player.moveFlag)
+            //{
+            player.pos.y += player.speed.y;
+            //}
+            //else
+            //{
+            //    player.speed.y = 0;
+            //}
+
+            // 上下のめり込みチェック
+            for (int i = 0; i < STAGE0_MAX; ++i)
+            {
+                if (hitCheck(&player, &stage0[i]))
+                {
+                    // 扉
+                    if (stage0[i].type == 2)
+                    {
+                        stage0[i].open = true;
+                        break;
+                    }
+
+                    // ベルトコンベア
+                    if (stage0[i].type == 3 && stage0[i].elec)
+                    {
+                        player.pos.x += 10;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (player.speed.y >= 0)
+                        dist = check(&player, &stage0[i], DIR::DOWN);
+                    else
+                        dist = check(&player, &stage0[i], DIR::UP);
+                    player.pos.y += dist;
+                    player.speed.y = 0;
+                }
+            }
+
+            // 位置にスピードを足す
+            //if (player.moveFlag)
+            //{
+            player.pos.x += player.speed.x;
+            //}
+            //else
+            //{
+            //    player.speed.x = 0;
+            //}
+
+            // 左右のめり込みチェック
+            for (int i = 0; i < STAGE0_MAX; ++i)
+            {
+                if (hitCheck(&player, &stage0[i]))
+                {
+                    // 扉
+                    if (stage0[i].type == 2)
+                    {
+                        stage0[i].open = true;
+                        break;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (player.speed.x >= 0)
+                        dist = check(&player, &stage0[i], DIR::RIGHT);
+                    else
+                        dist = check(&player, &stage0[i], DIR::LEFT);
+                    player.pos.x += dist;
+                    player.speed.x = 0;
+                }
+            }
+
+
+            // 四角の色設定
+            for (int i = 0; i < STAGE0_MAX; ++i)
+            {
+                switch (stage0[i].type)
+                {
+                case 0:
+                    stage0[i].color = { 1,1,1,1 };
+                    break;
+                case 1:
+                    stage0[i].color = { 1,0,0,1 };
+                    break;
+                case 2:
+                    stage0[i].color = { 0,1,0,1 };
+                    break;
+                case 3:
+                    stage0[i].color = { 1,1,1,1 };
+                    break;
+                }
+            }
+
+            // 床スクロール
+            if (stage0[0].elec)
+            {
+                Gangle += ToRadian(10);
+
+                stage0[0].position.x += 10;
+                stage0[1].position.x += 10;
+                stage0[1].pos.x += 10;
+            }
             else
             {
-                // 当たった
-                if (Elec.pos.x <= ElecPos.x || Elec.pos.y >= ElecPos.y)
-                {
-                    player.elec = false;    // プレイヤーの電気消す
-                    Elec.exist = false;
-                    stage0[0].elec = true;
-
-                    GangleT = 120;
-                }
-            }           
-        }
-
-
-
-        // 位置にスピードを足す
-        //if (player.moveFlag)
-        //{
-        player.pos.y += player.speed.y;
-        //}
-        //else
-        //{
-        //    player.speed.y = 0;
-        //}
-
-        // 上下のめり込みチェック
-        for (int i = 0; i < STAGE0_MAX; ++i)
-        {
-            if (hitCheck(&player, &stage0[i]))
-            {
-                // 扉
-                if (stage0[i].type == 2)
-                {
-                    stage0[i].open = true;
-                    break;
-                    // シーン切り替え
-                    //nextScene = SCENE::RESULT;
-                    //return;
-                }
-
-                // ベルトコンベア
-                if (stage0[i].type == 3 && stage0[i].elec)
-                {
-                    player.pos.x += 10;
-                }
-
-                // めり込み対策		// 当たり判定
-                float dist;
-                if (player.speed.y >= 0)
-                    dist = check(&player, &stage0[i], DIR::DOWN);
-                else
-                    dist = check(&player, &stage0[i], DIR::UP);
-                player.pos.y += dist;
-                player.speed.y = 0;
+                player.texPos.x = 0;
             }
-        }
-
-        // 位置にスピードを足す
-        //if (player.moveFlag)
-        //{
-        player.pos.x += player.speed.x;
-        //}
-        //else
-        //{
-        //    player.speed.x = 0;
-        //}
-
-        // 左右のめり込みチェック
-        for (int i = 0; i < STAGE0_MAX; ++i)
-        {
-            if (hitCheck(&player, &stage0[i]))
+            // 範囲外
+            if (stage0[0].position.x > 0)
             {
-                // 扉
-                if (stage0[i].type == 2)
-                {
-                    stage0[i].open = true;
-                    break;
-                    // シーン切り替え
-                    //nextScene = SCENE::RESULT;
-                    //return;
-                }
-
-                // めり込み対策		// 当たり判定
-                float dist;
-                if (player.speed.x >= 0)
-                    dist = check(&player, &stage0[i], DIR::RIGHT);
-                else
-                    dist = check(&player, &stage0[i], DIR::LEFT);
-                player.pos.x += dist;
-                player.speed.x = 0;
+                stage0[0].position.x = -1536;
             }
+
+
+            break;
         }
-
-
-        // 四角の色設定
-        for (int i = 0; i < STAGE0_MAX; ++i)
-        {
-            switch (stage0[i].type)
-            {
-            case 0:
-                stage0[i].color = { 1,1,1,1 };
-                break;
-            case 1:
-                stage0[i].color = { 1,0,0,1 };
-                break;
-            case 2:
-                stage0[i].color = { 0,1,0,1 };
-                break;
-            case 3:
-                stage0[i].color = { 1,1,1,1 };
-                break;
-            }
-        }
-
-        // 床スクロール
-        if (stage0[0].elec)
-        {
-            Gangle += ToRadian(10);
-
-            stage0[0].position.x += 10;
-            stage0[1].position.x += 10;
-            stage0[1].pos.x += 10;
-        }
-        else
-        {
-            player.texPos.x = 0;
-        }
-        // 範囲外
-        if (stage0[0].position.x > 0)
-        {
-            stage0[0].position.x = -1536;
-        }
-
-
-        break;
     }
 }
 
@@ -412,5 +420,11 @@ void stage0_render()
     
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
+    // ポーズ画面
+    if (pause)
+    {
+        sprite_render(sprPause, 0, 0);
+    }
 }
 

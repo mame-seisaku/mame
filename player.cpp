@@ -50,7 +50,7 @@ void Player::Update()
         if(!clear)
             Move();
 
-        if (pos.x < 0)pos.x = 0;
+        if (pos.x < 0 + pivot.x)pos.x = pivot.x;
         if (pos.x > 1536 - pivot.x)pos.x = 1536 - pivot.x;
 
         // 地面の判定
@@ -77,7 +77,7 @@ void Player::Move()
     if (elec)   // プレイヤーの電気があったら動ける
     {
         // ジャンプ
-        if (STATE(0) & PAD_UP)pos.y -= 15;
+        if (STATE(0) & PAD_TRG1)pos.y-= 15;
     
         if (STATE(0) & PAD_LEFT)
         {
