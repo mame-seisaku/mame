@@ -40,13 +40,18 @@ void Player::Update()
         angle = 0;
         hsize = { 42,50 };
         elec = true;
+        clear = false;
 
         ++state;
     case 2:
         ///// 通常時 /////
 
         // 入力.移動処理
-        Move();
+        if(!clear)
+            Move();
+
+        if (pos.x < 0 + pivot.x)pos.x = pivot.x;
+        if (pos.x > 1536 - pivot.x)pos.x = 1536 - pivot.x;
 
         // 地面の判定
         //checkGround();
@@ -72,7 +77,7 @@ void Player::Move()
     if (elec)   // プレイヤーの電気があったら動ける
     {
         // ジャンプ
-        if (STATE(0) & PAD_UP)pos.y -= 15;
+        if (STATE(0) & PAD_TRG1)pos.y-= 15;
     
         if (STATE(0) & PAD_LEFT)
         {

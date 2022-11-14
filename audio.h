@@ -4,6 +4,6 @@
 void audio_init();
 void audio_deinit();
 
-#define game_bgm 0
+#define game_bgm 1
 
 #endif//AUDIO_H

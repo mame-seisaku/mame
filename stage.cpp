@@ -1,7 +1,17 @@
 #include "all.h"
 
+/*****変数*****/
 int stage_state[STAGE_MAX];
     
+VECTOR2 ElecPos;
+
+obj2d Elec;
+
+bool pause;
+
+Sprite* sprPause;
+
+Sprite* sprTerrain;
 
 /// <summary>
 /// 壁との当たり判定
@@ -78,4 +88,19 @@ float check(obj2d* rc1, obj2d* rc2, int dir)
     }
     break;
     }
+}
+
+// ???
+void SetElecMove()
+{
+    Elec.exist = true;
+    Elec.pos = player.pos;
+    ElecPos = mousePos;
+
+    // プレイヤーの位置から進む方向を定義
+    Elec.moveVec = { ElecPos - player.pos };
+    DirectX::XMVECTOR VEC = DirectX::XMLoadFloat2(&Elec.moveVec);
+    VEC = DirectX::XMVector2Normalize(VEC);
+    VEC = DirectX::XMVectorScale(VEC, 10);
+    DirectX::XMStoreFloat2(&Elec.moveVec, VEC);
 }

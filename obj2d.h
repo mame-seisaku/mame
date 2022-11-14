@@ -17,8 +17,21 @@ public:
     VECTOR2 speed;      // 速度
     VECTOR2 hsize;      // 端
 
+    VECTOR2 moveVec;
+
+    int type;           // 四角のタイプ
+
+    bool exist;         // 存在するか
     bool elec;          // 電気
     bool moveFlag;
+
+    bool one;           // 
+    bool end;           // 
+    bool open;          // 扉の判定
+    bool close;
+    int anime;
+    int animeTimer;
+    int state;
 };
 
 

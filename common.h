@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #include "../GameLib/game_lib.h"
+#include "obj2d.h"
 using namespace GameLib;
 
 // 画面サイズ
@@ -38,5 +39,8 @@ extern float(* const ToDegree)(float);// ラジアンを角度に
 // 変数
 extern int curScene;
 extern int nextScene;
+
+void anime(obj2d* obj, int total, int flame, bool loop, int type);
+
 
 #endif//COMMON_H
