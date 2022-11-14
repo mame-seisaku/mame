@@ -54,6 +54,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
                 tutorial_deinit();
                 break;
 
+<<<<<<< HEAD
+            case SCENE::STAGE_0:
+                stage_0_deinit();
+=======
             case SCENE::SELECT:
                 select_deinit();
                 break;
@@ -84,6 +88,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::STAGE5:
                 stage5_deinit();
+>>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
                 break;
             }
 
@@ -102,6 +107,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
                 tutorial_init();
                 break;
 
+<<<<<<< HEAD
+            case SCENE::STAGE_0:
+                stage_0_init();
+=======
             case SCENE::SELECT:
                 select_init();
                 break;
@@ -132,6 +141,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::STAGE5:
                 stage5_init();
+>>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
                 break;
             }
 
@@ -163,6 +173,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             tutorial_render();
             break;
 
+<<<<<<< HEAD
+        case SCENE::STAGE_0:
+            stage_0_update();
+            stage_0_render();
+=======
         case SCENE::SELECT:
             select_update();
             select_render();
@@ -201,6 +216,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
         case SCENE::STAGE5:
             stage5_update();
             stage5_render();
+>>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
             break;
         }
 
@@ -226,6 +242,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
         tutorial_deinit();
         break;
 
+<<<<<<< HEAD
+    case SCENE::STAGE_0:
+        stage_0_deinit();
+        break;
+=======
     case SCENE::SELECT:
         select_deinit();
         break;
@@ -266,6 +287,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     if (ofs)
     {
         ofs.write((const char*)&data.stage_max, sizeof(data.stage_max));
+>>>>>>> 42f78feaa418dc3dd06df3974bcf2448484ff3f7
     }
 
     // オーディオの終了処理
