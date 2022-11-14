@@ -40,7 +40,7 @@ extern float(* const ToDegree)(float);// ƒ‰ƒWƒAƒ“‚ðŠp“x‚É
 extern int curScene;
 extern int nextScene;
 
-void anime(obj2d* obj, int total, int flame, bool loop);
+void anime(obj2d* obj, int total, int flame, bool loop, int type);
 
 
 #endif//COMMON_H

@@ -4,12 +4,16 @@
 float(* const ToRadian)(float) = DirectX::XMConvertToRadians;  // 角度をラジアンに
 float(* const ToDegree)(float) = DirectX::XMConvertToDegrees;  // ラジアンを角度に
 
-void anime(obj2d* obj, int total, int flame, bool loop)
+void anime(obj2d* obj, int total, int flame, bool loop,int type)
 {
 	switch (obj->state)
 	{
 	case 0:
 		obj->anime = obj->animeTimer = 0;
+		obj->end = false;
+		obj->one = false;
+		GameLib::sound::play(type, 0);
+
 		++obj->state;
 	case 1:
 		if (loop)

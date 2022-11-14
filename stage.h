@@ -20,9 +20,10 @@ class stage :public obj2d
 {
 public:
     VECTOR2 position;   // 画像描画用
-    int type;           // 四角のタイプ
+    
     //bool exist;         // 存在するか
     bool move;      // 動けるか
+ 
 };
 
 // プロトタイプ宣言

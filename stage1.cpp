@@ -123,6 +123,7 @@ void stage1_update()
         debug::setString("PossibleStage:%d", PossibleStage);
 #endif
 
+
         // ƒ}ƒEƒX‚Å‚ÌœßˆË‘€ì
         if (mousePos.x > stage1[3].pos.x - 80 && mousePos.y > stage1[3].pos.y - 50 && mousePos.x < stage1[3].pos.x + 80 && mousePos.y < stage1[3].pos.y + 50)
         {

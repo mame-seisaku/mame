@@ -5,7 +5,11 @@
 /// </summary>
 void audio_init()
 {
+    music::load(0, L"./Data/Musics/belt_conveyor.wav"); // ベルトコンベア
 
+
+    sound::load(0, L"./Data/Sounds/door.xwb");          // ドア
+    sound::load(1, L"./Data/Sounds/clear.xwb");         // クリア
 }
 
 /// <summary>
