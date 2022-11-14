@@ -162,6 +162,7 @@ void stage1_update()
 
             // マウスカーソル
 #ifdef _DEBUG
+#endif
             std::ostringstream oss;                                 // 文字列ストリーム
             POINT point;                                            // 位置用の変数を宣言する
             GetCursorPos(&point);                                   // スクリーン座標を取得する
@@ -170,9 +171,13 @@ void stage1_update()
             mousePos.y = (float)(point.y);
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
-            debug::setString("PossibleStage:%d", PossibleStage);
-            debug::setString("toroko:%f", stage1[3].pos.x);
-#endif
+            //debug::setString("PossibleStage:%d", PossibleStage);
+            //debug::setString("toroko:%f", stage1[3].pos.x);
+            debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+            debug::setString("stage1[3].pos.x - 80:%f", stage1[3].pos.x - 80);
+            debug::setString("stage1[3].pos.x + 80:%f", stage1[3].pos.x + 80);
+            debug::setString("stage1[3].pos.y - 50:%f", stage1[3].pos.y);
+            debug::setString("stage1[3].pos.y + 50:%f", stage1[3].pos.y + 110);
 
             // 扉アニメ
             if (stage1[6].open)
@@ -204,7 +209,7 @@ void stage1_update()
 
 
             // マウスでの憑依操作
-            if (mousePos.x > stage1[3].pos.x - 80 && mousePos.y > stage1[3].pos.y - 50 && mousePos.x < stage1[3].pos.x + 80 && mousePos.y < stage1[3].pos.y + 50)
+            if (mousePos.x > stage1[3].pos.x - 107 && mousePos.y > stage1[3].pos.y && mousePos.x < stage1[3].pos.x + 53 && mousePos.y < stage1[3].pos.y + 110)
             {
                 // 電気を飛ばす
                 if (TRG(0) & PAD_L3)
