@@ -77,6 +77,11 @@ void select_update()
         }
 
 
+        if (mousePos.x > 650 && mousePos.y > 250 && mousePos.x < 850 && mousePos.y < 390)
+        {
+            mouseClick(3);
+            break;
+        }
 
         if (TRG(0) & PAD_SELECT)
         {

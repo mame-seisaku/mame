@@ -40,13 +40,18 @@ void Player::Update()
         angle = 0;
         hsize = { 42,50 };
         elec = true;
+        clear = false;
 
         ++state;
     case 2:
         ///// ’Êí /////
 
         // “ü—Í.ˆÚ“®ˆ—
-        Move();
+        if(!clear)
+            Move();
+
+        if (pos.x < 0)pos.x = 0;
+        if (pos.x > 1536 - pivot.x)pos.x = 1536 - pivot.x;
 
         // ’n–Ê‚Ì”»’è
         //checkGround();
@@ -92,11 +97,14 @@ void Player::Move()
         {
             player.speed.x = 0;
         }
+       
     }
     else
     {
         player.speed.x = 0;
     }
+
+    
 
     // d—Í‘€ì
     player.speed.y += GRAVITY;
