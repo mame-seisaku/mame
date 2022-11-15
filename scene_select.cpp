@@ -61,23 +61,26 @@ void select_update()
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
 #endif
-      
+        debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+
+       
+
 
         // 画面切り替え
         //一列目
-        if (mousePos.x > 95 && mousePos.y > 250 && mousePos.x < 260 && mousePos.y < 390)
+        if (mousePos.x > 85 && mousePos.y > 250 && mousePos.x < 250 && mousePos.y < 435)
         {
             mouseClick(0);
             break;
         } 
-        if (mousePos.x > 295 && mousePos.y > 250 && mousePos.x < 490 && mousePos.y < 390)
+        if (mousePos.x > 270 && mousePos.y > 250 && mousePos.x < 430 && mousePos.y < 435)
         {
             mouseClick(1);
             break;
         }
 
 
-        if (mousePos.x > 650 && mousePos.y > 250 && mousePos.x < 850 && mousePos.y < 390)
+        if (mousePos.x > 630 && mousePos.y > 250 && mousePos.x < 800 && mousePos.y < 435)
         {
             mouseClick(3);
             break;
