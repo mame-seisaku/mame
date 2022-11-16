@@ -65,7 +65,7 @@ void game_update()
 
 
         // プレイヤー更新処理
-        player.Update();
+        player.Update({100,200});
 
 #ifdef _DEBUG
         debug::setString("stage:%d", selectStage);

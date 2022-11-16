@@ -18,7 +18,7 @@ public:
 public:
     void Init();        // 初期設定
     void Dinit();       // 終了処理
-    void Update();      // 更新処理
+    void Update(VECTOR2 Pos);      // 更新処理
     void Render();      // 描画処理
 
     void Move();        // 移動

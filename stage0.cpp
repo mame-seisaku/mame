@@ -145,7 +145,7 @@ void stage0_update()
 
         if (!pause)
         {
-            player.Update();
+            player.Update({ 100,200 });
 
             // マウスカーソル
             std::ostringstream oss;                                 // 文字列ストリーム
@@ -180,7 +180,7 @@ void stage0_update()
 
             if (player.clear)
             {
-                player.pos.x = 1290;    // ドアの位置に移動
+                player.pos.x = stage0[2].position.x + 51;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
@@ -282,7 +282,7 @@ void stage0_update()
                     if (stage0[i].type == 2)
                     {
                         stage0[i].open = true;
-                        break;
+                        continue;
                     }
 
                     // ベルトコンベア
@@ -321,7 +321,7 @@ void stage0_update()
                     if (stage0[i].type == 2)
                     {
                         stage0[i].open = true;
-                        break;
+                        continue;
                     }
 
                     // めり込み対策		// 当たり判定

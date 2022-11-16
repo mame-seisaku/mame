@@ -158,7 +158,7 @@ void stage1_update()
         if (!pause)
         {
 
-            player.Update();
+            player.Update({100,200});
 
             // マウスカーソル
 #ifdef _DEBUG
@@ -194,7 +194,7 @@ void stage1_update()
 
             if (player.clear)
             {
-                player.pos.x = 1290;    // ドアの位置に移動
+                player.pos.x = stage1[6].position.x + 51;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
@@ -235,29 +235,55 @@ void stage1_update()
                 Elec.pos.x += Elec.moveVec.x * 2;
                 Elec.pos.y += Elec.moveVec.y * 2;
 
+
                 // 右下方向へ進む
                 if (Elec.moveVec.x > 0)
                 {
-                    // 当たった
-                    if (Elec.pos.x >= ElecPos.x || Elec.pos.y >= ElecPos.y)
+                    if (Elec.moveVec.y > 0)
                     {
-                        player.elec = false;    // プレイヤーの電気消す
-                        Elec.exist = false;
-                        stage1[3].elec = true;
+                        // 当たった
+                        if (Elec.pos.x >= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage1[3].elec = true;
+                        }
+                    }
+                    else
+                    {
+                        // 当たった
+                        if (Elec.pos.x >= ElecPos.x)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage1[3].elec = true;
+                        }
                     }
                 }
                 // 左下方向へ進む
                 else
                 {
-                    // 当たった
-                    if (Elec.pos.x <= ElecPos.x || Elec.pos.y >= ElecPos.y)
+                    if (Elec.moveVec.y > 0)
                     {
-                        player.elec = false;    // プレイヤーの電気消す
-                        Elec.exist = false;
-                        stage1[3].elec = true;
+                        // 当たった
+                        if (Elec.pos.x <= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage1[3].elec = true;
+                        }
+                    }
+                    else
+                    {
+                        // 当たった
+                        if (Elec.pos.x <= ElecPos.x)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage1[3].elec = true;
+                        }
                     }
                 }
-
             }
 
 

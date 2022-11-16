@@ -20,7 +20,7 @@ void Player::Dinit()
 /// <summary>
 /// 更新処理
 /// </summary>
-void Player::Update()
+void Player::Update(VECTOR2 Pos)
 {
     switch (state)
     {
@@ -32,7 +32,8 @@ void Player::Update()
         ++state;
     case 1:
         ///// パラメータの設定 /////
-        pos = { 100,200 };
+        pos = { Pos.x,Pos.y };
+        //pos = { 100,200 };
         scale = { 1,1 };
         texPos = { 0,0 };
         texSize = { 84,100 };
@@ -83,31 +84,31 @@ void Player::Move()
         {
             if (!(STATE(0) & PAD_RIGHT))
             {
-                player.speed.x = -PLAYER_MOVE;
+                speed.x = -PLAYER_MOVE;
             }
         }
         else if (STATE(0) & PAD_RIGHT)
         {
             if (!(STATE(0) & PAD_LEFT))
             {
-                player.speed.x = PLAYER_MOVE;
+                speed.x = PLAYER_MOVE;
             }
         }
         else
         {
-            player.speed.x = 0;
+            speed.x = 0;
         }
        
     }
     else
     {
-        player.speed.x = 0;
+        speed.x = 0;
     }
 
     
 
     // 重力操作
-    player.speed.y += GRAVITY;
+    speed.y += GRAVITY;
 
 }
 

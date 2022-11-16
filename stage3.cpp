@@ -131,7 +131,7 @@ void stage3_update()
 
         if (!pause)
         {
-            player.Update();
+            player.Update({100,200});
 
             // マウスカーソル
 #ifdef _DEBUG
@@ -160,7 +160,7 @@ void stage3_update()
 
             if (player.clear)
             {
-                player.pos.x = 1290;    // ドアの位置に移動
+                player.pos.x = stage3[4].position.x + 51;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
