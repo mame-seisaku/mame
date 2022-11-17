@@ -145,6 +145,7 @@ void stage0_update()
         }
         if (EvPlayer.y < -200)
         {
+            PossibleStage = 1;
             nextScene = SCENE::RESULT;
             break;
         }

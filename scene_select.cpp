@@ -47,6 +47,10 @@ void select_update()
         ++select_state;
     case 1:
         ///// ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+#ifdef _DEBUG
+        //  PossibleStage = 0;
+#endif // _DEBUG
+
 
         selectStage = 0;
 
