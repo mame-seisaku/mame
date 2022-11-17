@@ -35,7 +35,7 @@ void stage1_deinit()
     safe_delete(spr1);
     safe_delete(sprBox1);
     safe_delete(sprTrolley);
-
+    safe_delete(sprMouse);
 
     safe_delete(sprElec);
     safe_delete(sprDoor);
@@ -68,6 +68,7 @@ void stage1_update()
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
+        sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
@@ -504,6 +505,8 @@ void stage1_render()
 
     // î‡
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 
     // É|Å[ÉYâÊñ 
     if (pause)

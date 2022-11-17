@@ -29,6 +29,7 @@ void select_deinit()
     safe_delete(sprSelect);
     safe_delete(sprLock);
     safe_delete(sprFrame);
+    safe_delete(sprMouse);
 }
 
 /// <summary>
@@ -43,6 +44,7 @@ void select_update()
         sprSelect = sprite_load(L"./Data/Images/select.png");
         sprLock = sprite_load(L"./Data/Images/lock.png");
         sprFrame = sprite_load(L"./Data/Images/frame.png");
+        sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
         ++select_state;
     case 1:
@@ -125,7 +127,7 @@ void select_render()
 
     disp_key();
 
-
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }
 
 /// <summary>
@@ -148,29 +150,29 @@ void disp_key()
     // if (i > 6)
     // sprite_render(sprLock, 256.0f + (i * 256.0f), 650.0f, 1.0f, 1.0f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
 
+    //sprite_render(sprLock, 256.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
+        
     switch (PossibleStage)
     {
         // ˆê—ñ–Ú
     case 0:
-        sprite_render(sprLock, 256.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 1:
         sprite_render(sprLock, 512.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 2:
+    case 1:
         sprite_render(sprLock, 768.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 3:
+    case 2:
         sprite_render(sprLock, 1024.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 4:
+    case 3:
         sprite_render(sprLock, 1280.0f, 350.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
         // “ñ—ñ–Ú
-    case 5:
+    case 4:
         sprite_render(sprLock, 256.0f, 650.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 6:
+    case 5:
         sprite_render(sprLock, 512.0f, 650.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 7:
+    case 6:
         sprite_render(sprLock, 768.0f, 650.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 8:
+    case 7:
         sprite_render(sprLock, 1024.0f, 650.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
-    case 9:
+    case 8:
         sprite_render(sprLock, 1280.0f, 650.0f, 1.5f, 1.5f, 0, 0, 105.0f, 105.0f, 52.5f, 52.5f);
     }
 }

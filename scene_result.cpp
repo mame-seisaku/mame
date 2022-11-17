@@ -19,6 +19,7 @@ void result_init()
 void result_deinit()
 {
     safe_delete(sprResult);
+    safe_delete(sprMouse);
 }
 
 /// <summary>
@@ -31,7 +32,7 @@ void result_update()
     case 0:
         ///// ‰Šú‰» /////
         sprResult = sprite_load(L"./Data/Images/result.png");
-        
+        sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
         ++result_state;
     case 1:
@@ -65,4 +66,6 @@ void result_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(sprResult, 0, 0);
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

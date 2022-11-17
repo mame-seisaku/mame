@@ -22,6 +22,7 @@ void title_init()
 void title_deinit()
 {
     safe_delete(sprTitle);
+    safe_delete(sprMouse);
 }
 
 /// <summary>
@@ -34,6 +35,7 @@ void title_update()
     case 0:
         ///// ‰Šúİ’è /////
         sprTitle = sprite_load(L"./Data/Images/title.png");
+        sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
         ++title_state;
     case 1:
@@ -89,4 +91,6 @@ void title_render()
     GameLib::clear(0, 0, 0);
 
     sprite_render(sprTitle, 0, 0);
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

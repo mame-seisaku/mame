@@ -5,6 +5,7 @@ int game_state;
 
 int PossibleStage;
 
+Sprite* sprMouse;
 
 Sprite* sprGame;
 

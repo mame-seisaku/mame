@@ -17,6 +17,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     // ランド関数
     srand((unsigned int)time(NULL));
 
+    ShowCursor(false);
+
     // ファイルデータ保存先変数
     struct Data data = {};
 

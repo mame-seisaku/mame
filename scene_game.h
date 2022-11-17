@@ -3,6 +3,7 @@
 
 // extern宣言
 extern int PossibleStage;
+extern Sprite* sprMouse;
 
 // プロトタイプ宣言
 void game_init();
