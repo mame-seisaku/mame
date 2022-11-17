@@ -5,6 +5,7 @@ int stage_state[STAGE_MAX];
     
 VECTOR2 ElecPos;
 VECTOR2 EvPlayer;
+VECTOR2 MouseTexPos;
 
 obj2d Elec;
 

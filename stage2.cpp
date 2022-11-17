@@ -233,6 +233,8 @@ void stage2_update()
         // 
         speed2 = {};
 
+        MouseTexPos = {};
+
         // BGM
         music::play(game_bgm, true);
 
@@ -291,28 +293,40 @@ void stage2_update()
                 if (stage2[i].pos.x - stage2[i].hsize.x < 0)stage2[i].pos.x = stage2[i].hsize.x;
             }
 
-            // マウスでの憑依操作
-            if (mousePos.x > stage2[16].pos.x - 50 && mousePos.y > stage2[16].pos.y - 42 && mousePos.x < stage2[16].pos.x + 50 && mousePos.y < stage2[16].pos.y + 42)
+            //// マウスでの憑依操作
+            //if (mousePos.x > stage2[16].pos.x - 50 && mousePos.y > stage2[16].pos.y - 42 && mousePos.x < stage2[16].pos.x + 50 && mousePos.y < stage2[16].pos.y + 42)
+            //{
+            //    // 電気を飛ばす
+            //    if (TRG(0) & PAD_L3)
+            //    {
+            //        // プレイヤーに電気があれば
+            //        if (!Elec.exist && player.elec)
+            //        {
+            //            SetElecMove();
+            //            Elec.type = 16;
+            //        }
+            //    }
+            //    // 電気回収
+            //    if (TRG(0) & PAD_R3 && !player.elec)
+            //    {
+            //        Elec.exist = false;
+            //        Elec.type = 16;
+            //        stage2[16].elec = false;
+            //        player.elec = true;
+            //    }
+            //}
+            
+            if (mousePos.x > stage2[5].pos.x - 42 && mousePos.y > stage2[5].pos.y - 42 && mousePos.x < stage2[5].pos.x + 42 && mousePos.y < stage2[5].pos.y + 42||
+                mousePos.x > stage2[6].pos.x - 42 && mousePos.y > stage2[6].pos.y - 42 && mousePos.x < stage2[6].pos.x + 42 && mousePos.y < stage2[6].pos.y + 42||
+                mousePos.x > stage2[7].pos.x - 42 && mousePos.y > stage2[7].pos.y - 42 && mousePos.x < stage2[7].pos.x + 42 && mousePos.y < stage2[7].pos.y + 42)
             {
-                // 電気を飛ばす
-                if (TRG(0) & PAD_L3)
-                {
-                    // プレイヤーに電気があれば
-                    if (!Elec.exist && player.elec)
-                    {
-                        SetElecMove();
-                        Elec.type = 16;
-                    }
-                }
-                // 電気回収
-                if (TRG(0) & PAD_R3 && !player.elec)
-                {
-                    Elec.exist = false;
-                    Elec.type = 16;
-                    stage2[16].elec = false;
-                    player.elec = true;
-                }
+                MouseTexPos.x = 100;
             }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
+            
             // 動くbox
             for (int i = 5; i < 8; ++i)
             {
@@ -747,7 +761,8 @@ void stage2_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    // mausuka-soru
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 
     // ポーズ画面
     if (pause)

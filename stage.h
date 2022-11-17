@@ -8,6 +8,7 @@ extern VECTOR2 mousePos;
 extern VECTOR2 ElecPos;
 extern VECTOR2 EvPlayer;
 extern obj2d Elec;
+extern VECTOR2 MouseTexPos;
 
 extern bool pause;
 extern Sprite* sprEvPlayer;

@@ -136,6 +136,8 @@ void stage0_update()
         Gangle = 0;
         GangleT = 0;
 
+        MouseTexPos = {};
+
         ++stage_state[0];
     case 2:
         ///// 通常時 /////
@@ -179,7 +181,14 @@ void stage0_update()
             debug::setString("Elec.Pos.x:%f,Elec.Pos.y:%f", Elec.pos.x, Elec.pos.y);
             debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
 #endif
-
+            if (mousePos.x > 0 && mousePos.y > 700 && mousePos.x < 1536 && mousePos.y < 900)
+            {
+                MouseTexPos.x = 100;
+            }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
 
             // 扉アニメ
             if (stage0[2].open)
@@ -456,7 +465,7 @@ void stage0_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 
     // ポーズ画面
     if (pause)
