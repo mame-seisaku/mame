@@ -60,8 +60,8 @@ void select_update()
 #ifdef _DEBUG
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
-#endif
         debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+#endif
 
        
 

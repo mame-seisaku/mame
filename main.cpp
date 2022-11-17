@@ -12,7 +12,7 @@ struct Data
 int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 {
     //ゲームライブラリの初期設定
-    GameLib::init(L"チーム制作２", WIDTH, HEIGHT, true);
+    GameLib::init(L"チーム制作２", WIDTH, HEIGHT, false);
 
     // ランド関数
     srand((unsigned int)time(NULL));

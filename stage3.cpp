@@ -27,6 +27,8 @@ void stage3_deinit()
 
 	safe_delete(spr3);
 	safe_delete(sprSyoukouki3);
+    safe_delete(sprEV);
+    safe_delete(sprEvPlayer);
 
     safe_delete(sprTerrain);
 
@@ -48,6 +50,8 @@ void stage3_update()
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
+        sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprEvPlayer = sprite_load(L"./Data/Images/p.png");
 
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
@@ -90,8 +94,6 @@ void stage3_update()
         stage3[3].type = 0;
         stage3[3].exist = true;
 
-
-
         // 扉
         stage3[4].position = { 1239,530 };
         stage3[4].pos = { 1330,620 };
@@ -101,6 +103,9 @@ void stage3_update()
         stage3[4].type = 2;
         stage3[4].exist = true;
         stage3[4].open = false;
+
+        // EvPlayer
+        EvPlayer = { stage3[4].position.x, stage3[4].position.y };
 
         // ドア最後
         door = {};
@@ -117,6 +122,10 @@ void stage3_update()
 
         // シーン切り替え
         if (door.end)
+        {
+            EvPlayer.y -= 10;
+        }
+        if (EvPlayer.y < -200)
         {
             nextScene = SCENE::RESULT;
             break;
@@ -371,6 +380,13 @@ void stage3_render()
 
     // エレベータ
     sprite_render(sprSyoukouki3, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
+
+    // エレベーター
+    sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 650);
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, stage3[4].position.x, stage3[4].position.y, 1, 1, stage3[4].texPos.x, stage3[4].texPos.y, stage3[4].texSize.x, stage3[4].texSize.y);
