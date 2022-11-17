@@ -41,13 +41,13 @@ void result_update()
     case 2:
         ///// 通常時 /////
 
-#ifdef _DEBUG
         std::ostringstream oss;                                 // 文字列ストリーム
         POINT point;                                            // 位置用の変数を宣言する
         GetCursorPos(&point);                                   // スクリーン座標を取得する
         ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
         mousePos.x = (float)(point.x);
         mousePos.y = (float)(point.y);
+#ifdef _DEBUG
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
         debug::setString("PossibleStage:%d", PossibleStage);
