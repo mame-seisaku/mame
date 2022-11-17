@@ -156,6 +156,8 @@ void stage3_update()
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
             debug::setString("PossibleStage:%d", PossibleStage);
+            debug::setString("stage3[3].pos.x:%f", stage3[3].pos.x);
+            debug::setString("stage3[3].pos.y:%f", stage3[3].pos.y);
 #endif
             // 扉アニメ
             if (stage3[4].open)
@@ -186,7 +188,7 @@ void stage3_update()
 
 
             // マウスでの憑依操作
-            if (mousePos.x > stage3[3].pos.x - 89 && mousePos.y > stage3[3].pos.y - 50 && mousePos.x < stage3[3].pos.x + 89 && mousePos.y < stage3[3].pos.y + 50)
+            if (mousePos.x > stage3[3].pos.x - 90 && mousePos.y > stage3[3].pos.y - 50 && mousePos.x < stage3[3].pos.x + 90 && mousePos.y < stage3[3].pos.y + 50)
             {
                 if (TRG(0) & PAD_L3)
                 {

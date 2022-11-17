@@ -41,8 +41,35 @@ void result_update()
     case 2:
         ///// 通常時 /////
 
+#ifdef _DEBUG
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = (float)(point.x);
+        mousePos.y = (float)(point.y);
+        oss << "(x=" << point.x << " y=" << point.y << ")";
+        SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
+        debug::setString("PossibleStage:%d", PossibleStage);
+#endif
+
         // 画面切り替え
-        if (TRG(0) & PAD_SELECT)
+
+        if (TRG(0) & PAD_L3)
+        {
+            if (mousePos.x > 385 && mousePos.y > 585 && mousePos.x < 1175 && mousePos.y < 640)
+            {
+                nextScene = SCENE::TITLE;
+                break;
+            }
+            if (mousePos.x > 385 && mousePos.y > 415 && mousePos.x < 1075 && mousePos.y < 520)
+            {
+                mouseClick(selectStage + 1);
+                break;
+            }
+        }
+
+        /*if (TRG(0) & PAD_SELECT)
         {
             nextScene = SCENE::TITLE;
             break;
@@ -52,7 +79,7 @@ void result_update()
         {
             mouseClick(selectStage + 1);
             break;
-        }
+        }*/
 
         break;
     }
