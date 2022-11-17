@@ -27,7 +27,8 @@ class stage :public obj2d
 {
 public:
     VECTOR2 position;   // ‰æ‘œ•`‰æ—p
-    
+    int counter;    // ‰ñ”
+
     //bool exist;         // ‘¶İ‚·‚é‚©
     bool move;      // “®‚¯‚é‚©
  

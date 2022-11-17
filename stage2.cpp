@@ -188,6 +188,7 @@ void stage2_update()
         stage2[13].hsize = { 32,100 };
         stage2[13].type = 4;
         stage2[13].exist = true;
+        stage2[13].color.w = 1;
 
         // 赤スイッチ
         stage2[14].pos = { 830,686 };
@@ -212,6 +213,7 @@ void stage2_update()
         stage2[17].hsize = { 32,100 };
         stage2[17].type = 4;
         stage2[17].exist = true;
+        stage2[17].color.w = 1;
 
         // EvPlayer
         EvPlayer = { stage2[1].position.x, stage2[1].position.y };
@@ -275,13 +277,17 @@ void stage2_update()
             mousePos.x = (float)(point.x);
             mousePos.y = (float)(point.y);
 #ifdef _DEBUG
-#endif
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
             debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
             debug::setString("stage2[6].pos.x:%f", stage2[5].pos.x);
             debug::setString("stage2[6].pos.y:%f", stage2[5].pos.y);
+#endif
             
+            for (int i = 5; i < 8; ++i)
+            {
+                if (stage2[i].pos.x - stage2[i].hsize.x < 0)stage2[i].pos.x = stage2[i].hsize.x;
+            }
 
             // マウスでの憑依操作
             if (mousePos.x > stage2[16].pos.x - 50 && mousePos.y > stage2[16].pos.y - 42 && mousePos.x < stage2[16].pos.x + 50 && mousePos.y < stage2[16].pos.y + 42)
@@ -417,15 +423,12 @@ void stage2_update()
                 speed2.x = 0;
             }
 
-            if (stage2[16].elec)
-            {
-                stage2[16].pos += speed2;
-            }
+
             for (int i = 5; i < 8; ++i)
             {
                 if (stage2[i].elec)
                 {
-                    stage2[i].pos += speed2;
+                    stage2[i].pos.y += speed2.y;
                 }
             }
 
@@ -546,6 +549,15 @@ void stage2_update()
                 }
             }
 
+            // x
+            for (int i = 5; i < 8; ++i)
+            {
+                if (stage2[i].elec)
+                {
+                    stage2[i].pos.x += speed2.x;
+                }
+            }
+
             // 位置にスピードを足す         
             player.pos.x += player.speed.x;
 
@@ -621,8 +633,17 @@ void stage2_update()
                 stage2[i].texPos.x = stage2[i].elec ? 0 : 90;
             }
 
-            stage2[13].color.w = stage2[13].exist ? 1 : 0;
-            stage2[17].color.w = stage2[17].exist ? 1 : 0;
+
+            if (!stage2[13].exist)++stage2[13].timer; // 点滅用タイマー
+            if (stage2[13].timer / 10 == 1 && stage2[13].counter < 7)
+            {
+                stage2[13].color.w = stage2[13].color.w == 0 ? 1 : 0;
+                stage2[17].color.w = stage2[17].color.w == 0 ? 1 : 0;
+
+                ++stage2[13].counter;
+                stage2[13].timer = 0;
+            }
+            
 
         }
         break;

@@ -20,6 +20,7 @@ public:
     VECTOR2 moveVec;
 
     int type;           // 四角のタイプ
+    int timer;          // タイマー
 
     bool exist;         // 存在するか
     bool elec;          // 電気
