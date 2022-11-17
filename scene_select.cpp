@@ -8,6 +8,8 @@ int selectStage;
 Sprite* sprSelect;
 Sprite* sprLock;
 
+Sprite* sprFrame;
+
 // externêÈåæ
 extern VECTOR2 mousePos;
 
@@ -26,6 +28,7 @@ void select_deinit()
 {
     safe_delete(sprSelect);
     safe_delete(sprLock);
+    safe_delete(sprFrame);
 }
 
 /// <summary>
@@ -39,6 +42,7 @@ void select_update()
         ///// èâä˙ê›íË /////
         sprSelect = sprite_load(L"./Data/Images/select.png");
         sprLock = sprite_load(L"./Data/Images/lock.png");
+        sprFrame = sprite_load(L"./Data/Images/frame.png");
 
         ++select_state;
     case 1:
@@ -68,30 +72,23 @@ void select_update()
 
         // âÊñ êÿÇËë÷Ç¶
         //àÍóÒñ⁄
-        if (mousePos.x > 85 && mousePos.y > 250 && mousePos.x < 250 && mousePos.y < 435)
-        {
-            mouseClick(0);
-            break;
-        } 
-        if (mousePos.x > 270 && mousePos.y > 250 && mousePos.x < 430 && mousePos.y < 435)
-        {
-            mouseClick(1);
-            break;
-        }
 
-        if (mousePos.x > 479 && mousePos.y > 250 && mousePos.x < 657 && mousePos.y < 390)
+        for (int i = 0; i < 5; i++)
         {
-            mouseClick(2);
-            break;
-        }
+            if (mousePos.x > 156 + (i * 256) && mousePos.y > 250 && mousePos.x < 356 + (i * 256) && mousePos.y < 450)
+            {
+                if (i > PossibleStage)continue;
 
+                mouseClick(i);
+                break;
+            }
+            if (mousePos.x > 156 + (i * 256) && mousePos.y > 550 && mousePos.x < 356 + (i * 256) && mousePos.y < 750)
+            {
+                if (i > PossibleStage)continue;
 
-        //if (mousePos.x > 677 && mousePos.y > 250 && mousePos.x < 850 && mousePos.y < 390)
-
-        if (mousePos.x > 630 && mousePos.y > 250 && mousePos.x < 800 && mousePos.y < 435)
-        {
-            mouseClick(3);
-            break;
+                mouseClick(i);
+                break;
+            }
         }
 
         if (TRG(0) & PAD_SELECT)
@@ -114,6 +111,13 @@ void select_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(sprSelect, 0, 0);
+
+    for (int i = 0; i < 5; i++)
+    {
+        sprite_render(sprFrame, 256 + (i * 256), 350, 1, 1, 0, 0, 200, 200, 100, 100);
+        sprite_render(sprFrame, 256 + (i * 256), 650, 1, 1, 0, 0, 200, 200, 100, 100);
+    }
+    
 
     disp_key();
 

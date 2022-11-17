@@ -267,9 +267,14 @@ void stage2_update()
             mousePos.x = (float)(point.x);
             mousePos.y = (float)(point.y);
 #ifdef _DEBUG
+#endif
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
-#endif
+            debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+            debug::setString("stage2[6].pos.x:%f", stage2[5].pos.x);
+            debug::setString("stage2[6].pos.y:%f", stage2[5].pos.y);
+            
+
             // マウスでの憑依操作
             if (mousePos.x > stage2[16].pos.x - 50 && mousePos.y > stage2[16].pos.y - 42 && mousePos.x < stage2[16].pos.x + 50 && mousePos.y < stage2[16].pos.y + 42)
             {

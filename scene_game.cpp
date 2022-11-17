@@ -48,7 +48,7 @@ void game_update()
         ++game_state;
     case 1:
         ///// パラメーターの設定 /////
-        PossibleStage = 1;
+        PossibleStage = 4;
 
         ++game_state;
     case 2:
