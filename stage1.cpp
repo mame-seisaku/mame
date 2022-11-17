@@ -39,6 +39,8 @@ void stage1_deinit()
 
     safe_delete(sprElec);
     safe_delete(sprDoor);
+    safe_delete(sprEV);
+    safe_delete(sprEvPlayer);
 
     safe_delete(sprTerrain);
 
@@ -64,6 +66,8 @@ void stage1_update()
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
+        sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprEvPlayer = sprite_load(L"./Data/Images/p.png");
 
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
@@ -118,8 +122,6 @@ void stage1_update()
         stage1[5].type = 0;
         stage1[5].exist = true;
 
-
-
         // 扉
         stage1[6].position = { 1239,530 };
         stage1[6].pos = { 1330,620 };
@@ -129,6 +131,9 @@ void stage1_update()
         stage1[6].type = 2;
         stage1[6].exist = true;
         stage1[6].open = false;
+
+        // EvPlayer
+        EvPlayer = { stage1[6].position.x, stage1[6].position.y };
 
         // ドア最後
         door = {};
@@ -144,6 +149,10 @@ void stage1_update()
 
         // シーン切り替え
         if (door.end)
+        {
+            EvPlayer.y -= 10;
+        }
+        if (EvPlayer.y < -200)
         {
             nextScene = SCENE::RESULT;
             break;
@@ -476,6 +485,13 @@ void stage1_render()
     // トロッコ
     sprite_render(sprTrolley, stage1[3].position.x, stage1[3].position.y, 1, 1, stage1[3].elec * 178, 0, 177, 177);
    
+    // エレベーター
+    sprite_render(sprEV, stage1[6].position.x - 5, stage1[6].position.y - 650);
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
+
     // 扉
     sprite_render(sprDoor, stage1[6].position.x, stage1[6].position.y, 1, 1, stage1[6].texPos.x, stage1[6].texPos.y, stage1[6].texSize.x, stage1[6].texSize.y);
 

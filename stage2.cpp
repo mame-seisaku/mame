@@ -12,7 +12,6 @@ Sprite* sprStage2;  // 背景
 Sprite* sprSwitch;  // スイッチ
 Sprite* sprBoxMove; // 動かせる箱
 Sprite* sprDoor2;   // 動くドア
-Sprite* sprPlayer2;
 
 
 extern VECTOR2 mousePos;
@@ -35,7 +34,8 @@ void stage2_deinit()
     safe_delete(sprBox);
     safe_delete(sprBoxMove);
     safe_delete(sprDoor2);
-    safe_delete(sprPlayer2);
+    safe_delete(sprEV);
+    safe_delete(sprEvPlayer);
 
     safe_delete(sprElec);
     safe_delete(sprDoor);
@@ -58,7 +58,8 @@ void stage2_update()
         sprBox = sprite_load(L"./Data/Images/box.png");
         sprBoxMove = sprite_load(L"./Data/Images/boxMove.png");
         sprDoor2 = sprite_load(L"./Data/Images/door2.png");
-        sprPlayer2 = sprite_load(L"./Data/Images/player.png");
+        sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprEvPlayer = sprite_load(L"./Data/Images/p.png");
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
@@ -86,6 +87,7 @@ void stage2_update()
         // 6 player2
         // 7 continue
         // 8 青スイッチ
+        // 9
 
         // 床
         stage2[0].pos = { 768,764 };
@@ -126,7 +128,7 @@ void stage2_update()
         stage2[4].exist = true;
 
         // 左のbox
-        stage2[5].pos = { 376,652 };
+        stage2[5].pos = { 230,652 };
         stage2[5].position = { stage2[5].pos.x - 44,stage2[5].pos.y - 44 };
         stage2[5].texPos.x = 90;
         stage2[5].hsize = { 44,44 };
@@ -150,8 +152,8 @@ void stage2_update()
         stage2[7].exist = true;
 
         // 真ん中のデカbox
-        stage2[8].position = { 490,523 };
-        stage2[8].pos = { 579,612.5f };
+        stage2[8].position = { 520,523 };
+        stage2[8].pos = { 609,612.5f };
         stage2[8].hsize = { 89, 88.5f };
         stage2[8].type = 7;
         stage2[8].exist = true;
@@ -172,13 +174,13 @@ void stage2_update()
         // 真ん中の床左
         stage2[11].pos = { 220,260 };
         stage2[11].hsize = { 50,25 };
-        stage2[11].type = 0;
+        stage2[11].type = 9;
         stage2[11].exist = true;
 
         // 左上床
-        stage2[12].pos = { 110,387 };
-        stage2[12].hsize = { 50,25 };
-        stage2[12].type = 0;
+        stage2[12].pos = { 110,392 };
+        stage2[12].hsize = { 120,30 };
+        stage2[12].type = 9;
         stage2[12].exist = true;
 
         // 邪魔な壁
@@ -199,12 +201,10 @@ void stage2_update()
         stage2[15].type = 8;
         stage2[15].exist = true;
 
-        // プレイヤー２
-        //stage2[16].pos = { 740,185 };
-        //stage2[16].hsize = { 42,50 };
-        //stage2[16].texSize = { 84,100 };
-        //stage2[16].pivot = { 42,50 };
-        //stage2[16].type = 6;
+        // たて
+        //stage2[16].pos = { 200,320 };
+        //stage2[16].hsize = { 25,80 };
+        //stage2[16].type = 9;
         //stage2[16].exist = true;
 
         // 邪魔な壁
@@ -212,6 +212,9 @@ void stage2_update()
         stage2[17].hsize = { 32,100 };
         stage2[17].type = 4;
         stage2[17].exist = true;
+
+        // EvPlayer
+        EvPlayer = { stage2[1].position.x, stage2[1].position.y };
 
         // 動くドア
         door2 = {};
@@ -243,6 +246,10 @@ void stage2_update()
 
         // シーン切り替え
         if (door.end)
+        {
+            EvPlayer.y -= 10;
+        }
+        if (EvPlayer.y < -200)
         {
             nextScene = SCENE::RESULT;
             break;
@@ -315,6 +322,14 @@ void stage2_update()
                     // 電気回収
                     if (TRG(0) & PAD_R3 && !player.elec)
                     {
+                        // 電気入ってるか
+                        for (int j = 5; j < 8; ++j)
+                        {
+                            if (i == j)continue;
+
+                            stage2[j].elec = false;
+                        }
+
                         Elec.exist = false;
                         Elec.type = i;
                         stage2[i].elec = false;
@@ -386,14 +401,14 @@ void stage2_update()
             {
                 if (!(STATE(0) & PAD_RIGHT))
                 {
-                    speed2.x = -PLAYER_MOVE;
+                    speed2.x = -5;
                 }
             }
             else if (STATE(0) & PAD_RIGHT)
             {
                 if (!(STATE(0) & PAD_LEFT))
                 {
-                    speed2.x = PLAYER_MOVE;
+                    speed2.x = 5;
                 }
             }
             else
@@ -514,6 +529,11 @@ void stage2_update()
                         continue;
                     }
 
+                    if (stage2[i].type == 9)// 関係ない
+                    {
+                        player.speed.y = -0.1;
+                    }
+
                     // めり込み対策		// 当たり判定
                     float dist;
                     if (player.speed.y >= 0)
@@ -582,6 +602,8 @@ void stage2_update()
                         continue;
                     }
 
+                    if (stage2[i].type == 9)continue;   // 関係ない
+
                     // めり込み対策		// 当たり判定
                     float dist;
                     if (player.speed.x >= 0)
@@ -593,11 +615,11 @@ void stage2_update()
                 }
             }
 
-            // 電気入ってるか
             for (int i = 5; i < 8; ++i)
             {
                 stage2[i].texPos.x = stage2[i].elec ? 0 : 90;
             }
+
             stage2[13].color.w = stage2[13].exist ? 1 : 0;
             stage2[17].color.w = stage2[17].exist ? 1 : 0;
 
@@ -605,7 +627,6 @@ void stage2_update()
         break;
     }
 }
-
 
 void stage2_render()
 {
@@ -653,7 +674,7 @@ void stage2_render()
     // 真ん中左床
     for (int x = 0; x < 4; ++x)
     {
-        sprite_render(sprTerrain, -26 + (64 * x), 362, 1, 1, 64, 0, 64, 64);
+        sprite_render(sprTerrain, -26 + (64 * x), 362, 1, 1, 0, 0, 64, 64);
     }
     // 邪魔な壁
     for (int y = 0; y < 4; ++y)
@@ -678,6 +699,13 @@ void stage2_render()
     // 動く扉
     sprite_render(sprDoor2, 290, 235, 1, 1, door2.texPos.x, 0, 128, 64);
     sprite_render(sprDoor2, 550, 235, -1, 1, door2.texPos.x, 0, 128, 64);
+
+    // エレベーター
+    sprite_render(sprEV, stage2[1].position.x - 5, stage2[1].position.y - 650);
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, stage2[1].position.x, stage2[1].position.y, 1, 1, stage2[1].texPos.x, stage2[1].texPos.y, stage2[1].texSize.x, stage2[1].texSize.y);

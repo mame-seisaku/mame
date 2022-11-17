@@ -17,6 +17,7 @@ Sprite* sprBeltConveyor;
 Sprite* sprBelt;
 Sprite* sprGear;
 
+
 extern VECTOR2 mousePos;
 
 
@@ -37,6 +38,8 @@ void stage0_deinit()
     safe_delete(sprBeltConveyor);
     safe_delete(sprBelt);
     safe_delete(sprGear);
+    safe_delete(sprEV);
+    safe_delete(sprEvPlayer);
 
     safe_delete(sprTerrain);
     safe_delete(sprPause);
@@ -61,6 +64,8 @@ void stage0_update()
         sprBeltConveyor = sprite_load(L"./Data/Images/BeltConveyor.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
         sprGear = sprite_load(L"./Data/Images/gear.png");
+        sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprEvPlayer = sprite_load(L"./Data/Images/p.png");
 
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
@@ -123,6 +128,9 @@ void stage0_update()
         // 電気
         Elec = {};
 
+        // EvPlayer
+        EvPlayer = { stage0[2].position.x, stage0[2].position.y };
+
         Gangle = 0;
         GangleT = 0;
 
@@ -133,6 +141,10 @@ void stage0_update()
         // シーン切り替え
         if (door.end)
         {
+            EvPlayer.y -= 10;            
+        }
+        if (EvPlayer.y < -200)
+        {
             nextScene = SCENE::RESULT;
             break;
         }
@@ -140,6 +152,7 @@ void stage0_update()
         // ポーズ  F
         if (TRG(0) & PAD_TRG4)
         {
+            //EvPlayer.y -= 10;
             pause = pause ? false : true;
         }
 
@@ -158,11 +171,11 @@ void stage0_update()
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
             debug::setString("PossibleStage:%d", PossibleStage);
-#endif
             debug::setString("player.elec:%d", player.elec);
             debug::setString("ElecPos.x:%f,ElecPos.y:%f", ElecPos.x, ElecPos.y);
             debug::setString("Elec.Pos.x:%f,Elec.Pos.y:%f", Elec.pos.x, Elec.pos.y);
             debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+#endif
 
 
             // 扉アニメ
@@ -416,7 +429,13 @@ void stage0_render()
     sprite_render(sprBelt, -stage0[0].position.x, 700 + 124+10, 1, -1);
     sprite_render(sprBelt, -stage0[0].position.x - 1530, 700 + 124+10, 1, -1);
 
+    // エレベーター
+    sprite_render(sprEV, stage0[2].position.x - 5, stage0[2].position.y - 650);
 
+    // playerEv
+    if(door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
+    
     // 扉
     sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y, 1, 1, stage0[2].texPos.x, stage0[2].texPos.y, stage0[2].texSize.x, stage0[2].texSize.y);
     // 箱
@@ -433,6 +452,7 @@ void stage0_render()
     
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
 
     // ポーズ画面
     if (pause)

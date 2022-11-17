@@ -4,11 +4,14 @@
 int stage_state[STAGE_MAX];
     
 VECTOR2 ElecPos;
+VECTOR2 EvPlayer;
 
 obj2d Elec;
 
 bool pause;
 
+Sprite* sprEvPlayer;
+Sprite* sprEV;  // エレベーター
 Sprite* sprPause;
 
 Sprite* sprTerrain;

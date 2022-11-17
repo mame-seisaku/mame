@@ -6,9 +6,12 @@
 extern int stage_state[STAGE_MAX];
 extern VECTOR2 mousePos;
 extern VECTOR2 ElecPos;
+extern VECTOR2 EvPlayer;
 extern obj2d Elec;
 
 extern bool pause;
+extern Sprite* sprEvPlayer;
+extern Sprite* sprEV;
 extern Sprite* sprPause;
 extern Sprite* sprTerrain;
 
