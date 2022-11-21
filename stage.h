@@ -2,6 +2,7 @@
 #define STAGE_H
 
 #define STAGE_MAX   (10)
+#define STAGE_MOVE  (10)
 
 extern int stage_state[STAGE_MAX];
 extern VECTOR2 mousePos;

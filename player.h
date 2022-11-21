@@ -10,6 +10,7 @@ class Player :public obj2d
 public:
     int state;
     int timer;
+    int AnimeState;
 
     bool clear;   // ƒNƒŠƒA
 
@@ -23,8 +24,11 @@ public:
 
     void Move();        // ˆÚ“®
     void checkGround(); // ’n–Ê‚Æ‚Ì”»’è
+
+    void Anime(int total, int flame);
 };
 
 extern Player player;
+
 
 #endif//PLAYER_H

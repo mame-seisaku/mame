@@ -13,7 +13,6 @@ Sprite* sprSwitch;  // スイッチ
 Sprite* sprBoxMove; // 動かせる箱
 Sprite* sprDoor2;   // 動くドア
 
-
 extern VECTOR2 mousePos;
 extern stage door;
 extern Sprite* sprElec; // 電気
@@ -154,8 +153,8 @@ void stage2_update()
         stage2[7].exist = true;
 
         // 真ん中のデカbox
-        stage2[8].position = { 520,523 };
-        stage2[8].pos = { 609,612.5f };
+        stage2[8].position = { 530,523 };
+        stage2[8].pos = { 619,612.5f };
         stage2[8].hsize = { 89, 88.5f };
         stage2[8].type = 7;
         stage2[8].exist = true;
@@ -218,7 +217,7 @@ void stage2_update()
         stage2[17].color.w = 1;
 
         // EvPlayer
-        EvPlayer = { stage2[1].position.x, stage2[1].position.y };
+        EvPlayer = { stage2[1].position.x, stage2[1].position.y + 100 };
 
         // 動くドア
         door2 = {};
@@ -253,11 +252,12 @@ void stage2_update()
         // シーン切り替え
         if (door.end)
         {
-            EvPlayer.y -= 10;
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
         }
         if (EvPlayer.y < -200)
         {
-            PossibleStage = 3;
+            if (PossibleStage < 3)PossibleStage = 3;
             nextScene = SCENE::RESULT;
             break;
         }
@@ -318,7 +318,7 @@ void stage2_update()
             
             if (mousePos.x > stage2[5].pos.x - 42 && mousePos.y > stage2[5].pos.y - 42 && mousePos.x < stage2[5].pos.x + 42 && mousePos.y < stage2[5].pos.y + 42||
                 mousePos.x > stage2[6].pos.x - 42 && mousePos.y > stage2[6].pos.y - 42 && mousePos.x < stage2[6].pos.x + 42 && mousePos.y < stage2[6].pos.y + 42||
-                mousePos.x > stage2[7].pos.x - 42 && mousePos.y > stage2[7].pos.y - 42 && mousePos.x < stage2[7].pos.x + 42 && mousePos.y < stage2[7].pos.y + 42)
+                mousePos.x > stage2[7   ].pos.x - 42 && mousePos.y > stage2[7].pos.y - 42 && mousePos.x < stage2[7].pos.x + 42 && mousePos.y < stage2[7].pos.y + 42)
             {
                 MouseTexPos.x = 100;
             }
@@ -468,7 +468,7 @@ void stage2_update()
 
             if (player.clear)
             {
-                player.pos.x = stage2[1].position.x + 51;    // ドアの位置に移動
+                player.pos.x = stage2[1].position.x + 71;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE2_MAX; ++i)
@@ -502,6 +502,7 @@ void stage2_update()
                         if (i == j)continue;
                         if (i >= 5 && i < 8)continue;
 
+                        if (stage2[i].type == 2)continue;   // 扉
                         if (stage2[i].type == 3 && !stage2[i].exist)continue;   // かけはし
                         if (stage2[i].type == 4)continue;   // 青壁
                         if (stage2[i].type == 5)continue;   // 赤スイッチ
@@ -586,6 +587,7 @@ void stage2_update()
                     {
                         if (i == j)continue;
 
+                        if (stage2[i].type == 2)continue;   // 扉
                         if (stage2[i].type == 3 && !stage2[i].exist)continue;   // かけはし
                         if (stage2[i].type == 4 && !stage2[i].exist)continue;   // 青壁
                         if (stage2[i].type == 5)continue;   // 赤スイッチ
@@ -739,11 +741,7 @@ void stage2_render()
     sprite_render(sprDoor2, 550, 235, -1, 1, door2.texPos.x, 0, 128, 64);
 
     // エレベーター
-    sprite_render(sprEV, stage2[1].position.x - 5, stage2[1].position.y - 650);
-
-    // playerEv
-    if (door.end)
-        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
+    sprite_render(sprEV, stage2[1].position.x - 5, stage2[1].position.y - 653);
 
     // 扉
     sprite_render(sprDoor, stage2[1].position.x, stage2[1].position.y, 1, 1, stage2[1].texPos.x, stage2[1].texPos.y, stage2[1].texSize.x, stage2[1].texSize.y);
@@ -757,6 +755,10 @@ void stage2_render()
 
     player.Render();
     //primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x + 35, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);

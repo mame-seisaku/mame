@@ -17,9 +17,7 @@ Sprite* sprBeltConveyor;
 Sprite* sprBelt;
 Sprite* sprGear;
 
-
 extern VECTOR2 mousePos;
-
 
 void stage0_init()
 {
@@ -46,6 +44,7 @@ void stage0_deinit()
     safe_delete(sprPause);
 
     music::stop(0);
+    music::stop(game_bgm);
 }
 
 void stage0_update()
@@ -131,12 +130,14 @@ void stage0_update()
         Elec = {};
 
         // EvPlayer
-        EvPlayer = { stage0[2].position.x, stage0[2].position.y };
+        EvPlayer = { stage0[2].position.x, stage0[2].position.y + 100 };
 
         Gangle = 0;
         GangleT = 0;
 
         MouseTexPos = {};
+
+        music::play(game_bgm, true);
 
         ++stage_state[0];
     case 2:
@@ -145,11 +146,12 @@ void stage0_update()
         // シーン切り替え
         if (door.end)
         {
-            EvPlayer.y -= 10;            
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
         }
         if (EvPlayer.y < -200)
         {
-            PossibleStage = 1;
+            if (PossibleStage < 1)PossibleStage = 1;
             nextScene = SCENE::RESULT;
             break;
         }
@@ -163,7 +165,7 @@ void stage0_update()
 
         if (!pause)
         {
-            player.Update({ 100,200 });
+            player.Update({ 100,200 });         
 
             // マウスカーソル
             std::ostringstream oss;                                 // 文字列ストリーム
@@ -205,13 +207,19 @@ void stage0_update()
 
             if (player.clear)
             {
-                player.pos.x = stage0[2].position.x + 51;    // ドアの位置に移動
+                player.pos.x = stage0[2].position.x + 71;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
                 {
                     stage0[i].elec = false;
                 }
+
+                Elec.exist = false;
+                stage0[0].elec = false;
+                player.elec = true;
+                GangleT = 0;
+                music::stop(0);
 
                 // 扉しまる
                 anime(&door, 7, 10, false, 0);
@@ -239,9 +247,7 @@ void stage0_update()
                         Elec.exist = false;
                         stage0[0].elec = false;
                         player.elec = true;
-
                         GangleT = 0;
-
                         music::stop(0);
                     }
                 }
@@ -392,7 +398,7 @@ void stage0_update()
             }
             else
             {
-                player.texPos.x = 0;
+                player.texPos.y = 0;
             }
             // 範囲外
             if (stage0[0].position.x > 0)
@@ -442,11 +448,8 @@ void stage0_render()
     sprite_render(sprBelt, -stage0[0].position.x - 1530, 700 + 124+10, 1, -1);
 
     // エレベーター
-    sprite_render(sprEV, stage0[2].position.x - 5, stage0[2].position.y - 650);
+    sprite_render(sprEV, stage0[2].position.x - 5, stage0[2].position.y - 653);
 
-    // playerEv
-    if(door.end)
-        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
     
     // 扉
     sprite_render(sprDoor, stage0[2].position.x, stage0[2].position.y, 1, 1, stage0[2].texPos.x, stage0[2].texPos.y, stage0[2].texSize.x, stage0[2].texSize.y);
@@ -461,6 +464,10 @@ void stage0_render()
     // プレイヤー
     player.Render();
     //primitive::rect(player.pos, player.hsize * 2, player.hsize, 0, { 0,0,1,1 });
+    
+    // playerEv
+    if(door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x +35, EvPlayer.y);
     
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);

@@ -7,6 +7,7 @@ void Player::Init()
 {
     state = 0;
     timer = 0;
+    AnimeState = 0;
 }
 
 /// <summary>
@@ -42,6 +43,7 @@ void Player::Update(VECTOR2 Pos)
         hsize = { 42,50 };
         elec = true;
         clear = false;
+        
 
         ++state;
     case 2:
@@ -57,8 +59,8 @@ void Player::Update(VECTOR2 Pos)
         // ’n–Ê‚Ì”»’è
         //checkGround();
 
-        player.texPos.x = player.elec ? 0 : 84;
-
+        player.texPos.y = player.elec ? 0 : 100;
+        if (!player.elec)player.texPos.x = 0;
 
         break;
     }
@@ -105,7 +107,8 @@ void Player::Move()
         speed.x = 0;
     }
 
-    
+    if (!(speed.x == 0))
+        Anime(6, 10);
 
     // d—Í‘€ì
     speed.y += GRAVITY;
@@ -121,3 +124,26 @@ void Player::checkGround()
     }
 }
 
+void Player::Anime(int total, int flame)
+{
+    switch (AnimeState)
+    {
+    case 0:
+        anime = animeTimer = 0;
+        end = false;
+        one = false;
+
+        ++AnimeState;
+    case 1:
+        anime = animeTimer / flame;
+        if (anime >= total)
+        {
+            anime = 0;
+            animeTimer = 0;
+        }
+        texPos.x = anime * texSize.x;
+        ++animeTimer;
+
+        break;
+    }
+}

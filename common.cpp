@@ -12,7 +12,8 @@ void anime(obj2d* obj, int total, int flame, bool loop,int type)
 		obj->anime = obj->animeTimer = 0;
 		obj->end = false;
 		obj->one = false;
-		GameLib::sound::play(type, 0);
+		if(type==0)
+			GameLib::sound::play(type, 0);
 
 		++obj->state;
 	case 1:

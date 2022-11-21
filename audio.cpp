@@ -6,7 +6,7 @@
 void audio_init()
 {
 
-    music::load(game_bgm, L"./Data/Musics/game_bgm.wav", 0.5f);
+    music::load(game_bgm, L"./Data/Musics/game_bgm.wav", 0.2f);
 
     music::load(0, L"./Data/Musics/belt_conveyor.wav"); // ベルトコンベア
 

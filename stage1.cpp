@@ -134,7 +134,7 @@ void stage1_update()
         stage1[6].open = false;
 
         // EvPlayer
-        EvPlayer = { stage1[6].position.x, stage1[6].position.y };
+        EvPlayer = { stage1[6].position.x, stage1[6].position.y + 100 };
 
         // ドア最後
         door = {};
@@ -151,11 +151,12 @@ void stage1_update()
         // シーン切り替え
         if (door.end)
         {
-            EvPlayer.y -= 10;
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
         }
         if (EvPlayer.y < -200)
         {
-            PossibleStage = 2;
+            if (PossibleStage < 2)PossibleStage = 2;
             nextScene = SCENE::RESULT;
             break;
         }
@@ -172,14 +173,13 @@ void stage1_update()
             player.Update({100,200});
 
             // マウスカーソル
-#ifdef _DEBUG
-#endif
             std::ostringstream oss;                                 // 文字列ストリーム
             POINT point;                                            // 位置用の変数を宣言する
             GetCursorPos(&point);                                   // スクリーン座標を取得する
             ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
             mousePos.x = (float)(point.x);
             mousePos.y = (float)(point.y);
+#ifdef _DEBUG
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
             //debug::setString("PossibleStage:%d", PossibleStage);
@@ -187,6 +187,7 @@ void stage1_update()
             debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
             debug::setString("stage1[3].pos.x:%f", stage1[3].pos.x);
             debug::setString("stage1[3].pos.y:%f", stage1[3].pos.y);
+#endif
 
             // 扉アニメ
             if (stage1[6].open)
@@ -203,7 +204,7 @@ void stage1_update()
 
             if (player.clear)
             {
-                player.pos.x = stage1[6].position.x + 51;    // ドアの位置に移動
+                player.pos.x = stage1[6].position.x + 71;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
@@ -488,11 +489,8 @@ void stage1_render()
     sprite_render(sprTrolley, stage1[3].position.x, stage1[3].position.y, 1, 1, stage1[3].elec * 178, 0, 177, 177);
    
     // エレベーター
-    sprite_render(sprEV, stage1[6].position.x - 5, stage1[6].position.y - 650);
+    sprite_render(sprEV, stage1[6].position.x - 5, stage1[6].position.y - 653);
 
-    // playerEv
-    if (door.end)
-        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, stage1[6].position.x, stage1[6].position.y, 1, 1, stage1[6].texPos.x, stage1[6].texPos.y, stage1[6].texSize.x, stage1[6].texSize.y);
@@ -502,6 +500,10 @@ void stage1_render()
         sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
 
     player.Render();
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x + 35, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);

@@ -8,7 +8,6 @@ VECTOR2 speed3;
 Sprite* spr3;
 Sprite* sprSyoukouki3;
 
-
 extern VECTOR2 mousePos;
 extern stage door;
 
@@ -97,8 +96,8 @@ void stage3_update()
         stage3[3].exist = true;
 
         // 扉
-        stage3[4].position = { 1239,530 };
-        stage3[4].pos = { 1330,620 };
+        stage3[4].position = { 1239,230 };
+        stage3[4].pos = { 1330,320 };
         stage3[4].hsize = { 80, 89 };
         stage3[4].texPos = {};
         stage3[4].texSize = { 178,177 };
@@ -107,7 +106,7 @@ void stage3_update()
         stage3[4].open = false;
 
         // EvPlayer
-        EvPlayer = { stage3[4].position.x, stage3[4].position.y };
+        EvPlayer = { stage3[4].position.x, stage3[4].position.y + 100 };
 
         // ドア最後
         door = {};
@@ -125,11 +124,12 @@ void stage3_update()
         // シーン切り替え
         if (door.end)
         {
-            EvPlayer.y -= 10;
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
         }
         if (EvPlayer.y < -200)
         {
-            PossibleStage = 4;
+            if (PossibleStage < 4)PossibleStage = 4;
             nextScene = SCENE::RESULT;
             break;
         }
@@ -174,7 +174,7 @@ void stage3_update()
 
             if (player.clear)
             {
-                player.pos.x = stage3[4].position.x + 51;    // ドアの位置に移動
+                player.pos.x = stage3[4].position.x + 71;    // ドアの位置に移動
                 // 電気を戻す
                 player.elec = true;
                 for (int i = 0; i < STAGE0_MAX; ++i)
@@ -387,11 +387,7 @@ void stage3_render()
     sprite_render(sprSyoukouki3, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
 
     // エレベーター
-    sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 650);
-
-    // playerEv
-    if (door.end)
-        sprite_render(sprEvPlayer, EvPlayer.x - 5, EvPlayer.y);
+    sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 653);
 
     // 扉
     sprite_render(sprDoor, stage3[4].position.x, stage3[4].position.y, 1, 1, stage3[4].texPos.x, stage3[4].texPos.y, stage3[4].texSize.x, stage3[4].texSize.y);
@@ -401,6 +397,10 @@ void stage3_render()
         sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
 
     player.Render();
+
+    // playerEv
+    if (door.end)
+        sprite_render(sprEvPlayer, EvPlayer.x + 35, EvPlayer.y);
 
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
