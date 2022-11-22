@@ -13,7 +13,6 @@ Sprite* sprSwitch;  // スイッチ
 Sprite* sprBoxMove; // 動かせる箱
 Sprite* sprDoor2;   // 動くドア
 
-extern VECTOR2 mousePos;
 extern stage door;
 extern Sprite* sprElec; // 電気
 extern Sprite* sprDoor; // ドア
@@ -443,14 +442,6 @@ void stage2_update()
             }
 
 
-            for (int i = 5; i < 8; ++i)
-            {
-                if (stage2[i].elec)
-                {
-                    stage2[i].pos.y += speed2.y;
-                }
-            }
-
             // かけはし
             if (door2.open)anime(&door2, 10, 10, false, 0);
             if (door2.end)stage2[10].exist = true;
@@ -492,8 +483,13 @@ void stage2_update()
 
             // 重力
             speed2.y += 1.0f;
-            if (speed2.y > 8.0f)speed2.y = 8.0f;
+            //if (speed2.y > 10.0f)speed2.y = 10.0f;
             
+            for (int i = 5; i < 8; ++i)
+            {
+                stage2[i].pos.y += 12;
+            }
+
 
             // 上下のめりこみチェック
             for (int i = 0; i < STAGE2_MAX; ++i)

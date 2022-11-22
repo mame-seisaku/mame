@@ -2,10 +2,13 @@
 
 /*****変数*****/
 int select_state;
+int select_timer[3];
 
 int selectStage;
 
 int S_texPos_Y[10];
+
+extern int TtexPos[TITLE_MAX];
 
 Sprite* sprSelect;
 Sprite* sprLock;
@@ -22,6 +25,9 @@ extern VECTOR2 mousePos;
 void select_init()
 {
     select_state = 0;
+    select_timer[0] = 0;
+    select_timer[1] = 0;
+    select_timer[2] = 0;
 }
 
 /// <summary>
@@ -34,6 +40,7 @@ void select_deinit()
     safe_delete(sprFrame);
     safe_delete(sprMouse);
     safe_delete(sprNum);
+    safe_delete(sprTerrain);
 }
 
 /// <summary>
@@ -50,6 +57,7 @@ void select_update()
         sprFrame = sprite_load(L"./Data/Images/frame.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
         sprNum = sprite_load(L"./Data/Images/num.png");
+        sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
         ++select_state;
     case 1:
@@ -66,10 +74,15 @@ void select_update()
 
         selectStage = 0;
 
+        for (int i = 0; i < TITLE_MAX; ++i)
+        {
+            TtexPos[i] = 64;
+        }
+
         ++select_state;
     case 2:
         ///// 通常時 /////
-        
+
         // マウスカーソル
         std::ostringstream oss;                                 // 文字列ストリーム
         POINT point;                                            // 位置用の変数を宣言する
@@ -110,7 +123,7 @@ void select_update()
 
                 S_texPos_Y[i + 5] = 0;
 
-                mouseClick(i+5);
+                mouseClick(i + 5);
                 break;
             }
             else
@@ -124,11 +137,33 @@ void select_update()
             nextScene = SCENE::TITLE;
             break;
         }
-        
 
+
+        int temp = select_timer[0] / 4;
+        int temp1 = select_timer[1] / 4 + 70;
+        int temp2 = select_timer[2] / 4 + 120;
+        
+        for (int i = 0; i < TITLE_MAX; ++i)
+        {
+            //if (temp == i)continue;
+            //if (temp1 == i)continue;
+
+            TtexPos[i] = 64;
+        }
+
+        TtexPos[temp] = 0;
+        TtexPos[temp1] = 0;
+        TtexPos[temp2] = 128;
+
+        if (select_timer[0] > 1248)select_timer[0] = 0;
+        if (select_timer[1] > 968)select_timer[1] = 0;
+        if (select_timer[2] > 768)select_timer[2] = 0;
 
         break;
     }
+    ++select_timer[0];
+    ++select_timer[1];
+    ++select_timer[2];
 }
 
 /// <summary>
@@ -138,12 +173,22 @@ void select_render()
 {
     GameLib::clear(1, 1, 1);
 
+
+    int S_Count = 0;
+    for (int y = 1; y <= 13; ++y)
+    {
+        for (int x = 1; x <= 24; ++x)
+        {
+            sprite_render(sprTerrain, -64 + (x * 64), -72 + (y * 64), 1, 1, TtexPos[S_Count], 0, 64, 64);
+            ++S_Count;
+        }
+    }
     sprite_render(sprSelect, 0, 0);
 
     for (int i = 0; i < 5; i++)
     {
-        sprite_render(sprFrame, 256.0f + (i * 256.0f), 350.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
-        sprite_render(sprFrame, 256.0f + (i * 256.0f), 650.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
+        //sprite_render(sprFrame, 256.0f + (i * 256.0f), 350.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
+        //sprite_render(sprFrame, 256.0f + (i * 256.0f), 650.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
         
         sprite_render(sprNum, 256.0f + (i * 256.0f), 350, 1, 1, i * 200, S_texPos_Y[i] + 0, 200, 200, 100, 100);
         sprite_render(sprNum, 256.0f + (i * 256.0f), 650, 1, 1, i * 200, S_texPos_Y[i + 5] + 200, 200, 200, 100, 100);

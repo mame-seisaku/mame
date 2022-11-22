@@ -19,6 +19,9 @@ extern Sprite* sprTerrain;
 
 extern Sprite* sprWhite;
 
+extern Sprite* sprElec; // 電気
+extern Sprite* sprDoor; // ドア
+
 enum DIR
 {
     DOWN,
@@ -38,8 +41,9 @@ public:
  
 };
 
-// プロトタイプ宣言
+extern stage door;
 
+// プロトタイプ宣言
 bool hitCheck(obj2d* rc1, obj2d* rc2);
 float check(obj2d* rc1, obj2d* rc2, int dir);
 
