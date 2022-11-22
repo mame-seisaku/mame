@@ -8,7 +8,6 @@ stage stage1[STAGE1_MAX];
 Sprite* spr1;
 Sprite* sprBox1;
 Sprite* sprTrolley;
-
 VECTOR2 speed1;
 
 extern VECTOR2 mousePos;
