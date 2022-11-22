@@ -5,10 +5,13 @@ int select_state;
 
 int selectStage;
 
+int S_texPos_Y[10];
+
 Sprite* sprSelect;
 Sprite* sprLock;
 
 Sprite* sprFrame;
+Sprite* sprNum;
 
 // extern宣言
 extern VECTOR2 mousePos;
@@ -30,6 +33,7 @@ void select_deinit()
     safe_delete(sprLock);
     safe_delete(sprFrame);
     safe_delete(sprMouse);
+    safe_delete(sprNum);
 }
 
 /// <summary>
@@ -45,6 +49,7 @@ void select_update()
         sprLock = sprite_load(L"./Data/Images/lock.png");
         sprFrame = sprite_load(L"./Data/Images/frame.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
+        sprNum = sprite_load(L"./Data/Images/num.png");
 
         ++select_state;
     case 1:
@@ -52,6 +57,11 @@ void select_update()
 #ifdef _DEBUG
           //PossibleStage = 4;
 #endif // _DEBUG
+
+        for (int i = 0; i < 10; ++i)
+        {
+            S_texPos_Y[i] = 400;
+        }
 
 
         selectStage = 0;
@@ -71,9 +81,9 @@ void select_update()
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
         debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+        debug::setString("PossibleStage:%d", PossibleStage);
 #endif
 
-       
 
 
         // 画面切り替え
@@ -85,15 +95,27 @@ void select_update()
             {
                 if (i > PossibleStage)continue;
 
-                mouseClick(i);
-                break;
-            }
-            if (mousePos.x > 156 + (i * 256) && mousePos.y > 550 && mousePos.x < 356 + (i * 256) && mousePos.y < 750)
-            {
-                if (i > PossibleStage)continue;
+                S_texPos_Y[i] = 0;
 
                 mouseClick(i);
                 break;
+            }
+            else
+            {
+                S_texPos_Y[i] = 400;
+            }
+            if (mousePos.x > 156 + (i * 256) && mousePos.y > 550 && mousePos.x < 356 + (i * 256) && mousePos.y < 750)
+            {
+                if (i + 5 > PossibleStage)continue;
+
+                S_texPos_Y[i + 5] = 0;
+
+                mouseClick(i+5);
+                break;
+            }
+            else
+            {
+                S_texPos_Y[i + 5] = 400;
             }
         }
 
@@ -122,6 +144,9 @@ void select_render()
     {
         sprite_render(sprFrame, 256.0f + (i * 256.0f), 350.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
         sprite_render(sprFrame, 256.0f + (i * 256.0f), 650.0f, 1.0f, 1.0f, 0, 0, 200.0f, 200.0f, 100.0f, 100.0f);
+        
+        sprite_render(sprNum, 256.0f + (i * 256.0f), 350, 1, 1, i * 200, S_texPos_Y[i] + 0, 200, 200, 100, 100);
+        sprite_render(sprNum, 256.0f + (i * 256.0f), 650, 1, 1, i * 200, S_texPos_Y[i + 5] + 200, 200, 200, 100, 100);
     }
     
 
@@ -210,5 +235,33 @@ void mouseClick(int s)
             nextScene = SCENE::STAGE5;
             break;
         }
+    }
+}
+
+void NotmouseClick(int s)
+{
+    selectStage = s;
+
+    // シーン切り替え
+    switch (s)
+    {
+    case 0:
+        nextScene = SCENE::STAGE0;
+        break;
+    case 1:
+        nextScene = SCENE::STAGE1;
+        break;
+    case 2:
+        nextScene = SCENE::STAGE2;
+        break;
+    case 3:
+        nextScene = SCENE::STAGE3;
+        break;
+    case 4:
+        nextScene = SCENE::STAGE4;
+        break;
+    case 5:
+        nextScene = SCENE::STAGE5;
+        break;
     }
 }

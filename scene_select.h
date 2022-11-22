@@ -11,5 +11,6 @@ void select_render();
 
 void disp_key();
 void mouseClick(int s);
+void NotmouseClick(int s);
 
 #endif//SELECT_H

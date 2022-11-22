@@ -12,4 +12,6 @@ void wordState0();
 void wordState1();
 void wordState2();
 
+extern int JudgeTutorial;
+
 #endif//SCENE_TITLE_H

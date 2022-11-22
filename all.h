@@ -26,6 +26,7 @@
 #include "scene_select.h"
 #include "scene_tutorial.h"
 #include "scene_result.h"
+#include "scene_restart.h"
 
 
 using namespace GameLib;

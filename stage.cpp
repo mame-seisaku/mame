@@ -17,6 +17,8 @@ Sprite* sprPause;
 
 Sprite* sprTerrain;
 
+Sprite* sprWhite;
+
 /// <summary>
 /// •Ç‚Æ‚Ì“–‚½‚è”»’è
 /// </summary>

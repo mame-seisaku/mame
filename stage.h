@@ -17,6 +17,8 @@ extern Sprite* sprEV;
 extern Sprite* sprPause;
 extern Sprite* sprTerrain;
 
+extern Sprite* sprWhite;
+
 enum DIR
 {
     DOWN,
