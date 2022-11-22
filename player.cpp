@@ -107,6 +107,15 @@ void Player::Move()
         speed.x = 0;
     }
 
+    if (speed.x < 0)
+    {
+        scale.x = -1;
+    }
+    else if (speed.x > 0)
+    {
+        scale.x = 1;
+    }
+
     if (!(speed.x == 0))
         Anime(6, 10);
 

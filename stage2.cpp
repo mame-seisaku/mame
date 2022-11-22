@@ -62,7 +62,7 @@ void stage2_update()
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
-        sprElec = sprite_load(L"./Data/Images/elec1.png");
+        sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
         sprPause = sprite_load(L"./Data/Images/pause.png");
@@ -764,7 +764,7 @@ void stage2_render()
 
     // 電気
     if (Elec.exist)
-        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.7f, 0.7f, 128, 0, 128, 128, 64, 64);
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 128, 128, 64, 64);
 
     // player2
     //sprite_render(sprPlayer2, stage2[16].pos.x, stage2[16].pos.y, 1, 1, 0, 0, stage2[16].texSize.x, stage2[16].texSize.y, stage2[16].pivot.x, stage2[16].pivot.y);
@@ -779,13 +779,13 @@ void stage2_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    // mausuka-soru
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
-
     // ポーズ画面
     if (pause)
     {
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+
+    // マウスカーソル
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }

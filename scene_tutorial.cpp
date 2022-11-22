@@ -650,7 +650,7 @@ void tutorial_render()
 
     // “d‹C
     if (Elec.exist)
-        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 128, 128, 64, 64);
 
     player.Render();
 

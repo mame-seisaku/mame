@@ -6,7 +6,7 @@ stage stage3[STAGE3_MAX];
 VECTOR2 speed3;
 
 Sprite* spr3;
-Sprite* sprSyoukouki3;
+Sprite* sprSyoukouki;
 
 extern VECTOR2 mousePos;
 extern stage door;
@@ -25,13 +25,12 @@ void stage3_deinit()
     player.Dinit();
 
 	safe_delete(spr3);
-	safe_delete(sprSyoukouki3);
+	safe_delete(sprSyoukouki);
+
     safe_delete(sprEV);
     safe_delete(sprEvPlayer);
     safe_delete(sprMouse);
-
     safe_delete(sprTerrain);
-
     safe_delete(sprPause);
     safe_delete(sprWhite);
 
@@ -47,16 +46,14 @@ void stage3_update()
         player.Init();
 
         spr3 = sprite_load(L"./Data/Images/04.png");
-        sprSyoukouki3 = sprite_load(L"./Data/Images/syoukouki2.png");
+        sprSyoukouki = sprite_load(L"./Data/Images/syoukouki2.png");
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
-
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
-
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
 
@@ -403,7 +400,7 @@ void stage3_render()
     }
 
     // エレベータ
-    sprite_render(sprSyoukouki3, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
+    sprite_render(sprSyoukouki, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
 
     // エレベーター
     sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 653);
@@ -413,7 +410,7 @@ void stage3_render()
 
     // 電気
     if (Elec.exist)
-        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 128, 128, 64, 64);
 
     player.Render();
 
@@ -424,12 +421,12 @@ void stage3_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
-
     // ポーズ画面
     if (pause)
     {
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

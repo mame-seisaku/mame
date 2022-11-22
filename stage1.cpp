@@ -515,7 +515,7 @@ void stage1_render()
 
     // 電気
     if (Elec.exist)
-        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 1, 1, 0, 0, 128, 128, 64, 64);
 
     player.Render();
 
@@ -526,14 +526,14 @@ void stage1_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
-
     // ポーズ画面
     if (pause)
     {
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 
 #ifdef _DEBUG
     debug::setString("player%d", player.elec);
