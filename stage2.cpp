@@ -41,6 +41,7 @@ void stage2_deinit()
     safe_delete(sprDoor);
     safe_delete(sprTerrain);
     safe_delete(sprPause);
+    safe_delete(sprWhite);
 
     music::stop(game_bgm);
 }
@@ -62,10 +63,11 @@ void stage2_update()
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
 
-        sprElec = sprite_load(L"./Data/Images/elec.png");
+        sprElec = sprite_load(L"./Data/Images/elec1.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
         sprPause = sprite_load(L"./Data/Images/pause.png");
+        sprWhite = sprite_load(L"./Data/Images/white.png");
 
         ++stage_state[2];
     case 1:
@@ -268,18 +270,19 @@ void stage2_update()
             pause = pause ? false : true;
         }
 
+        // マウスカーソル
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = (float)(point.x);
+        mousePos.y = (float)(point.y);
+        
         if (!pause)
         {
             // プレイヤー更新
             player.Update({100,500});
 
-            // マウスカーソル
-            std::ostringstream oss;                                 // 文字列ストリーム
-            POINT point;                                            // 位置用の変数を宣言する
-            GetCursorPos(&point);                                   // スクリーン座標を取得する
-            ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
-            mousePos.x = (float)(point.x);
-            mousePos.y = (float)(point.y);
 #ifdef _DEBUG
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
@@ -318,7 +321,7 @@ void stage2_update()
             
             if (mousePos.x > stage2[5].pos.x - 42 && mousePos.y > stage2[5].pos.y - 42 && mousePos.x < stage2[5].pos.x + 42 && mousePos.y < stage2[5].pos.y + 42||
                 mousePos.x > stage2[6].pos.x - 42 && mousePos.y > stage2[6].pos.y - 42 && mousePos.x < stage2[6].pos.x + 42 && mousePos.y < stage2[6].pos.y + 42||
-                mousePos.x > stage2[7   ].pos.x - 42 && mousePos.y > stage2[7].pos.y - 42 && mousePos.x < stage2[7].pos.x + 42 && mousePos.y < stage2[7].pos.y + 42)
+                mousePos.x > stage2[7].pos.x - 42 && mousePos.y > stage2[7].pos.y - 42 && mousePos.x < stage2[7].pos.x + 42 && mousePos.y < stage2[7].pos.y + 42)
             {
                 MouseTexPos.x = 100;
             }
@@ -664,6 +667,23 @@ void stage2_update()
             
 
         }
+        else
+        {
+            if (TRG(0) & PAD_L3)
+            {
+                if (mousePos.x > 550 && mousePos.y > 400 && mousePos.x < 900 && mousePos.y < 460)
+                {
+                    nextScene = SCENE::RESTART;
+                    break;
+                }
+                else if (mousePos.x > 540 && mousePos.y > 540 && mousePos.x < 910 && mousePos.y < 600)
+                {
+                    nextScene = SCENE::SELECT;
+                    break;
+                }
+            }
+        }
+
         break;
     }
 }
@@ -748,7 +768,7 @@ void stage2_render()
 
     // 電気
     if (Elec.exist)
-        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.5f, 0.5f, 0, 0, 128, 128, 64, 64);
+        sprite_render(sprElec, Elec.pos.x, Elec.pos.y, 0.7f, 0.7f, 128, 0, 128, 128, 64, 64);
 
     // player2
     //sprite_render(sprPlayer2, stage2[16].pos.x, stage2[16].pos.y, 1, 1, 0, 0, stage2[16].texSize.x, stage2[16].texSize.y, stage2[16].pivot.x, stage2[16].pivot.y);
@@ -769,6 +789,7 @@ void stage2_render()
     // ポーズ画面
     if (pause)
     {
+        sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
 }

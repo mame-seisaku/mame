@@ -2,11 +2,13 @@
 
 int curScene = SCENE::NONE;
 int nextScene = SCENE::TITLE;
+//int nextScene = SCENE::RESULT;
 
 // ファイル読み込み用
 struct Data
 {
     int stage_max;
+    int tutorial;
 };
 
 int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
@@ -28,9 +30,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     if (ifs)
     {
         ifs.read((char*)&data.stage_max, sizeof(data));
+        ifs.read((char*)&data.tutorial, sizeof(data));
         ifs.close();
     }
     PossibleStage = data.stage_max;
+    JudgeTutorial = data.tutorial;
 
     // オーディオの初期設定
     audio_init();
@@ -87,6 +91,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             case SCENE::STAGE5:
                 stage5_deinit();
                 break;
+
+            case SCENE::RESTART:
+                restart_deinit();
+                break;
             }
 
             // 次のシーンに追う下初期設定処理
@@ -134,6 +142,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::STAGE5:
                 stage5_init();
+                break;
+
+            case SCENE::RESTART:
+                restart_init();
                 break;
             }
 
@@ -204,6 +216,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             stage5_update();
             stage5_render();
             break;
+
+        case SCENE::RESTART:
+            restart_update();
+            restart_render();
+            break;
         }
 
         // デバック用文字列の表示
@@ -259,15 +276,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
     case SCENE::STAGE5:
         stage5_deinit();
         break;
+
+    case SCENE::RESTART:
+        restart_deinit();
+        break;
     }
 
     //  ファイル書き出し
     data.stage_max = PossibleStage;
+    data.tutorial = JudgeTutorial;
     std::ofstream ofs;
     ofs.open("mame.bin", std::ios::binary);
     if (ofs)
     {
         ofs.write((const char*)&data.stage_max, sizeof(data.stage_max));
+        ofs.write((const char*)&data.tutorial, sizeof(data.tutorial));
     }
 
     // オーディオの終了処理

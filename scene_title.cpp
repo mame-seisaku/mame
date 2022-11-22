@@ -9,9 +9,15 @@ int wordState;
 
 int TtexPos[TITLE_MAX];
 
+int JudgeTutorial;
+
 VECTOR2 mousePos;   // マウスカーソルの位置
+obj2d Titile_A;
 
 Sprite* sprTitle;
+Sprite* sprTtitleAnime;
+
+extern int Tstate;
 
 /// <summary>
 /// タイトルの初期設定
@@ -31,6 +37,7 @@ void title_deinit()
 {
     safe_delete(sprTitle);
     safe_delete(sprMouse);
+    safe_delete(sprTtitleAnime);
 
     safe_delete(sprTerrain);
 }
@@ -47,6 +54,7 @@ void title_update()
         sprTitle = sprite_load(L"./Data/Images/title.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
+        sprTtitleAnime = sprite_load(L"./Data/Images/titleAnime.png");
 
         ++title_state;
     case 1:
@@ -60,7 +68,10 @@ void title_update()
             TtexPos[i] = 64;
         }
 
-
+        Titile_A = {};
+        Titile_A.pos = { 0,0 };
+        Titile_A.texPos = {  };
+        Titile_A.texSize = { 1536,824 };
 
         wordState0();
 
@@ -75,12 +86,22 @@ void title_update()
             // スタート
             if (mousePos.x > 615 && mousePos.y > 420 && mousePos.x < 825 && mousePos.y < 495)
             {
-                nextScene = SCENE::SELECT;
-                break;
+                if (JudgeTutorial == 0)
+                {
+                    Tstate = 0;
+                    nextScene = SCENE::TUTORIAL;
+                    break;
+                }
+                else
+                {
+                    nextScene = SCENE::SELECT;
+                    break;
+                }
             }
             // チュートリアル
             if (mousePos.x > 500 && mousePos.y > 600 && mousePos.x < 970 && mousePos.y < 670)
             {
+                Tstate = 1;
                 nextScene = SCENE::TUTORIAL;
                 break;
             }
@@ -98,6 +119,7 @@ void title_update()
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
         debug::setString("PossibleStage:%d", PossibleStage);
         debug::setString("title_timer:%d", title_timer);
+        debug::setString("JudgeTutorial:%d", JudgeTutorial);
 #endif
 
 #ifdef _DEBUG
@@ -128,6 +150,8 @@ void title_update()
         }
 #endif
 
+        anime(&Titile_A, 9, 10, true, 1);
+
         break;
     }
     ++title_timer;
@@ -141,6 +165,8 @@ void title_render()
     GameLib::clear(0, 0, 0);
 
     sprite_render(sprTitle, 0, 0);
+
+    sprite_render(sprTtitleAnime, Titile_A.pos.x, Titile_A.pos.y, 1, 1, Titile_A.texPos.x, Titile_A.texPos.y, 1536, 824);
 
 #ifdef _DEBUG
 //    int Count = 0;

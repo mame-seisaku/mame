@@ -40,6 +40,8 @@ void stage0_deinit()
     safe_delete(sprEvPlayer);
     safe_delete(sprMouse);
 
+    safe_delete(sprWhite);
+
     safe_delete(sprTerrain);
     safe_delete(sprPause);
 
@@ -71,6 +73,7 @@ void stage0_update()
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
 
         sprPause = sprite_load(L"./Data/Images/pause.png");
+        sprWhite = sprite_load(L"./Data/Images/white.png");
 
         ++stage_state[0];
     case 1:
@@ -163,17 +166,17 @@ void stage0_update()
             pause = pause ? false : true;
         }
 
+        // マウスカーソル
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = (float)(point.x);
+        mousePos.y = (float)(point.y);
+
         if (!pause)
         {
             player.Update({ 100,200 });         
-
-            // マウスカーソル
-            std::ostringstream oss;                                 // 文字列ストリーム
-            POINT point;                                            // 位置用の変数を宣言する
-            GetCursorPos(&point);                                   // スクリーン座標を取得する
-            ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
-            mousePos.x = (float)(point.x);
-            mousePos.y = (float)(point.y);
 #ifdef _DEBUG
             oss << "(x=" << point.x << " y=" << point.y << ")";
             SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
@@ -407,8 +410,25 @@ void stage0_update()
             }
 
 
-            break;
         }
+        else
+        {
+            if (TRG(0) & PAD_L3)
+            {
+                if (mousePos.x > 550 && mousePos.y > 400 && mousePos.x < 900 && mousePos.y < 460)
+                {
+                    nextScene = SCENE::RESTART;
+                    break;
+                }
+                else if (mousePos.x > 540 && mousePos.y > 540 && mousePos.x < 910 && mousePos.y < 600)
+                {
+                    nextScene = SCENE::SELECT;
+                    break;
+                }
+            }
+        }
+
+        break;
     }
 }
 
@@ -477,6 +497,7 @@ void stage0_render()
     // ポーズ画面
     if (pause)
     {
+        sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
 }

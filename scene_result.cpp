@@ -3,7 +3,10 @@
 /*****•Ï”*****/
 int result_state;
 
+float R_texPos_y[3];
+
 Sprite* sprResult;
+Sprite* sprIcon;
 
 /// <summary>
 /// ‰Šúİ’è
@@ -20,6 +23,7 @@ void result_deinit()
 {
     safe_delete(sprResult);
     safe_delete(sprMouse);
+    safe_delete(sprIcon);
 }
 
 /// <summary>
@@ -33,10 +37,16 @@ void result_update()
         ///// ‰Šú‰» /////
         sprResult = sprite_load(L"./Data/Images/result.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
+        sprIcon = sprite_load(L"./Data/Images/icon.png");
 
         ++result_state;
     case 1:
         ///// ƒpƒ‰ƒ[ƒ^‚Ìİ’è /////
+
+        R_texPos_y[0] = 0;
+        R_texPos_y[1] = 0;
+        R_texPos_y[2] = 0;
+
         ++result_state;
     case 2:
         ///// ’Êí /////
@@ -54,32 +64,52 @@ void result_update()
 #endif
 
         // ‰æ–ÊØ‚è‘Ö‚¦
-
-        if (TRG(0) & PAD_L3)
+        if (mousePos.x > 240 && mousePos.y > 384 && mousePos.x < 496 && mousePos.y < 640)
         {
-            if (mousePos.x > 385 && mousePos.y > 585 && mousePos.x < 1175 && mousePos.y < 640)
+            R_texPos_y[0] = 256;
+            if (TRG(0) & PAD_L3)
             {
-                nextScene = SCENE::TITLE;
+                mouseClick(selectStage);
                 break;
             }
-            if (mousePos.x > 385 && mousePos.y > 415 && mousePos.x < 1075 && mousePos.y < 520)
+        }
+        else
+            R_texPos_y[0] = 0;
+        if (mousePos.x > 640 && mousePos.y > 384 && mousePos.x < 896 && mousePos.y < 640)
+        {
+            R_texPos_y[1] = 256;
+            if (TRG(0) & PAD_L3)
+            {
+                nextScene = SCENE::SELECT;
+                break;
+            }
+        }
+        else
+            R_texPos_y[1] = 0;
+        if (mousePos.x > 1040 && mousePos.y > 384 && mousePos.x < 1296 && mousePos.y < 640)
+        {
+            R_texPos_y[2] = 256;
+            if (TRG(0) & PAD_L3)
             {
                 mouseClick(selectStage + 1);
                 break;
             }
         }
+        else
+            R_texPos_y[2] = 0;
 
-        /*if (TRG(0) & PAD_SELECT)
+        if (mousePos.x > 240 && mousePos.y > 384 && mousePos.x < 496 && mousePos.y < 640||
+            mousePos.x > 640 && mousePos.y > 384 && mousePos.x < 896 && mousePos.y < 640||
+            mousePos.x > 1040 && mousePos.y > 384 && mousePos.x < 1296 && mousePos.y < 640
+            )
         {
-            nextScene = SCENE::TITLE;
-            break;
+            MouseTexPos.x = 100;
+        }
+        else
+        {
+            MouseTexPos.x = 0;
         }
 
-        if (STATE(0) & PAD_START)
-        {
-            mouseClick(selectStage + 1);
-            break;
-        }*/
 
         break;
     }
@@ -93,6 +123,10 @@ void result_render()
     GameLib::clear(1, 1, 1);
 
     sprite_render(sprResult, 0, 0);
+
+    sprite_render(sprIcon, 368, 512, 1, 1, 0, R_texPos_y[0], 256, 256, 128, 128);
+    sprite_render(sprIcon, 768, 512, 1, 1, 256, R_texPos_y[1], 256, 256, 128, 128);
+    sprite_render(sprIcon, 1168, 512, 1, 1, 512, R_texPos_y[2], 256, 256, 128, 128);
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

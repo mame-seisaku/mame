@@ -30,6 +30,7 @@ enum SCENE
     STAGE8,
     STAGE9,
     STAGE10,
+    RESTART,
 };
 
 // ŠÖ”ƒ|ƒCƒ“ƒ^
