@@ -6,7 +6,8 @@ stage stage3[STAGE3_MAX];
 VECTOR2 speed3;
 
 Sprite* spr3;
-Sprite* sprSyoukouki;
+Sprite* sprSyoukouki; // 昇降機
+extern Sprite* sprBox; 
 
 extern VECTOR2 mousePos;
 extern stage door;
@@ -30,6 +31,7 @@ void stage3_deinit()
     safe_delete(sprEV);
     safe_delete(sprEvPlayer);
     safe_delete(sprMouse);
+    safe_delete(sprBox);
     safe_delete(sprTerrain);
     safe_delete(sprPause);
     safe_delete(sprWhite);
@@ -47,6 +49,9 @@ void stage3_update()
 
         spr3 = sprite_load(L"./Data/Images/04.png");
         sprSyoukouki = sprite_load(L"./Data/Images/syoukouki2.png");
+
+        sprBox = sprite_load(L"./Data/Images/box.png");
+
 
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
@@ -70,6 +75,7 @@ void stage3_update()
         }
 
         // type 
+        // 0 kabe
         // 2 扉
 
         // 床
@@ -87,7 +93,7 @@ void stage3_update()
         stage3[2].hsize = { 15,412 };
         stage3[2].type = 0;
         stage3[2].exist = true;
-        //エレベータ
+        //昇降機
         stage3[3].position = { 890,510 };
         stage3[3].pos = { 979,650 };
         stage3[3].hsize = { 89, 50 };
@@ -103,6 +109,26 @@ void stage3_update()
         stage3[4].type = 2;
         stage3[4].exist = true;
         stage3[4].open = false;
+
+        // 高台
+        stage3[5].pos = { 1340,550 };
+        stage3[5].hsize = { 180, 150 };
+        stage3[5].type = 0;
+        stage3[5].exist = true;
+
+        // 真ん中のデカbox
+        stage3[6].position = { 480,523 };
+        stage3[6].pos = { 569,612.5f };
+        stage3[6].hsize = { 89, 88.5f };
+        stage3[6].type = 7;
+        stage3[6].exist = true;
+
+        //昇降機2
+        stage3[7].position = { 240,210 };
+        stage3[7].pos = { 329,350 };
+        stage3[7].hsize = { 89, 50 };
+        stage3[7].type = 0;
+        stage3[7].exist = true;
 
         // EvPlayer
         EvPlayer = { stage3[4].position.x, stage3[4].position.y + 100 };
@@ -157,6 +183,8 @@ void stage3_update()
             debug::setString("PossibleStage:%d", PossibleStage);
             debug::setString("stage3[3].pos.x:%f", stage3[3].pos.x);
             debug::setString("stage3[3].pos.y:%f", stage3[3].pos.y);
+            debug::setString("stage3[7].pos.x:%f", stage3[7].pos.x);
+            debug::setString("stage3[7].pos.y:%f", stage3[7].pos.y);
 #endif
             // 扉アニメ
             if (stage3[4].open)
@@ -187,6 +215,7 @@ void stage3_update()
 
 
             // マウスでの憑依操作
+            //昇降機1
             if (mousePos.x > stage3[3].pos.x - 90 && mousePos.y > stage3[3].pos.y - 50 && mousePos.x < stage3[3].pos.x + 90 && mousePos.y < stage3[3].pos.y + 50)
             {
                 if (TRG(0) & PAD_L3)
@@ -194,15 +223,29 @@ void stage3_update()
                     if (!Elec.exist && player.elec)
                     {
                         SetElecMove();
-                        Elec.type = stage3[3].type;
+                        Elec.type = 3;
+                    }
+                }
+            }
+            //昇降機2
+            if (mousePos.x > stage3[7].pos.x - 90 && mousePos.y > stage3[7].pos.y - 50 && mousePos.x < stage3[7].pos.x + 90 && mousePos.y < stage3[7].pos.y + 50)
+            {
+                if (TRG(0) & PAD_L3)
+                {
+                    if (!Elec.exist && player.elec)
+                    {
+                        SetElecMove();
+                        Elec.type = 7;
                     }
                 }
             }
             if (TRG(0) & PAD_R3 && !player.elec)
             {
                 stage3[3].elec = false;
+                stage3[7].elec = false;
                 player.elec = true;
             }
+
 
             if (Elec.exist) // 存在したら
             {
@@ -221,7 +264,8 @@ void stage3_update()
                         {
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
-                            stage3[3].elec = true;
+                            stage3[Elec.type].elec = true;
+                           
                         }
                     }
                     else
@@ -231,7 +275,8 @@ void stage3_update()
                         {
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
-                            stage3[3].elec = true;
+                            stage3[Elec.type].elec = true;
+                            
                         }
                     }
                 }
@@ -245,7 +290,8 @@ void stage3_update()
                         {
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
-                            stage3[3].elec = true;
+                            stage3[Elec.type].elec = true;
+                            
                         }
                     }
                     else
@@ -255,7 +301,8 @@ void stage3_update()
                         {
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
-                            stage3[3].elec = true;
+                            stage3[Elec.type].elec = true;
+                            
                         }
                     }
                 }
@@ -285,13 +332,19 @@ void stage3_update()
 
             player.pos.y += player.speed.y;
             /* stage3[3].position.y = stage3[3].pos.y-140;*/
+            //昇降機1 移動
             if (stage3[3].elec == true) {
                 stage3[3].pos.y += speed3.y;
                 stage3[3].position.y = stage3[3].pos.y - 140;
             }
+            //昇降機2 移動
+            if (stage3[7].elec == true) {
+                stage3[7].pos.y += speed3.y;
+                stage3[7].position.y = stage3[7].pos.y - 140;
+            }
 
             // 上下のめり込みチェック
-            for (int i = 0; i < STAGE0_MAX; ++i)
+            for (int i = 0; i < STAGE3_MAX; ++i)
             {
                 if (hitCheck(&player, &stage3[i]))
                 {
@@ -299,8 +352,9 @@ void stage3_update()
                     if (stage3[i].type == 2)
                     {
                         stage3[i].open = true;
-                        break;
+                        continue;
                     }
+
 
                     // めり込み対策		// 当たり判定
                     float dist;
@@ -310,7 +364,9 @@ void stage3_update()
                         dist = check(&player, &stage3[i], DIR::UP);
                     player.pos.y += dist;
                     player.speed.y = 0;
+                    
                 }
+                //昇降機1
                 if (hitCheck(&stage3[3], &stage3[0]))
                 {
                     float dist;
@@ -322,20 +378,40 @@ void stage3_update()
                     speed3.y = 0;
                     stage3[3].position.y += dist;
                 }
+                //昇降機2
+                if (hitCheck(&stage3[7], &stage3[0]))
+                {
+                    float dist;
+                    if (speed3.y >= 0)
+                        dist = check(&stage3[7], &stage3[0], DIR::DOWN);
+                    else
+                        dist = check(&stage3[7], &stage3[0], DIR::UP);
+                    stage3[7].pos.y += dist;
+                    speed3.y = 0;
+                    stage3[7].position.y += dist;
+                }
+               
             }
 
             //上 上限
+            //昇降機1
             if (stage3[3].pos.y < 200) {
                 stage3[3].pos.y = 200;
                 stage3[3].position.y = 60;
             }
+            //昇降機2
+            if (stage3[7].pos.y < 200) {
+                stage3[7].pos.y = 200;
+                stage3[7].position.y = 60;
+            }
+
 
             //操作切り替え
             player.pos.x += player.speed.x;
 
 
             // 左右のめり込みチェック
-            for (int i = 0; i < STAGE0_MAX; ++i)
+            for (int i = 0; i < STAGE3_MAX; ++i)
             {
                 if (player.elec == true) {
                     if (hitCheck(&player, &stage3[i]))
@@ -344,7 +420,7 @@ void stage3_update()
                         if (stage3[i].type == 2)
                         {
                             stage3[i].open = true;
-                            break;
+                            continue;
                         }
 
                         // めり込み対策		// 当たり判定
@@ -387,10 +463,11 @@ void stage3_render()
     sprite_render(spr3, 0, 0);
 
     // 地形描画
-    for (int i = 0; i < STAGE1_MAX; ++i)
+   /* for (int i = 0; i < STAGE1_MAX; ++i)
     {
         primitive::rect(stage3[i].pos, stage3[i].hsize * 2, stage3[i].hsize, 0, { 1,0,0,1 });
-    }
+    }*/
+    //床
     for (int y = 0; y < 2; ++y)
     {
         for (int x = 0; x < 24; ++x)
@@ -398,12 +475,27 @@ void stage3_render()
             sprite_render(sprTerrain, x * 64, 700 + (y * 64), 1, 1, 64, 0, 64, 64);
         }
     }
+    
+    //高台
+    for (int y = 0; y < 7; ++y)
+    {
+        for (int x = 0; x < 6; ++x)
+        {
+            sprite_render(sprTerrain, 1152 + (x * 64), 400 + (y * 64), 1, 1, 64, 0, 64, 64);
+        }
+    }
 
-    // エレベータ
+
+    // 昇降機
     sprite_render(sprSyoukouki, stage3[3].position.x, stage3[3].position.y, 1, 1, stage3[3].elec * 178, 0, 177, 177);
-
+    // 昇降機2
+    sprite_render(sprSyoukouki, stage3[7].position.x, stage3[7].position.y, 1, 1, stage3[7].elec * 178, 0, 177, 177);
+    
     // エレベーター
     sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 653);
+
+    
+
 
     // 扉
     sprite_render(sprDoor, stage3[4].position.x, stage3[4].position.y, 1, 1, stage3[4].texPos.x, stage3[4].texPos.y, stage3[4].texSize.x, stage3[4].texSize.y);
@@ -421,6 +513,9 @@ void stage3_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
+
+    // デカ箱
+    sprite_render(sprBox, stage3[6].position.x, stage3[6].position.y);
     // ポーズ画面
     if (pause)
     {
