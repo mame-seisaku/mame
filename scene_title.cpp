@@ -40,6 +40,8 @@ void title_deinit()
     safe_delete(sprTtitleAnime);
 
     safe_delete(sprTerrain);
+
+    music::stop(title_bgm);
 }
 
 /// <summary>
@@ -74,6 +76,8 @@ void title_update()
         Titile_A.texSize = { 1536,824 };
 
         wordState0();
+
+        music::play(title_bgm, true);
 
         ++title_state;
     case 2:

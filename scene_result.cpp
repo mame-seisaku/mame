@@ -24,6 +24,8 @@ void result_deinit()
     safe_delete(sprResult);
     safe_delete(sprMouse);
     safe_delete(sprIcon);
+
+    music::stop(result_bgm);
 }
 
 /// <summary>
@@ -46,6 +48,8 @@ void result_update()
         R_texPos_y[0] = 0;
         R_texPos_y[1] = 0;
         R_texPos_y[2] = 0;
+
+        music::play(result_bgm, true);
 
         ++result_state;
     case 2:
