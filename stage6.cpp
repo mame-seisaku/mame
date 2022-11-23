@@ -1,12 +1,12 @@
-#if 0
+#if 1
 #include "all.h"
 
-void stage5_init()
+void stage6_init()
 {
-    stage_state[5] = 0;
+    stage_state[6] = 0;
 }
 
-void stage5_deinit()
+void stage6_deinit()
 {
     player.Dinit();
 
@@ -21,9 +21,9 @@ void stage5_deinit()
     music::stop(game_bgm);
 }
 
-void stage5_update()
+void stage6_update()
 {
-    switch (stage_state[5])
+    switch (stage_state[6])
     {
     case 0:
         ///// ‰Šúİ’è /////
@@ -57,7 +57,7 @@ void stage5_update()
         music::play(game_bgm, true);
 
 
-        ++stage_state[5];
+        ++stage_state[6];
     case 2:
         ///// ’Êí /////
 
@@ -84,7 +84,7 @@ void stage5_update()
     }
 }
 
-void stage5_render()
+void stage6_render()
 {
     GameLib::clear(1, 1, 1);
 
