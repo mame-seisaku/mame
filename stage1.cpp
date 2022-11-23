@@ -326,10 +326,7 @@ void stage1_update()
                 {
 
                     //ã‚Éæ‚Á‚½‚ÌˆÚ“®
-                    if (stage1[i].type == 1 && stage1[i].elec)
-                    {
-                        player.pos.x += speed1.x;
-                    }
+                    
 
                     // ”à
                     if (stage1[i].type == 2)
