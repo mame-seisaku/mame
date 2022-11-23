@@ -35,7 +35,7 @@ void stage2_deinit()
     safe_delete(sprEV);
     safe_delete(sprEvPlayer);
     safe_delete(sprMouse);
-
+    safe_delete(sprUI);
     safe_delete(sprElec);
     safe_delete(sprDoor);
     safe_delete(sprTerrain);
@@ -61,7 +61,7 @@ void stage2_update()
         sprEV = sprite_load(L"./Data/Images/EV.png");
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
-
+        sprUI = sprite_load(L"./Data/Images/UI.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
@@ -680,6 +680,8 @@ void stage2_update()
             }
         }
 
+        UI = player.elec ? 0 : 105;
+
         break;
     }
 }
@@ -778,6 +780,9 @@ void stage2_render()
 
     // î‡
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
+    // UI
+    sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
 
     // É|Å[ÉYâÊñ 
     if (pause)

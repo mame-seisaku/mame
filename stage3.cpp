@@ -27,7 +27,7 @@ void stage3_deinit()
 
 	safe_delete(spr3);
 	safe_delete(sprSyoukouki);
-
+    safe_delete(sprUI);
     safe_delete(sprEV);
     safe_delete(sprEvPlayer);
     safe_delete(sprMouse);
@@ -52,7 +52,7 @@ void stage3_update()
 
         sprBox = sprite_load(L"./Data/Images/box.png");
 
-
+        sprUI = sprite_load(L"./Data/Images/UI.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
@@ -452,6 +452,8 @@ void stage3_update()
             }
         }
 
+        UI = player.elec ? 0 : 105;
+
         break;
     }
 }
@@ -513,9 +515,12 @@ void stage3_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-
     // デカ箱
     sprite_render(sprBox, stage3[6].position.x, stage3[6].position.y);
+
+    // UI
+    sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
+    
     // ポーズ画面
     if (pause)
     {

@@ -5,6 +5,8 @@
 #define STAGE_MOVE  (10)
 
 extern int stage_state[STAGE_MAX];
+extern int UI;
+
 extern VECTOR2 mousePos;
 extern VECTOR2 ElecPos;
 extern VECTOR2 EvPlayer;
@@ -18,7 +20,7 @@ extern Sprite* sprPause;
 extern Sprite* sprTerrain;
 
 extern Sprite* sprWhite;
-
+extern Sprite* sprUI;
 extern Sprite* sprElec; // 電気
 extern Sprite* sprDoor; // ドア
 

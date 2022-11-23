@@ -95,6 +95,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             case SCENE::RESTART:
                 restart_deinit();
                 break;
+
+            case SCENE::ZUKAN:
+                zukan_deinit();
+                break;
             }
 
             // 次のシーンに追う下初期設定処理
@@ -146,6 +150,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::RESTART:
                 restart_init();
+                break;
+
+            case SCENE::ZUKAN:
+                zukan_init();
                 break;
             }
 
@@ -221,6 +229,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             restart_update();
             restart_render();
             break;
+
+        case SCENE::ZUKAN:
+            zukan_update();
+            zukan_render();
+            break;
         }
 
         // デバック用文字列の表示
@@ -279,6 +292,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     case SCENE::RESTART:
         restart_deinit();
+        break;
+
+    case SCENE::ZUKAN:
+        zukan_deinit();
         break;
     }
 

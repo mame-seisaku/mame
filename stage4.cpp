@@ -21,7 +21,7 @@ void stage4_deinit()
 
     safe_delete(sprStage0);
     safe_delete(sprBox);
-
+    safe_delete(sprUI);
     safe_delete(sprElec);
     safe_delete(sprDoor);
     safe_delete(sprEV);
@@ -46,7 +46,7 @@ void stage4_update()
         sprStage0 = sprite_load(L"./Data/Images/04.png");
         sprBox = sprite_load(L"./Data/Images/boxMove.png");
         sprSyoukouki = sprite_load(L"./Data/Images/syoukouki2.png");
-
+        sprUI = sprite_load(L"./Data/Images/UI.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
@@ -84,7 +84,7 @@ void stage4_update()
         stage4[0].exist = true;
 
         // 扉 
-        stage4[1].position = { 1315,274 };
+        stage4[1].position = { 1315,280 };
         stage4[1].pos = { 1405,360 };
         stage4[1].hsize = { 80, 89 };
         stage4[1].texPos = {};
@@ -134,7 +134,7 @@ void stage4_update()
         stage4[7].exist = true;
 
         // EvPlayer
-        //EvPlayer = { stage3[4].position.x, stage3[4].position.y + 100 };
+        EvPlayer = { stage4[1].position.x, stage4[1].position.y + 100 };
 
         // ドア最後
         door = {};
@@ -151,12 +151,26 @@ void stage4_update()
     case 2:
         ///// 通常時 /////
 
+                // シーン切り替え
+        if (door.end)
+        {
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
+        }
+        if (EvPlayer.y < -200)
+        {
+            if (PossibleStage < 5)PossibleStage = 5;
+            nextScene = SCENE::RESULT;
+            break;
+        }
+
         // ポーズ  F
         if (TRG(0) & PAD_TRG4)
         {
             pause = pause ? false : true;
         }
 
+        // 死んだ判定
         if (player.pos.y > 1600)
         {
             player.pos.y = -100;
@@ -463,6 +477,8 @@ void stage4_update()
             }
         }
 
+        UI = player.elec ? 0 : 105;
+
         break;
     }
 }
@@ -510,7 +526,7 @@ void stage4_render()
     sprite_render(sprSyoukouki, stage4[4].position.x, stage4[4].position.y, 1, 1, stage4[4].elec * 178, 0, 177, 177);
 
     // エレベーター
-    sprite_render(sprEV, stage4[1].position.x - 5, stage4[1].position.y - 653);
+    sprite_render(sprEV, stage4[1].position.x - 5, stage4[1].position.y - 658);
 
     // 扉
     sprite_render(sprDoor, stage4[1].position.x, stage4[1].position.y, 1, 1, stage4[1].texPos.x, stage4[1].texPos.y, stage4[1].texSize.x, stage4[1].texSize.y);
@@ -527,6 +543,9 @@ void stage4_render()
 
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
+    // UI
+    sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
 
     // ポーズ画面
     if (pause)

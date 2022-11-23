@@ -79,6 +79,11 @@ void title_update()
     case 2:
         ///// í èÌéû /////
 
+        if (TRG(0) & PAD_START)
+        {
+            nextScene = SCENE::ZUKAN;
+            break;
+        }
 
         // âÊñ êÿÇËë÷Ç¶
         if (TRG(0) & PAD_L3)

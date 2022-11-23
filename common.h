@@ -31,6 +31,7 @@ enum SCENE
     STAGE9,
     STAGE10,
     RESTART,
+    ZUKAN,
 };
 
 // ŠÖ”ƒ|ƒCƒ“ƒ^

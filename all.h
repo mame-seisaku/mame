@@ -27,7 +27,7 @@
 #include "scene_tutorial.h"
 #include "scene_result.h"
 #include "scene_restart.h"
-
+#include "scene_zukan.h"
 
 using namespace GameLib;
 using namespace input;

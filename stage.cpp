@@ -3,6 +3,8 @@
 /*****変数*****/
 int stage_state[STAGE_MAX];
     
+int UI;
+
 VECTOR2 ElecPos;
 VECTOR2 EvPlayer;
 VECTOR2 MouseTexPos;
@@ -11,6 +13,7 @@ obj2d Elec;
 
 bool pause;
 
+Sprite* sprUI;  //UI
 Sprite* sprEvPlayer;
 Sprite* sprEV;  // エレベーター
 Sprite* sprPause;
