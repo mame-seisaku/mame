@@ -44,6 +44,7 @@ void stage0_deinit()
     safe_delete(sprUI);
     safe_delete(sprTerrain);
     safe_delete(sprPause);
+    safe_delete(sprHelp);
 
     music::stop(0);
     music::stop(game_bgm);
@@ -74,6 +75,7 @@ void stage0_update()
         sprUI = sprite_load(L"./Data/Images/UI.png");
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
+        sprHelp = sprite_load(L"./Data/Images/help.png");
 
         ++stage_state[0];
     case 1:
@@ -164,6 +166,10 @@ void stage0_update()
         {
             //EvPlayer.y -= 10;
             pause = pause ? false : true;
+        }
+        if (mousePos.x > 1440 && mousePos.y > 0 && mousePos.x < 1536 && mousePos.y < 70)
+        {
+            if (TRG(0) & PAD_L3)pause = pause ? false : true;
         }
 
         // マウスカーソル
@@ -503,6 +509,7 @@ void stage0_render()
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+    sprite_render(sprHelp, 0, 0);
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }

@@ -29,6 +29,7 @@ void stage6_deinit()
     safe_delete(sprBox);
     safe_delete(sprSyoukouki);
     safe_delete(sprEV);
+    safe_delete(sprHelp);
 
     music::stop(game_bgm);
 }
@@ -53,6 +54,7 @@ void stage6_update()
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprHelp = sprite_load(L"./Data/Images/help.png");
 
         ++stage_state[6];
     case 1:
@@ -128,7 +130,10 @@ void stage6_update()
         {
             pause = pause ? false : true;
         }
-
+        if (mousePos.x > 1440 && mousePos.y > 0 && mousePos.x < 1536 && mousePos.y < 70)
+        {
+            if (TRG(0) & PAD_L3)pause = pause ? false : true;
+        }
         
 
         // マウスカーソル
@@ -444,6 +449,7 @@ void stage6_render()
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+    sprite_render(sprHelp, 0, 0);
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

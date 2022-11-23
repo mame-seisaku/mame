@@ -23,6 +23,7 @@ extern Sprite* sprWhite;
 extern Sprite* sprUI;
 extern Sprite* sprElec; // 電気
 extern Sprite* sprDoor; // ドア
+extern Sprite* sprHelp;
 
 enum DIR
 {

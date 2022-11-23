@@ -48,8 +48,11 @@ void stage5_deinit()
     safe_delete(sprTerrain);
     safe_delete(sprPause);
     safe_delete(sprWhite);
+    safe_delete(sprHelp);
 
 
+    music::stop(0);
+    music::stop(TROLLEY);
     music::stop(game_bgm);
 }
 
@@ -80,6 +83,7 @@ void stage5_update()
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
+        sprHelp = sprite_load(L"./Data/Images/help.png");
 
         ++stage_state[5];
     case 1:
@@ -167,7 +171,7 @@ void stage5_update()
         stage5[8].exist = true;
 
         // 昇降機 右
-        stage5[9].position = { 1200,540 };
+        stage5[9].position = { 1200,520 };
         stage5[9].pos = { stage5[9].position.x + 89,stage5[9].position.y + 140 };
         stage5[9].hsize = { 89, 50 };
         stage5[9].type = 3;
@@ -208,6 +212,7 @@ void stage5_update()
         Gangle = 0;
 
         music::play(game_bgm, true);
+        music::play(0, true);
 
 
         ++stage_state[5];
@@ -232,6 +237,10 @@ void stage5_update()
         {
             pause = pause ? false : true;
         }
+        if (mousePos.x > 1440 && mousePos.y > 0 && mousePos.x < 1536 && mousePos.y < 70)
+        {
+            if (TRG(0) & PAD_L3)pause = pause ? false : true;
+        }
 
         // マウスカーソル
         std::ostringstream oss;                                 // 文字列ストリーム
@@ -250,6 +259,8 @@ void stage5_update()
         if (!pause)
         {
             player.Update({ 535,160 });
+
+            if (!stage5[10].elec) music::stop(TROLLEY);
 
             // ギア回転
             Gangle += ToRadian(10);
@@ -365,6 +376,7 @@ void stage5_update()
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
                             stage5[Elec.type].elec = true;
+                            if(Elec.type==10)music::play(TROLLEY, true);
                         }
                     }
                     else
@@ -375,6 +387,7 @@ void stage5_update()
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
                             stage5[Elec.type].elec = true;
+                            if (Elec.type == 10)music::play(TROLLEY, true);
                         }
                     }
                 }
@@ -389,6 +402,7 @@ void stage5_update()
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
                             stage5[Elec.type].elec = true;
+                            if (Elec.type == 10)music::play(TROLLEY, true);
                         }
                     }
                     else
@@ -399,6 +413,7 @@ void stage5_update()
                             player.elec = false;    // プレイヤーの電気消す
                             Elec.exist = false;
                             stage5[Elec.type].elec = true;
+                            if (Elec.type == 10)music::play(TROLLEY, true);
                         }
                     }
                 }
@@ -475,9 +490,9 @@ void stage5_update()
                             stage5[i].position.y = 300;
                             stage5[i].pos.y = stage5[i].position.y + 140;
                         }
-                        if (stage5[i].position.y > 540)
+                        if (stage5[i].position.y > 520)
                         {
-                            stage5[i].position.y = 540;
+                            stage5[i].position.y = 520;
                             stage5[i].pos.y = stage5[i].position.y + 140;
                         }
 
@@ -527,6 +542,7 @@ void stage5_update()
                 if (hitCheck(&stage5[10], &stage5[11]))
                 {
                     stage5[11].exist = false;
+                    sound::play(2,0);
                 }
             }
 
@@ -658,6 +674,14 @@ void stage5_render()
         primitive::rect(stage5[i].pos, stage5[i].hsize * 2, stage5[i].hsize, 0, { stage5[i].color.x,stage5[i].color.y,stage5[i].color.z,1 });
     }
 #endif // _DEBUG
+    
+    for (int y = 0; y < 2; ++y)
+    {
+        for (int x = 0; x < 24; ++x)
+        {
+            sprite_render(sprTerrain, 64 * x, 632 + (64 * (y + 1)), 1, 1, 64, 0, 64, 64);
+        }
+    }
 
     // べるとこんべあ　
     for (int i = 0; i < 13; ++i)
@@ -689,9 +713,12 @@ void stage5_render()
     {
         sprite_render(sprTerrain, 1360 + (x * 64), 278, 1, 1, 64, 0, 64, 64);
     }
-    for (int y = 0; y < 5; ++y)
+    if (stage5[11].exist)
     {
-        sprite_render(sprTerrain, 1034, -42 + (y * 64), 1, 1, 192, 0, 64, 64);
+        for (int y = 0; y < 5; ++y)
+        {
+            sprite_render(sprTerrain, 1034, -42 + (y * 64), 1, 1, 192, 0, 64, 64);
+        }
     }
 
     // トロッコ
@@ -738,6 +765,7 @@ void stage5_render()
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+    sprite_render(sprHelp, 0, 0);
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }

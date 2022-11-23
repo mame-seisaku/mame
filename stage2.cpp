@@ -41,6 +41,7 @@ void stage2_deinit()
     safe_delete(sprTerrain);
     safe_delete(sprPause);
     safe_delete(sprWhite);
+    safe_delete(sprHelp);
 
     music::stop(game_bgm);
 }
@@ -67,6 +68,7 @@ void stage2_update()
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
+        sprHelp = sprite_load(L"./Data/Images/help.png");
 
         ++stage_state[2];
     case 1:
@@ -267,6 +269,10 @@ void stage2_update()
         if (TRG(0) & PAD_TRG4)
         {
             pause = pause ? false : true;
+        }
+        if (mousePos.x > 1440 && mousePos.y > 0 && mousePos.x < 1536 && mousePos.y < 70)
+        {
+            if (TRG(0) & PAD_L3)pause = pause ? false : true;
         }
 
         // マウスカーソル
@@ -790,6 +796,7 @@ void stage2_render()
         sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
         sprite_render(sprPause, 0, 0);
     }
+    sprite_render(sprHelp, 0, 0);
 
     // マウスカーソル
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);

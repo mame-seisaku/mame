@@ -24,6 +24,8 @@ Sprite* sprTerrain;
 
 Sprite* sprWhite;
 
+Sprite* sprHelp;
+
 /// <summary>
 /// •Ç‚Æ‚Ì“–‚½‚è”»’è
 /// </summary>
