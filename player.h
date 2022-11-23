@@ -12,6 +12,8 @@ public:
     int timer;
     int AnimeState;
 
+    int jumpTimer;
+    bool jump;
     bool clear;   // ƒNƒŠƒA
 
     Sprite* sprPlayer;

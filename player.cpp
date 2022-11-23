@@ -43,7 +43,8 @@ void Player::Update(VECTOR2 Pos)
         hsize = { 42,50 };
         elec = true;
         clear = false;
-        
+        jump = true;
+        jumpTimer = 0;
 
         ++state;
     case 2:
@@ -79,8 +80,19 @@ void Player::Move()
     // 入力移動
     if (elec)   // プレイヤーの電気があったら動ける
     {
+
         // ジャンプ
-        if (STATE(0) & PAD_TRG1)pos.y-= 15;
+        if (TRG(0) & PAD_TRG1 && jump)
+        {
+            player.speed.y = -15;
+            jump = false;
+        }
+        if (!jump)++jumpTimer;
+        if (jumpTimer > 30)
+        {
+            jumpTimer = 0;
+            jump = true;
+        }
     
         if (STATE(0) & PAD_LEFT)
         {

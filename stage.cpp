@@ -1,5 +1,7 @@
 #include "all.h"
 
+#define ADJUST      (0.125f)
+
 /*****•Ï”*****/
 int stage_state[STAGE_MAX];
     
@@ -66,7 +68,7 @@ float check(obj2d* rc1, obj2d* rc2, int dir)
         const float rc1Top = rc1->pos.y - rc1->hsize.y;
         const float rc2Bottom = rc2->pos.y + rc2->hsize.y;
 
-        return rc2Bottom - rc1Top;
+        return rc2Bottom - rc1Top + ADJUST;
     }
     break;
 
@@ -75,7 +77,7 @@ float check(obj2d* rc1, obj2d* rc2, int dir)
         const float rc1Bottom = rc1->pos.y + rc1->hsize.y;
         const float rc2Top = rc2->pos.y - rc2->hsize.y;
 
-        return rc2Top - rc1Bottom;
+        return rc2Top - rc1Bottom - ADJUST;
     }
     break;
 
@@ -84,7 +86,7 @@ float check(obj2d* rc1, obj2d* rc2, int dir)
         const float rc1Left = rc1->pos.x - rc1->hsize.x;
         const float rc2Right = rc2->pos.x + rc2->hsize.x;
 
-        return rc2Right - rc1Left;
+        return rc2Right - rc1Left + ADJUST;
     }
     break;
 
@@ -93,7 +95,7 @@ float check(obj2d* rc1, obj2d* rc2, int dir)
         const float rc1Right = rc1->pos.x + rc1->hsize.x;
         const float rc2Left = rc2->pos.x - rc2->hsize.x;
 
-        return rc2Left - rc1Right;
+        return rc2Left - rc1Right - ADJUST;
     }
     break;
     }

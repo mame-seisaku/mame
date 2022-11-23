@@ -192,7 +192,7 @@ void zukan_render()
         GameLib::sprite_render(sprSyoukouki, 1200, 300, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[3], Z_color[3], Z_color[3]);
 
         // è∏ç~ã@
-        GameLib::sprite_render(sprSyoukouki, 830, 530, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[4], Z_color[4], Z_color[4]);
+        GameLib::sprite_render(sprSyoukouki, 830, 530, 1, 1, 0, 177, 178, 177, 0, 0, 0, Z_color[4], Z_color[4], Z_color[4]);
 
 
         break;
