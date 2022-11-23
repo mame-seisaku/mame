@@ -41,6 +41,8 @@ void select_deinit()
     safe_delete(sprMouse);
     safe_delete(sprNum);
     safe_delete(sprTerrain);
+
+    music::stop(select_bgm);
 }
 
 /// <summary>
@@ -78,6 +80,8 @@ void select_update()
         {
             TtexPos[i] = 64;
         }
+
+        music::play(select_bgm, true);
 
         ++select_state;
     case 2:
