@@ -738,7 +738,7 @@ void stage2_render()
     // ^‚ñ’†¶°
     for (int x = 0; x < 4; ++x)
     {
-        sprite_render(sprTerrain, -26 + (64 * x), 362, 1, 1, 0, 0, 64, 64);
+        sprite_render(sprTerrain, -26 + (64 * x), 362, 1, 1, 64, 0, 64, 64);
     }
     // ×–‚‚È•Ç
     for (int y = 0; y < 4; ++y)

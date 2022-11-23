@@ -5,8 +5,11 @@ int zukan_state;
 int Z_color[10];
 
 int Z_page;
+int Z_explanation;
 
 Sprite* sprZukan;   // 図鑑
+Sprite* sprV;   // やじるし
+Sprite* sprZ_name;
 
 extern Sprite* sprStage0;       // 背景
 extern Sprite* sprBelt;         // ベルト部分
@@ -28,6 +31,8 @@ void zukan_deinit()
 {
     safe_delete(sprZukan);
 
+    safe_delete(sprZ_name);
+
     safe_delete(sprStage0);
     safe_delete(sprBelt);
     safe_delete(sprGear);
@@ -37,6 +42,7 @@ void zukan_deinit()
     safe_delete(sprSwitch);
     safe_delete(sprTrolley);
     safe_delete(sprDoor2);
+    safe_delete(sprV);
 
     // extern
     safe_delete(sprEvPlayer);   // evplayer
@@ -58,6 +64,8 @@ void zukan_update()
         ///// 初期設定 //////
         sprZukan = sprite_load(L"./Data/Images/zukan.png");
 
+        sprZ_name = sprite_load(L"./Data/Images/z_name.png");
+
         sprStage0 = sprite_load(L"./Data/Images/04.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
         sprGear = sprite_load(L"./Data/Images/gear.png");
@@ -67,6 +75,7 @@ void zukan_update()
         sprSwitch = sprite_load(L"./Data/Images/switch.png");
         sprTrolley = sprite_load(L"./Data/Images/trolley.png");
         sprDoor2 = sprite_load(L"./Data/Images/door2.png");
+        sprV = sprite_load(L"./Data/Images/v.png");
 
         sprEvPlayer = sprite_load(L"./Data/Images/p.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
@@ -89,15 +98,50 @@ void zukan_update()
 
         // ページ
         Z_page = 0;
+        Z_explanation = -1;
 
         ++zukan_state;
     case 2:
         ///// 通常時 /////
 
+        // ページ切り替え
+        if (mousePos.x > 1300 && mousePos.y > 600 && mousePos.x < 1420 && mousePos.y < 700 && Z_page == 0)
+        {
+            if (TRG(0) & PAD_L3)Z_page += 1;
+        }
+        if (mousePos.x > 1150 && mousePos.y > 600 && mousePos.x < 1270 && mousePos.y < 700 && Z_page == 1)
+        {
+            if (TRG(0) & PAD_L3)Z_page -= 1;
+        }
+
         if (TRG(0) & PAD_L3)
         {
-            Z_page = Z_page == 0 ? 1 : 0;
+            // ひだりうえ
+            if (mousePos.x > 765 && mousePos.y > 90 && mousePos.x < 1070 && mousePos.y < 280)
+            {
+                Z_explanation = 0;
+            }
+            // みぎうえ
+            if (mousePos.x > 1130 && mousePos.y > 90 && mousePos.x < 1450 && mousePos.y < 280)
+            {
+                Z_explanation = 1;
+            }
+            // ひだりまんなか
+            if (mousePos.x > 765 && mousePos.y > 315 && mousePos.x < 1070 && mousePos.y < 505)
+            {
+                Z_explanation = 2;
+            }
+            // みぎまんなか
+            if (mousePos.x > 1130 && mousePos.y > 315 && mousePos.x < 1450 && mousePos.y < 505)
+            {
+                Z_explanation = 3;
+            }
+            if (mousePos.x > 765 && mousePos.y > 540 && mousePos.x < 1070 && mousePos.y < 740)
+            {
+                Z_explanation = 4;
+            }
         }
+       
 
         if (TRG(0) & PAD_START)
         {
@@ -154,6 +198,71 @@ void zukan_render()
     GameLib::sprite_render(sprStage0, 0, 0);
     GameLib::sprite_render(sprZukan, 0, 0);
 
+    switch (Z_explanation)
+    {
+    case 0:
+        GameLib::sprite_render(sprBelt, 108, 580, 1, 1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        GameLib::sprite_render(sprBelt, 108, 720, 1, -1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        for (int i = 0; i < 5; ++i)
+        {
+            GameLib::sprite_render(sprGear, 103 + (i * 120), 590, 1, 1, 0, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        }
+        GameLib::sprite_render(sprGear, 703, 560, 1, 1, 0, 0, 25, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+
+        GameLib::sprite_render(sprGear, 160, 170, 1, 1, 0, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        GameLib::sprite_render(sprGear, 160, 310, 1, 1, 120, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        GameLib::sprite_render(sprGear, 160, 450, 1, 1, 240, 0, 120, 120, 0, 0, 0, Z_color[5], Z_color[5], Z_color[5]);
+
+        // ベルトコンベアー
+        if(Z_color[0]==0)
+            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+        else
+            sprite_render(sprZ_name, 0, 0, 1, 1, 1536, 0, 1536, 824);
+
+
+        break;
+    case 1:
+        GameLib::sprite_render(sprBox, 200, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        GameLib::sprite_render(sprBox, 450, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+
+        // box
+        if (Z_color[0] == 0)
+            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+        else
+            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 2, 0, 1536, 824);
+
+        break;
+    case 2:
+
+        // box
+        if (Z_color[0] == 0)
+            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+        else
+            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 3, 0, 1536, 824);
+
+        break;
+    case 3:
+
+        // box
+        if (Z_color[0] == 0)
+            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+        else
+            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 4, 0, 1536, 824);
+
+        break;
+    case 4:
+
+        // box
+        if (Z_color[1] == 0)
+            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+        else
+            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 5, 0, 1536, 824);
+
+        break;
+    default:
+        break;
+    }
+
     switch (Z_page)
     {
     case 0:
@@ -175,6 +284,9 @@ void zukan_render()
 
         // トロッコ
         GameLib::sprite_render(sprTrolley, 820, 530, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+
+        // やじるし
+        GameLib::sprite_render(sprV, 1300, 580, 0.5f, 0.5f);
         
         break;
     case 1:
@@ -194,6 +306,8 @@ void zukan_render()
         // 昇降機
         GameLib::sprite_render(sprSyoukouki, 830, 530, 1, 1, 0, 177, 178, 177, 0, 0, 0, Z_color[4], Z_color[4], Z_color[4]);
 
+        // やじるし
+        GameLib::sprite_render(sprV, 1280, 580, -0.5f, 0.5f);
 
         break;
     }

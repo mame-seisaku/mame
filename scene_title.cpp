@@ -175,7 +175,7 @@ void title_render()
 
     sprite_render(sprTitle, 0, 0);
 
-    sprite_render(sprTtitleAnime, Titile_A.pos.x, Titile_A.pos.y, 1, 1, Titile_A.texPos.x, Titile_A.texPos.y, 1536, 824);
+    //sprite_render(sprTtitleAnime, Titile_A.pos.x, Titile_A.pos.y, 1, 1, Titile_A.texPos.x, Titile_A.texPos.y, 1536, 824);
 
 #ifdef _DEBUG
 //    int Count = 0;
