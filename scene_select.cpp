@@ -283,6 +283,9 @@ void mouseClick(int s)
         case 5:
             nextScene = SCENE::STAGE5;
             break;
+        case 6:
+            nextScene = SCENE::STAGE6;
+            break;
         }
     }
 }
@@ -311,6 +314,9 @@ void NotmouseClick(int s)
         break;
     case 5:
         nextScene = SCENE::STAGE5;
+        break;
+    case 6:
+        nextScene = SCENE::STAGE6;
         break;
     }
 }
