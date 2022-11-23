@@ -151,7 +151,7 @@ void stage4_update()
     case 2:
         ///// 通常時 /////
 
-                // シーン切り替え
+        // シーン切り替え
         if (door.end)
         {
             player.pos.y = EvPlayer.y - 45;

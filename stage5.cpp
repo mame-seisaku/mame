@@ -124,7 +124,7 @@ void stage5_update()
 
 
         // EvPlayer
-        //EvPlayer = { stage3[4].position.x, stage3[4].position.y + 100 };
+        EvPlayer = { stage5[1].position.x, stage5[1].position.y + 100 };
 
         // ドア最後
         door = {};
@@ -140,6 +140,19 @@ void stage5_update()
         ++stage_state[5];
     case 2:
         ///// 通常時 /////
+        
+        // シーン切り替え
+        if (door.end)
+        {
+            player.pos.y = EvPlayer.y - 45;
+            EvPlayer.y -= STAGE_MOVE;
+        }
+        if (EvPlayer.y < -200)
+        {
+            if (PossibleStage < 6)PossibleStage = 6;
+            nextScene = SCENE::RESULT;
+            break;
+        }
 
         // ポーズ  F
         if (TRG(0) & PAD_TRG4)
@@ -163,8 +176,7 @@ void stage5_update()
 
         if (!pause)
         {
-            player.Update({ 100,500 });
-
+            player.Update({ 535,160 });
 
             // ギア回転
             Gangle += ToRadian(10);
@@ -173,6 +185,216 @@ void stage5_update()
             if (stage5[0].position.x > 0)
             {        
                 stage5[0].position.x = -1536;
+            }
+
+            // 扉アニメ
+            if (stage5[1].open)
+                anime(&stage5[1], 7, 10, false, 0);
+
+            // クリア判定
+            if (stage5[1].end && stage5[1].one && !door.close)
+            {
+                player.clear = true;
+                door = stage5[1];
+                door.state = 0;
+                door.close = true;
+            }
+
+            // クリア判定
+            if (player.clear)
+            {
+                player.pos.x = stage5[1].position.x + 71;    // ドアの位置に移動
+                // 電気を戻す
+                player.elec = true;
+                for (int i = 0; i < STAGE5_MAX; ++i)
+                {
+                    stage5[i].elec = false;
+                }
+
+                // 扉しまる
+                anime(&door, 7, 10, false, 0);
+            }
+
+            // マウスでの憑依操作
+#if 0            
+            for (int i = 2; i < 5; ++i)
+            {
+                if (mousePos.x > stage4[i].pos.x - 90 && mousePos.y > stage4[i].pos.y - 50 && mousePos.x < stage4[i].pos.x + 90 && mousePos.y - 50 < stage4[i].pos.y + 110)
+                {
+                    // 電気を飛ばす
+                    if (TRG(0) & PAD_L3)
+                    {
+                        // プレイヤーに電気があれば
+                        if (!Elec.exist && player.elec)
+                        {
+                            SetElecMove();
+                            Elec.type = i;
+                        }
+                    }
+                    // 電気回収
+                    if (TRG(0) & PAD_R3 && !player.elec)
+                    {
+                        for (int j = 2; j < 5; ++j)
+                        {
+                            if (i == j)continue;
+
+                            stage4[j].elec = false;
+                        }
+
+                        Elec.exist = false;
+                        stage4[i].elec = false;
+                        player.elec = true;
+                    }
+                }
+            }
+#endif
+
+
+            // 電気の移動と、当たったか判定
+            if (Elec.exist) // 存在したら
+            {
+                // 移動
+                Elec.pos.x += Elec.moveVec.x * 2;
+                Elec.pos.y += Elec.moveVec.y * 2;
+
+
+                // 右下方向へ進む
+                if (Elec.moveVec.x > 0)
+                {
+                    if (Elec.moveVec.y > 0)
+                    {
+                        // 当たった
+                        if (Elec.pos.x >= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage5[Elec.type].elec = true;
+                        }
+                    }
+                    else
+                    {
+                        // 当たった
+                        if (Elec.pos.x >= ElecPos.x)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage5[Elec.type].elec = true;
+                        }
+                    }
+                }
+                // 左下方向へ進む
+                else
+                {
+                    if (Elec.moveVec.y > 0)
+                    {
+                        // 当たった
+                        if (Elec.pos.x <= ElecPos.x && Elec.pos.y >= ElecPos.y)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage5[Elec.type].elec = true;
+                        }
+                    }
+                    else
+                    {
+                        // 当たった
+                        if (Elec.pos.x <= ElecPos.x)
+                        {
+                            player.elec = false;    // プレイヤーの電気消す
+                            Elec.exist = false;
+                            stage5[Elec.type].elec = true;
+                        }
+                    }
+                }
+            }
+
+            if (STATE(0) & PAD_UP)
+            {
+                if (!(STATE(0) & PAD_DOWN))
+                {
+                    speed5.y = -PLAYER_MOVE;
+                }
+            }
+            else if (STATE(0) & PAD_DOWN)
+            {
+                if (!(STATE(0) & PAD_UP))
+                {
+                    speed5.y = PLAYER_MOVE;
+                }
+            }
+            else
+            {
+                speed5.y = 0;
+            }
+            if (STATE(0) & PAD_LEFT)
+            {
+                if (!(STATE(0) & PAD_RIGHT))
+                {
+                    speed5.x = -PLAYER_MOVE;
+                }
+            }
+            else if (STATE(0) & PAD_RIGHT)
+            {
+                if (!(STATE(0) & PAD_LEFT))
+                {
+                    speed5.x = PLAYER_MOVE;
+                }
+            }
+            else
+            {
+                speed5.x = 0;
+            }
+
+            // 位置にスピードを足す
+            player.pos.y += player.speed.y;
+
+            // 上下のめり込みチェック
+            for (int i = 0; i < STAGE5_MAX; ++i)
+            {
+                if (hitCheck(&player, &stage5[i]))
+                {
+                    // 扉
+                    if (stage5[i].type == 2)
+                    {
+                        stage5[i].open = true;
+                        continue;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (player.speed.y >= 0)
+                        dist = check(&player, &stage5[i], DIR::DOWN);
+                    else
+                        dist = check(&player, &stage5[i], DIR::UP);
+                    player.pos.y += dist;
+                    player.speed.y = 0;
+                }
+            }
+
+            // 位置にスピードを足す         
+            player.pos.x += player.speed.x;
+
+            // 左右のめり込みチェック
+            for (int i = 0; i < STAGE5_MAX; ++i)
+            {
+                if (hitCheck(&player, &stage5[i]))
+                {
+                    // 扉
+                    if (stage5[i].type == 2)
+                    {
+                        stage5[i].open = true;
+                        continue;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (player.speed.x >= 0)
+                        dist = check(&player, &stage5[i], DIR::RIGHT);
+                    else
+                        dist = check(&player, &stage5[i], DIR::LEFT);
+                    player.pos.x += dist;
+                    player.speed.x = 0;
+                }
             }
 
         }
@@ -263,3 +485,106 @@ void stage5_render()
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }
+
+#if 0
+#include "all.h"
+
+void stage5_init()
+{
+    stage_state[5] = 0;
+}
+
+void stage5_deinit()
+{
+    player.Dinit();
+
+    safe_delete(sprEV);
+    safe_delete(sprEvPlayer);
+    safe_delete(sprMouse);
+    safe_delete(sprTerrain);
+    safe_delete(sprPause);
+    safe_delete(sprWhite);
+
+
+    music::stop(game_bgm);
+}
+
+void stage5_update()
+{
+    switch (stage_state[5])
+    {
+    case 0:
+        ///// 初期設定 /////
+        player.Init();
+
+        sprElec = sprite_load(L"./Data/Images/elec.png");
+        sprDoor = sprite_load(L"./Data/Images/door.png");
+        sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprEvPlayer = sprite_load(L"./Data/Images/p.png");
+        sprMouse = sprite_load(L"./Data/Images/mouse.png");
+        sprTerrain = sprite_load(L"./Data/Images/terrain.png");
+        sprPause = sprite_load(L"./Data/Images/pause.png");
+        sprWhite = sprite_load(L"./Data/Images/white.png");
+
+        ++stage_state[5];
+    case 1:
+        ///// パラメーターの設定 /////
+
+        // ポーズ
+        pause = false;
+
+        // EvPlayer
+        //EvPlayer = { stage3[4].position.x, stage3[4].position.y + 100 };
+
+        // ドア最後
+        door = {};
+
+        // 電気
+        Elec = {};
+
+        music::play(game_bgm, true);
+
+
+        ++stage_state[5];
+    case 2:
+        ///// 通常時 /////
+
+        // ポーズ  F
+        if (TRG(0) & PAD_TRG4)
+        {
+            pause = pause ? false : true;
+        }
+
+        // マウスカーソル
+        std::ostringstream oss;                                 // 文字列ストリーム
+        POINT point;                                            // 位置用の変数を宣言する
+        GetCursorPos(&point);                                   // スクリーン座標を取得する
+        ScreenToClient(window::getHwnd(), &point);              // クライアント座標に変換する
+        mousePos.x = (float)(point.x);
+        mousePos.y = (float)(point.y);
+
+        if (!pause)
+        {
+            player.Update({ 100,500 });
+        }
+
+        break;
+    }
+}
+
+void stage5_render()
+{
+    GameLib::clear(1, 1, 1);
+
+
+    // ポーズ画面
+    if (pause)
+    {
+        sprite_render(sprWhite, 0, 0, 1, 1, 0, 0, 1536, 824, 0, 0, 0, 1, 1, 1, 0.4f);
+        sprite_render(sprPause, 0, 0);
+    }
+
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+}
+
+#endif
