@@ -522,7 +522,7 @@ void stage4_render()
 
     // 昇降機
     sprite_render(sprSyoukouki, stage4[2].position.x, stage4[2].position.y, 1, 1, stage4[2].elec * 178, 0, 177, 177);
-    sprite_render(sprSyoukouki, stage4[3].position.x, stage4[3].position.y, 1, 1, stage4[3].elec * 178, 0, 177, 177);
+    sprite_render(sprSyoukouki, stage4[3].position.x, stage4[3].position.y, 1, 1, stage4[3].elec * 178, 177, 177, 177);
     sprite_render(sprSyoukouki, stage4[4].position.x, stage4[4].position.y, 1, 1, stage4[4].elec * 178, 0, 177, 177);
 
     // エレベーター

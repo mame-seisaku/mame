@@ -8,6 +8,7 @@ int Z_page;
 
 Sprite* sprZukan;   // }ŠÓ
 
+extern Sprite* sprStage0;       // ”wŒi
 extern Sprite* sprBelt;         // ƒxƒ‹ƒg•”•ª
 extern Sprite* sprGear;         // ƒMƒA
 extern Sprite* sprBox;          // ƒfƒJ” 
@@ -27,6 +28,7 @@ void zukan_deinit()
 {
     safe_delete(sprZukan);
 
+    safe_delete(sprStage0);
     safe_delete(sprBelt);
     safe_delete(sprGear);
     safe_delete(sprBox);
@@ -56,6 +58,7 @@ void zukan_update()
         ///// ‰Šúİ’è //////
         sprZukan = sprite_load(L"./Data/Images/zukan.png");
 
+        sprStage0 = sprite_load(L"./Data/Images/04.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
         sprGear = sprite_load(L"./Data/Images/gear.png");
         sprBox = sprite_load(L"./Data/Images/box.png");
@@ -148,6 +151,7 @@ void zukan_render()
 {
     GameLib::clear(1, 1, 1);
 
+    GameLib::sprite_render(sprStage0, 0, 0);
     GameLib::sprite_render(sprZukan, 0, 0);
 
     switch (Z_page)
@@ -182,7 +186,7 @@ void zukan_render()
         GameLib::sprite_render(sprSwitch, 1300, 160, 1, 1, 0, 64, 64, 64, 0, 0, 0, Z_color[2], Z_color[2], Z_color[2]);
 
         // ‘«ê
-        GameLib::sprite_render(sprDoor2, 850, 400, 1, 1, 1152, 0, 128, 128, 0, 0, 0, Z_color[2], Z_color[2], Z_color[2]);
+        GameLib::sprite_render(sprDoor2, 850, 400, 1, 1, 1152, 0, 128, 64, 0, 0, 0, Z_color[2], Z_color[2], Z_color[2]);
 
         // ¸~‹@
         GameLib::sprite_render(sprSyoukouki, 1200, 300, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[3], Z_color[3], Z_color[3]);
