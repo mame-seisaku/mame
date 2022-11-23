@@ -17,6 +17,7 @@
 #include "stage3.h"
 #include "stage4.h"
 #include "stage5.h"
+#include "stage6.h"
 #include "player.h"
 
 #include "scene_title.h"

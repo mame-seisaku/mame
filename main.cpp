@@ -92,6 +92,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
                 stage5_deinit();
                 break;
 
+            case SCENE::STAGE6:
+                stage6_deinit();
+                break;
+
             case SCENE::RESTART:
                 restart_deinit();
                 break;
@@ -146,6 +150,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
             case SCENE::STAGE5:
                 stage5_init();
+                break;
+
+            case SCENE::STAGE6:
+                stage6_deinit();
                 break;
 
             case SCENE::RESTART:
@@ -225,6 +233,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
             stage5_render();
             break;
 
+        case SCENE::STAGE6:
+            stage6_update();
+            stage6_render();
+            break;
+
         case SCENE::RESTART:
             restart_update();
             restart_render();
@@ -288,6 +301,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
 
     case SCENE::STAGE5:
         stage5_deinit();
+        break;
+
+    case SCENE::STAGE6:
+        stage6_deinit();
         break;
 
     case SCENE::RESTART:
