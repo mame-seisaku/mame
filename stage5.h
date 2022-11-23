@@ -1,6 +1,6 @@
 #pragma once
 
-#define STAGE5_MAX  (10)
+#define STAGE5_MAX  (15)
 
 void stage5_init();
 void stage5_deinit();
