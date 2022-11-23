@@ -1,4 +1,3 @@
-#if 1
 #include "all.h"
 
 /*****変数*****/
@@ -143,6 +142,7 @@ void stage6_update()
         oss << "(x=" << point.x << " y=" << point.y << ")";
         SetWindowTextA(window::getHwnd(), oss.str().c_str());   // タイトルバーにを表示させる
         debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
+        debug::setString("selectStage:%d", selectStage);
 #endif
 
         if (!pause)
@@ -447,5 +447,3 @@ void stage6_render()
 
     sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
 }
-
-#endif

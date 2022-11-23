@@ -153,7 +153,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int)
                 break;
 
             case SCENE::STAGE6:
-                stage6_deinit();
+                stage6_init();
                 break;
 
             case SCENE::RESTART:
