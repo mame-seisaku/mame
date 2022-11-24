@@ -41,7 +41,7 @@ public:
 
     //bool exist;         // ë∂ç›Ç∑ÇÈÇ©
     bool move;      // ìÆÇØÇÈÇ©
- 
+    
 };
 
 extern stage door;

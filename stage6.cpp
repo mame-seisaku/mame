@@ -142,7 +142,7 @@ void stage6_update()
         stage6[7].hsize = { 20,10 };
         stage6[7].texPos = {0,64};
         stage6[7].type = 5;
-        stage6[7].exist = false;
+        stage6[7].exist = true;
 
         // EvPlayer
         EvPlayer = { stage6[1].position.x, stage6[1].position.y + 100 };
@@ -362,25 +362,30 @@ void stage6_update()
             }
 
             //憑依操作
-            if (STATE(0) & PAD_UP)
+            if (stage6[3].elec)
             {
-                if (!(STATE(0) & PAD_DOWN))
+                if (STATE(0) & PAD_UP)
                 {
-                    speed6.y = -PLAYER_MOVE;
+                    if (!(STATE(0) & PAD_DOWN))
+                    {
+                        speed6.y = -PLAYER_MOVE;
+                    }
                 }
-            }
-            else if (STATE(0) & PAD_DOWN)
-            {
-                if (!(STATE(0) & PAD_UP))
+                else if (STATE(0) & PAD_DOWN)
                 {
-                    speed6.y = PLAYER_MOVE;
+                    if (!(STATE(0) & PAD_UP))
+                    {
+                        speed6.y = PLAYER_MOVE;
+                    }
+                }
+                else
+                {
+                    speed6.y = 0;
                 }
             }
             else
             {
-                if (stage6[3].elec) {
-                    speed6.y = 0;
-                }
+                speed6.y = 0;
             }
             if (STATE(0) & PAD_LEFT)
             {
@@ -405,21 +410,53 @@ void stage6_update()
             player.pos.y += player.speed.y;
 
             // 重力
+            if (!stage6[3].elec)
+                stage6[4].speed.y = 5;
+            else
+                stage6[4].speed.y = 0;
+
+
+            stage6[4].pos.y += stage6[4].speed.y;
+
+            //debug::setString("stage6[4].pos.x-46:%f", stage6[4].pos.x - 46);
+            //debug::setString("stage6[3].pos.x - stage6[3].hsize.x:%f", stage6[3].pos.x - 140);
+            //debug::setString("stage6[4].pos.x:%f",stage6[4].pos.x);
+            //debug::setString("stage6[3].pos.x + stage6[3].hsize.x:%f", stage6[3].pos.x + 140);
+            //debug::setString("stage6[4].pos.y:%f", stage6[4].pos.y);
 
             //昇降機1 移動
-            if (stage6[3].elec) {
+            if (stage6[3].elec)
+            {
                 stage6[3].pos.y += speed6.y;
                 stage6[3].position.y = stage6[3].pos.y - 140;
+
+                if (stage6[4].pos.x - 46 > stage6[3].pos.x - 140 && stage6[4].pos.x < stage6[3].pos.x + 140 && stage6[4].pos.y < stage6[3].pos.y)
+                    stage6[4].pos.y += speed6.y;
+
+
+                if (stage6[3].position.y < -40)
+                {
+                    stage6[3].position.y = -40;
+                    stage6[3].pos.y = stage6[3].position.y + 140;
+                    if (stage6[4].pos.x - 46 > stage6[3].pos.x - 140 && stage6[4].pos.x < stage6[3].pos.x + 140 && stage6[4].pos.y < stage6[3].pos.y)
+                        stage6[4].pos.y = 5;
+                }
+                if (stage6[3].position.y > 400)
+                {
+                    stage6[3].position.y = 400;
+                    stage6[3].pos.y = stage6[3].position.y + 140;
+                }
             }
-           
+
+
 
             //ボックス移動
-            if (stage6[4].elec)
-            {
-         
-                stage6[4].pos.y += speed6.y;
-            }
-            speed6.y += 1.0f;
+            //if (stage6[4].elec)
+            //{
+            //    stage6[4].pos.y += speed6.y;
+            //}
+            // 重力
+            //speed6.y += 1.0f;
 
             // 上下のめり込みチェック
             for (int i = 0; i < STAGE6_MAX; ++i)
@@ -432,6 +469,10 @@ void stage6_update()
                         stage6[i].open = true;
                         continue;
                     }
+
+                    if (stage6[i].type == 4 && !stage6[i].exist)continue; //青壁
+
+                    if (stage6[i].type == 5)continue;
 
                     // めり込み対策		// 当たり判定
                     float dist;
@@ -446,10 +487,10 @@ void stage6_update()
                 {
                     if (i == 4)continue;
 
-                    if (stage6[i].type == 2)continue;
-                    if (stage6[i].type == 3 && !stage6[i].exist)continue; //昇降機
-                    if (stage6[i].type == 7 && !stage6[i].exist)continue; //箱
+                    //if (stage6[i].type == 2)continue;
+                    //if (stage6[i].type == 3)continue; //昇降機
                     if (stage6[i].type == 4 && !stage6[i].exist)continue; //青壁
+                    //if (stage6[i].type == 7)continue; //箱
 
                     if (stage6[i].type == 5)    // 青スイッチ
                     {
@@ -489,6 +530,10 @@ void stage6_update()
                         continue;
                     }
 
+                    if (stage6[i].type == 4 && !stage6[i].exist)continue; //青壁
+
+                    if (stage6[i].type == 5)continue;
+
                     // めり込み対策		// 当たり判定
                     float dist;
                     if (player.speed.x >= 0)
@@ -503,10 +548,10 @@ void stage6_update()
                 {
                     if (i == 4)continue;
 
-                    if (stage6[i].type == 2)continue;   // 扉
-                    if (stage6[i].type == 3 && !stage6[i].exist)continue; //昇降機
-                    if (stage6[i].type == 7 && !stage6[i].exist)continue; //箱
-                    if (stage6[i].type == 4 )continue; //青壁
+                    //if (stage6[i].type == 2)continue;   // 扉
+                    //if (stage6[i].type == 3)continue; //昇降機
+                    if (stage6[i].type == 4 && !stage6[i].exist)continue; //青壁
+                    //if (stage6[i].type == 7)continue; //箱
 
                     if (stage6[i].type == 5)    // 青スイッチ
                     {
@@ -526,11 +571,18 @@ void stage6_update()
                 }
             }
 
-           //箱　画像切り替え
-                stage6[4].texPos.x = stage6[4].elec ? 0 : 90;
-            
+            //箱　画像切り替え
+            stage6[4].texPos.x = stage6[4].elec ? 0 : 90;
 
 
+            if (!stage6[6].exist)++stage6[6].timer; // 点滅用タイマー
+            if (stage6[6].timer / 10 == 1 && stage6[6].counter < 7)
+            {
+                stage6[6].color.w = stage6[6].color.w == 0 ? 1 : 0;
+
+                ++stage6[6].counter;
+                stage6[6].timer = 0;
+            }
 
 
         }
@@ -584,13 +636,12 @@ void stage6_render()
         sprite_render(sprTerrain, 64 * x, 312, 1, 1, 64, 0, 64, 64);
     }
 
-    // 邪魔な壁
-    if (stage6[6].exist == true) {
-        for (int y = 0; y < 5; ++y)
-        {
-            sprite_render(sprTerrain, 192, 379 + (64 * y), 1, 1, 128, 0, 64, 64, 0, 0, 0, 1, 1, 1, stage6[6].color.w);
-        }
+    // 邪魔な壁   
+    for (int y = 0; y < 5; ++y)
+    {
+        sprite_render(sprTerrain, 192, 379 + (64 * y), 1, 1, 128, 0, 64, 64, 0, 0, 0, 1, 1, 1, stage6[6].color.w);
     }
+   
 
     // スイッチ
     sprite_render(sprSwitch, 318, 635, 1, 1, stage6[7].texPos.x, stage6[7].texPos.y, 64, 64);
