@@ -120,7 +120,7 @@ void stage6_update()
         }
         if (EvPlayer.y < -200)
         {
-            if (PossibleStage < 7)PossibleStage = 7;
+            if (PossibleStage < 6)PossibleStage = 6;
             nextScene = SCENE::RESULT;
             break;
         }
