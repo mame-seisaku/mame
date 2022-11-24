@@ -10,6 +10,9 @@ VECTOR2 speed6;
 extern Sprite* sprSyoukouki;    // 昇降機
 extern Sprite* sprBox;          // box
 extern Sprite* sprStage0;       // 背景
+extern Sprite* psrSyoukouki;    // 昇降機
+extern Sprite* sprBoxMove;      //動く箱
+extern Sprite* sprSwitch;  // スイッチ
 
 void stage6_init()
 {
@@ -30,6 +33,8 @@ void stage6_deinit()
     safe_delete(sprBox);
     safe_delete(sprSyoukouki);
     safe_delete(sprEV);
+    safe_delete(sprBoxMove);
+    safe_delete(sprSwitch);
 
     music::stop(game_bgm);
 }
@@ -43,7 +48,7 @@ void stage6_update()
         player.Init();
 
         sprStage0 = sprite_load(L"./Data/Images/04.png");
-        sprBox = sprite_load(L"./Data/Images/boxMove.png");
+        sprBox = sprite_load(L"./Data/Images/box.png");
         sprSyoukouki = sprite_load(L"./Data/Images/syoukouki2.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");
         sprDoor = sprite_load(L"./Data/Images/door.png");
@@ -54,6 +59,8 @@ void stage6_update()
         sprPause = sprite_load(L"./Data/Images/pause.png");
         sprWhite = sprite_load(L"./Data/Images/white.png");
         sprEV = sprite_load(L"./Data/Images/EV.png");
+        sprBoxMove = sprite_load(L"./Data/Images/boxMove.png");
+        sprSwitch = sprite_load(L"./Data/Images/switch.png");
 
         ++stage_state[6];
     case 1:
@@ -81,8 +88,8 @@ void stage6_update()
         stage6[0].exist = true;
 
         // 扉 
-        stage6[1].position = { 1315,530 };
-        stage6[1].pos = { 1405,610 };
+        stage6[1].position = { 115,143 };
+        stage6[1].pos = { 205,223 };
         stage6[1].hsize = { 80, 89 };
         stage6[1].texPos = {};
         stage6[1].texSize = { 178,177 };
@@ -90,6 +97,47 @@ void stage6_update()
         stage6[1].exist = true;
         stage6[1].open = false;
 
+        // 真ん中のデカbox
+        stage6[2].position = { 974,523 };
+        stage6[2].pos = { 1063,612.5f };
+        stage6[2].hsize = { 89, 88.5f };
+        stage6[2].type = 7;
+        stage6[2].exist = true;
+
+        //昇降機
+        stage6[3].position = { 1160,-40 };
+        stage6[3].pos = { 1249,100 };
+        stage6[3].hsize = { 89, 50 };
+        stage6[3].type = 3;
+        stage6[3].exist = true;
+
+        //　動く箱
+        stage6[4].pos = { 400,280 };
+        stage6[4].position = { stage6[4].pos.x - 44,stage6[4].pos.y - 44 };
+        stage6[4].texPos.x = 90;
+        stage6[4].hsize = { 44,44 };
+        stage6[4].type = 1;
+        stage6[4].exist = true;
+
+        // 上の床
+        stage6[5].pos = { 576,344 };
+        stage6[5].hsize = { 576,32 };
+        stage6[5].type = 0;
+        stage6[5].exist = true;
+
+        // 邪魔な壁
+        stage6[6].pos = { 224,550 };
+        stage6[6].hsize = { 32,150 };
+        stage6[6].type = 4;
+        stage6[6].exist = true;
+        stage6[6].color.w = 1;
+
+        // 青スイッチ
+        stage6[7].pos = { 350,690 };
+        stage6[7].hsize = { 20,10 };
+        stage6[7].texPos = {0,64};
+        stage6[7].type = 5;
+        stage6[7].exist = false;
 
         // EvPlayer
         EvPlayer = { stage6[1].position.x, stage6[1].position.y + 100 };
@@ -211,6 +259,41 @@ void stage6_update()
             }
 #endif
 
+            // マウスでの憑依操作
+            //昇降機1
+            if (mousePos.x > stage6[3].pos.x - 90 && mousePos.y > stage6[3].pos.y - 50 && mousePos.x < stage6[3].pos.x + 90 && mousePos.y < stage6[3].pos.y + 50)
+            {
+                if (TRG(0) & PAD_L3)
+                {
+                    if (!Elec.exist && player.elec)
+                    {
+                        SetElecMove();
+                        Elec.type = 3;
+                    }
+                }
+            }
+
+            if (mousePos.x > stage6[4].pos.x - 42 && mousePos.y > stage6[4].pos.y - 42 && mousePos.x < stage6[4].pos.x + 42 && mousePos.y < stage6[4].pos.y + 42)
+            {
+                // 電気を飛ばす
+                if (TRG(0) & PAD_L3)
+                {
+                    // プレイヤーに電気があれば
+                    if (!Elec.exist && player.elec)
+                    {
+                        SetElecMove();
+                        Elec.type = 4;
+                    }
+                }
+            }
+
+            if (TRG(0) & PAD_R3 && !player.elec)
+            {
+                stage6[3].elec = false;
+                stage6[4].elec = false;
+                player.elec = true;
+            }
+
             // 電気の移動と、当たったか判定
             if (Elec.exist) // 存在したら
             {
@@ -286,7 +369,9 @@ void stage6_update()
             }
             else
             {
-                speed6.y = 0;
+                if (stage6[3].elec) {
+                    speed6.y = 0;
+                }
             }
             if (STATE(0) & PAD_LEFT)
             {
@@ -310,6 +395,23 @@ void stage6_update()
             // 位置にスピードを足す
             player.pos.y += player.speed.y;
 
+            // 重力
+
+            //昇降機1 移動
+            if (stage6[3].elec) {
+                stage6[3].pos.y += speed6.y;
+                stage6[3].position.y = stage6[3].pos.y - 140;
+            }
+           
+
+            //ボックス移動
+            if (stage6[4].elec)
+            {
+         
+                stage6[4].pos.y += speed6.y;
+            }
+            speed6.y += 1.0f;
+
             // 上下のめり込みチェック
             for (int i = 0; i < STAGE6_MAX; ++i)
             {
@@ -331,10 +433,40 @@ void stage6_update()
                     player.pos.y += dist;
                     player.speed.y = 0;
                 }
+                if (hitCheck(&stage6[4], &stage6[i]))
+                {
+                    if (i == 4)continue;
+
+                    if (stage6[i].type == 2)continue;
+                    if (stage6[i].type == 3 && !stage6[i].exist)continue; //昇降機
+                    if (stage6[i].type == 7 && !stage6[i].exist)continue; //箱
+                    if (stage6[i].type == 4 && !stage6[i].exist)continue; //青壁
+
+                    if (stage6[i].type == 5)    // 青スイッチ
+                    {
+                        stage6[i].texPos.x = 64;
+                        stage6[6].exist = false;
+                        continue;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (speed6.y >= 0)
+                        dist = check(&stage6[4], &stage6[i], DIR::DOWN);
+                    else
+                        dist = check(&stage6[4], &stage6[i], DIR::UP);
+                    stage6[4].pos.y += dist;
+                    speed6.y = 0;
+                }
             }
 
             // 位置にスピードを足す         
             player.pos.x += player.speed.x;
+
+            if (stage6[4].elec)
+            {
+                stage6[4].pos.x += speed6.x;
+            }
 
             // 左右のめり込みチェック
             for (int i = 0; i < STAGE6_MAX; ++i)
@@ -357,9 +489,37 @@ void stage6_update()
                     player.pos.x += dist;
                     player.speed.x = 0;
                 }
+
+                if (hitCheck(&stage6[4], &stage6[i]))
+                {
+                    if (i == 4)continue;
+
+                    if (stage6[i].type == 2)continue;   // 扉
+                    if (stage6[i].type == 3 && !stage6[i].exist)continue; //昇降機
+                    if (stage6[i].type == 7 && !stage6[i].exist)continue; //箱
+                    if (stage6[i].type == 4 )continue; //青壁
+
+                    if (stage6[i].type == 5)    // 青スイッチ
+                    {
+                        stage6[i].texPos.x = 64;
+                        stage6[6].exist = false;
+                        continue;
+                    }
+
+                    // めり込み対策		// 当たり判定
+                    float dist;
+                    if (speed6.x >= 0)
+                        dist = check(&stage6[4], &stage6[i], DIR::RIGHT);
+                    else
+                        dist = check(&stage6[4], &stage6[i], DIR::LEFT);
+                    stage6[4].pos.x += dist;
+                    speed6.x = 0;
+                }
             }
 
-
+           //箱　画像切り替え
+                stage6[4].texPos.x = stage6[4].elec ? 0 : 90;
+            
 
 
 
@@ -412,8 +572,22 @@ void stage6_render()
 
     for (int x = 0; x < 18; ++x)
     {
-        sprite_render(sprTerrain, 64 * x, 412, 1, 1, 64, 0, 64, 64);
+        sprite_render(sprTerrain, 64 * x, 312, 1, 1, 64, 0, 64, 64);
     }
+
+    // 邪魔な壁
+    if (stage6[6].exist == true) {
+        for (int y = 0; y < 5; ++y)
+        {
+            sprite_render(sprTerrain, 192, 379 + (64 * y), 1, 1, 128, 0, 64, 64, 0, 0, 0, 1, 1, 1, stage6[6].color.w);
+        }
+    }
+
+    // スイッチ
+    sprite_render(sprSwitch, 318, 635, 1, 1, stage6[7].texPos.x, stage6[7].texPos.y, 64, 64);
+
+    // 昇降機
+    sprite_render(sprSyoukouki, stage6[3].position.x, stage6[3].position.y, 1, 1, stage6[3].elec * 178, 0, 177, 177);
 
     // エレベーター
     sprite_render(sprEV, stage6[1].position.x - 5, stage6[1].position.y - 653);
@@ -434,6 +608,12 @@ void stage6_render()
 
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
+
+    //動く箱
+    sprite_render(sprBoxMove, stage6[4].pos.x - 46, stage6[4].pos.y - 46, 1, 1, stage6[4].texPos.x, 0, 90, 90);
+
+    // デカ箱
+    sprite_render(sprBox, stage6[2].position.x, stage6[2].position.y);
 
     // UI
     sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
