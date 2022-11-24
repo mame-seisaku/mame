@@ -4,6 +4,8 @@
 int title_state;
 int title_timer;
 
+int help;
+
 int moziState;
 int wordState;
 
@@ -95,6 +97,8 @@ void title_update()
 
         music::play(title_bgm, true);
 
+        help = 0;
+
         ++title_state;
     case 2:
         ///// �ʏ펞 /////
@@ -132,6 +136,7 @@ void title_update()
             if (mousePos.x > 510 && mousePos.y > 670 && mousePos.x < 1000 && mousePos.y < 725)
             {
                
+                help = 1;
                 nextScene = SCENE::ZUKAN;
                 break;
             }

@@ -3,6 +3,8 @@
 
 #define TITLE_MAX   312
 
+extern int help;
+
 void title_init();
 void title_deinit();
 void title_update();

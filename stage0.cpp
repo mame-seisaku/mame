@@ -432,6 +432,13 @@ void stage0_update()
                     break;
                 }
             }
+            
+            if (TRG(0) & PAD_START)
+            {
+                help = 6;
+                nextScene = SCENE::ZUKAN;
+                break;
+            }
         }
 
         UI = player.elec ? 0 : 105;

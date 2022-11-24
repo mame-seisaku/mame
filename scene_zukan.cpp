@@ -129,6 +129,12 @@ void zukan_update()
     case 2:
         ///// ’ÊíŽž /////
 
+        if (TRG(0) & PAD_START)
+        {
+            nextScene = help;
+            break;
+        }
+
         // ƒy[ƒWØ‚è‘Ö‚¦
         if (mousePos.x > 1300 && mousePos.y > 600 && mousePos.x < 1420 && mousePos.y < 700 && Z_page == 0)
         {
