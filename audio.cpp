@@ -18,7 +18,7 @@ void audio_init()
 
     music::load(TROLLEY, L"./Data/Musics/trolley.wav");
 
-
+    music::load(6, L"./Data/Musics/zukan.wav", 0.2f);
 
     sound::load(0, L"./Data/Sounds/door.xwb");          // ドア
     sound::load(1, L"./Data/Sounds/clear.xwb");         // クリア

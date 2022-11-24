@@ -74,7 +74,7 @@ void tutorial_update()
         ///// ‰Šú‰» /////
         player.Init();
 
-        sprTutorial = sprite_load(L"./Data/Images/04.png");
+        sprTutorial = sprite_load(L"./Data/Images/05.png");
 
         sprJump = sprite_load(L"./Data/Images/jump.png");
         sprBoxMove = sprite_load(L"./Data/Images/boxMove.png");

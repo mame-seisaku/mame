@@ -11,6 +11,14 @@ Sprite* sprZukan;   // 図鑑
 Sprite* sprV;   // やじるし
 Sprite* sprZ_name;
 
+Sprite* sprW2;
+Sprite* sprW3;
+
+extern float Gangle; // ギア
+extern int GangleT;
+
+extern stage door;
+
 extern Sprite* sprStage0;       // 背景
 extern Sprite* sprBelt;         // ベルト部分
 extern Sprite* sprGear;         // ギア
@@ -33,6 +41,9 @@ void zukan_deinit()
 
     safe_delete(sprZ_name);
 
+    safe_delete(sprW2);
+    safe_delete(sprW3);
+
     safe_delete(sprStage0);
     safe_delete(sprBelt);
     safe_delete(sprGear);
@@ -54,6 +65,8 @@ void zukan_deinit()
     safe_delete(sprElec);       // 電気
     safe_delete(sprDoor);       // ドア
     safe_delete(sprMouse);      // マウスカーソル
+
+    music::stop(6);
 }
 
 void zukan_update()
@@ -65,6 +78,9 @@ void zukan_update()
         sprZukan = sprite_load(L"./Data/Images/zukan.png");
 
         sprZ_name = sprite_load(L"./Data/Images/z_name.png");
+
+        sprW2 = sprite_load(L"./Data/Images/w2.png");
+        sprW3 = sprite_load(L"./Data/Images/w3.png");
 
         sprStage0 = sprite_load(L"./Data/Images/04.png");
         sprBelt = sprite_load(L"./Data/Images/Belt.png");
@@ -99,6 +115,15 @@ void zukan_update()
         // ページ
         Z_page = 0;
         Z_explanation = -1;
+
+        // どあ　
+        door = {};
+        door.texSize = { 178,177 };
+
+        // ぎあ
+        Gangle = 0;
+
+        music::play(6, true);
 
         ++zukan_state;
     case 2:
@@ -187,6 +212,12 @@ void zukan_update()
         debug::setString("mousePos.x:%f,mousePos.y:%f", mousePos.x, mousePos.y);
 #endif
 
+        // ドアアニメ
+        anime(&door, 7, 20, true, 1);
+
+        // ギア回転
+        Gangle += ToRadian(10);
+
         break;
     }
 }
@@ -198,70 +229,120 @@ void zukan_render()
     GameLib::sprite_render(sprStage0, 0, 0);
     GameLib::sprite_render(sprZukan, 0, 0);
 
-    switch (Z_explanation)
+    if (Z_page == 0)
     {
-    case 0:
-        GameLib::sprite_render(sprBelt, 108, 580, 1, 1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-        GameLib::sprite_render(sprBelt, 108, 720, 1, -1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-        for (int i = 0; i < 5; ++i)
+        switch (Z_explanation)
         {
-            GameLib::sprite_render(sprGear, 103 + (i * 120), 590, 1, 1, 0, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        case 0:
+            GameLib::sprite_render(sprBelt, 108, 580, 1, 1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            GameLib::sprite_render(sprBelt, 108, 720, 1, -1, 0, 0, 620, 124, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            for (int i = 0; i < 5; ++i)
+            {
+                GameLib::sprite_render(sprGear, 173 + (i * 120), 650, 1, 1, 120, 0, 120, 120, 60, 60, Gangle, Z_color[0], Z_color[0], Z_color[0]);
+            }
+            //GameLib::sprite_render(sprGear, 703, 590, 1, 1, 0, 0, 25, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+
+            GameLib::sprite_render(sprGear, 160, 170, 1, 1, 0, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            GameLib::sprite_render(sprGear, 160, 310, 1, 1, 120, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            GameLib::sprite_render(sprGear, 160, 450, 1, 1, 240, 0, 120, 120, 0, 0, 0, Z_color[5], Z_color[5], Z_color[5]);
+
+
+            if (Z_color[0] == 0)
+            {
+                sprite_render(sprW2, -40, -30, 1, 1, 0, 0, 1536, 824);
+                sprite_render(sprW2, -40, 110, 1, 1, 0, 0, 1536, 824);
+            }
+            else
+            {
+                sprite_render(sprW2, -40, -30, 1, 1, 1536, 0, 1536, 824);
+                sprite_render(sprW2, -40, 110, 1, 1, 1536 * 2, 0, 1536, 824);
+            }
+            if (Z_color[5] == 0)
+                sprite_render(sprW2, -40, 250, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprW2, -40, 250, 1, 1, 1536 * 3, 0, 1536, 824);
+
+            // ベルトコンベアー
+            if (Z_color[5] == 0)
+                sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprZ_name, 0, 0, 1, 1, 1536, 0, 1536, 824);
+
+
+            break;
+        case 1:
+            GameLib::sprite_render(sprBox, 200, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            GameLib::sprite_render(sprBox, 450, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+
+            // box
+            if (Z_color[0] == 0)
+                sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 2, 0, 1536, 824);
+
+            break;
+        case 2:
+
+            //130 200
+
+            sprite_render(sprTerrain, 130, 200, 1, 1, 0, 0, 64, 64, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            sprite_render(sprTerrain, 130, 300, 1, 1, 64, 0, 64, 64, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+            sprite_render(sprTerrain, 130, 400, 1, 1, 128, 0, 64, 64, 0, 0, 0, Z_color[2], Z_color[2], Z_color[2]);
+            sprite_render(sprTerrain, 130, 500, 1, 1, 192, 0, 64, 64, 0, 0, 0, Z_color[5], Z_color[5], Z_color[5]);
+
+            if (Z_color[0] == 0)
+                sprite_render(sprW3, 0, -50, 1, 1, 1536 * 3, 0, 1536, 824);
+            else
+                sprite_render(sprW3, 0, -50, 1, 1, 0, 0, 1536, 824);
+
+            if (Z_color[2] == 0)
+                sprite_render(sprW3, 0, 100, 1, 1, 1536 * 3, 0, 1536, 824);
+            else
+                sprite_render(sprW3, 0, 100, 1, 1, 1536, 0, 1536, 824);
+
+            if (Z_color[5] == 0)
+                sprite_render(sprW3, 0, 200, 1, 1, 1536 * 3, 0, 1536, 824);
+            else
+                sprite_render(sprW3, 0, 200, 1, 1, 1536 * 2, 0, 1536, 824);
+
+            // terrain
+            if (Z_color[0] == 0)
+                sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 3, 0, 1536, 824);
+
+            break;
+        case 3:
+
+            sprite_render(sprDoor, 250, 300, 1.5f, 1.5f, door.texPos.x, door.texPos.y, door.texSize.x, door.texSize.y, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+
+            // door
+            if (Z_color[0] == 0)
+                sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 4, 0, 1536, 824);
+
+            break;
+        case 4:
+
+            GameLib::sprite_render(sprTrolley, 120, 330, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+            GameLib::sprite_render(sprTrolley, 320, 330, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+            GameLib::sprite_render(sprTrolley, 520, 330, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+            GameLib::sprite_render(sprTrolley, 220, 530, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+            GameLib::sprite_render(sprTrolley, 420, 530, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[1], Z_color[1], Z_color[1]);
+
+            // torokko
+            if (Z_color[1] == 0)
+                sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
+            else
+                sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 5, 0, 1536, 824);
+
+            break;
+        default:
+            break;
         }
-        GameLib::sprite_render(sprGear, 703, 560, 1, 1, 0, 0, 25, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-
-        GameLib::sprite_render(sprGear, 160, 170, 1, 1, 0, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-        GameLib::sprite_render(sprGear, 160, 310, 1, 1, 120, 0, 120, 120, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-        GameLib::sprite_render(sprGear, 160, 450, 1, 1, 240, 0, 120, 120, 0, 0, 0, Z_color[5], Z_color[5], Z_color[5]);
-
-        // ベルトコンベアー
-        if(Z_color[0]==0)
-            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
-        else
-            sprite_render(sprZ_name, 0, 0, 1, 1, 1536, 0, 1536, 824);
-
-
-        break;
-    case 1:
-        GameLib::sprite_render(sprBox, 200, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-        GameLib::sprite_render(sprBox, 450, 450, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
-
-        // box
-        if (Z_color[0] == 0)
-            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
-        else
-            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 2, 0, 1536, 824);
-
-        break;
-    case 2:
-
-        // box
-        if (Z_color[0] == 0)
-            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
-        else
-            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 3, 0, 1536, 824);
-
-        break;
-    case 3:
-
-        // box
-        if (Z_color[0] == 0)
-            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
-        else
-            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 4, 0, 1536, 824);
-
-        break;
-    case 4:
-
-        // box
-        if (Z_color[1] == 0)
-            sprite_render(sprZ_name, 0, 0, 1, 1, 0, 0, 1536, 824);
-        else
-            sprite_render(sprZ_name, 0, 0, 1, 1, 1536 * 5, 0, 1536, 824);
-
-        break;
-    default:
-        break;
     }
+
 
     switch (Z_page)
     {
@@ -277,7 +358,7 @@ void zukan_render()
         GameLib::sprite_render(sprBox, 1200, 95, 1, 1, 0, 0, 178, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
 
         // 地形
-        GameLib::sprite_render(sprTerrain, 820, 400, 1, 1, 0, 0, 192, 64, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
+        GameLib::sprite_render(sprTerrain, 790, 400, 1, 1, 0, 0, 256, 64, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
 
         // どあ
         GameLib::sprite_render(sprDoor, 1200, 325, 1, 1, 0, 0, 177, 177, 0, 0, 0, Z_color[0], Z_color[0], Z_color[0]);
