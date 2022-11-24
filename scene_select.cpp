@@ -136,10 +136,13 @@ void select_update()
             }
         }
 
-        if (TRG(0) & PAD_SELECT)
+        if (TRG(0) & PAD_L3)
         {
-            nextScene = SCENE::TITLE;
-            break;
+            if (mousePos.x > 5 && mousePos.y > 10 && mousePos.x < 200 && mousePos.y < 80)
+            {
+                nextScene = SCENE::TITLE;
+                break;
+            }
         }
 
 
