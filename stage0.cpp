@@ -59,7 +59,7 @@ void stage0_update()
         player.Init();
 
         //sprStage0     = sprite_load(L"./Data/Images/stage0.png");
-        sprStage0 = sprite_load(L"./Data/Images/04.png");
+        sprStage0 = sprite_load(L"./Data/Images/05.png");
         sprStage0Floor = sprite_load(L"./Data/Images/03.png");
         sprBox = sprite_load(L"./Data/Images/box.png");
         sprElec = sprite_load(L"./Data/Images/elec.png");

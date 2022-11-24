@@ -54,7 +54,7 @@ void stage2_update()
         ///// ‰Šúİ’è /////
         player.Init();
 
-        sprStage2 = sprite_load(L"./Data/Images/04.png");
+        sprStage2 = sprite_load(L"./Data/Images/05.png");
         sprSwitch = sprite_load(L"./Data/Images/switch.png");
         sprBox = sprite_load(L"./Data/Images/box.png");
         sprBoxMove = sprite_load(L"./Data/Images/boxMove.png");

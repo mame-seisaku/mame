@@ -62,7 +62,7 @@ void stage1_update()
         ///// ‰Šúİ’è /////
         player.Init();
 
-        spr1 = sprite_load(L"./Data/Images/04.png");
+        spr1 = sprite_load(L"./Data/Images/05.png");
         sprBox1 = sprite_load(L"./Data/Images/box.png");
         sprTrolley = sprite_load(L"./Data/Images/trolley.png");
 

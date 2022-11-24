@@ -48,7 +48,7 @@ void stage3_update()
         ///// ‰Šúİ’è /////
         player.Init();
 
-        spr3 = sprite_load(L"./Data/Images/04.png");
+        spr3 = sprite_load(L"./Data/Images/05.png");
         sprSyoukouki = sprite_load(L"./Data/Images/syoukouki2.png");
 
         sprBox = sprite_load(L"./Data/Images/box.png");
