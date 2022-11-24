@@ -11,11 +11,16 @@ int TtexPos[TITLE_MAX];
 
 int JudgeTutorial;
 
+int texPos_x[3];
+
 VECTOR2 mousePos;   // マウスカーソルの位置
 obj2d Titile_A;
 
 Sprite* sprTitle;
 Sprite* sprTtitleAnime;
+Sprite* sprPlay;
+extern Sprite* sprTutorial;
+Sprite* sprBooks;
 
 extern int Tstate;
 
@@ -41,6 +46,10 @@ void title_deinit()
 
     safe_delete(sprTerrain);
 
+    safe_delete(sprPlay);
+    safe_delete(sprTutorial);
+    safe_delete(sprBooks);
+
     music::stop(title_bgm);
 }
 
@@ -57,6 +66,9 @@ void title_update()
         sprMouse = sprite_load(L"./Data/Images/mouse.png");
         sprTerrain = sprite_load(L"./Data/Images/terrain.png");
         sprTtitleAnime = sprite_load(L"./Data/Images/titleAnime.png");
+        sprPlay    =sprite_load(L"./Data/Images/home.png");
+        sprTutorial=sprite_load(L"./Data/Images/home2.png");
+        sprBooks   =sprite_load(L"./Data/Images/home1.png");
 
         ++title_state;
     case 1:
@@ -68,6 +80,10 @@ void title_update()
         for (int i = 0; i < TITLE_MAX; ++i)
         {
             TtexPos[i] = 64;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            texPos_x[i] = 0;
         }
 
         Titile_A = {};
@@ -83,18 +99,15 @@ void title_update()
     case 2:
         ///// 通常時 /////
 
-        if (TRG(0) & PAD_START)
-        {
-            nextScene = SCENE::ZUKAN;
-            break;
-        }
+       
 
         // 画面切り替え
         if (TRG(0) & PAD_L3)
         {
             // スタート
-            if (mousePos.x > 615 && mousePos.y > 420 && mousePos.x < 825 && mousePos.y < 495)
+            if (mousePos.x > 630 && mousePos.y > 500 && mousePos.x < 820 && mousePos.y < 560)
             {
+                
                 if (JudgeTutorial == 0)
                 {
                     Tstate = 0;
@@ -108,14 +121,48 @@ void title_update()
                 }
             }
             // チュートリアル
-            if (mousePos.x > 500 && mousePos.y > 600 && mousePos.x < 970 && mousePos.y < 670)
+            if (mousePos.x > 590 && mousePos.y > 590 && mousePos.x < 865 && mousePos.y < 640)
             {
+                
                 Tstate = 1;
                 nextScene = SCENE::TUTORIAL;
                 break;
             }
+            //図鑑
+            if (mousePos.x > 510 && mousePos.y > 670 && mousePos.x < 1000 && mousePos.y < 725)
+            {
+               
+                nextScene = SCENE::ZUKAN;
+                break;
+            }
         }
 
+        if (mousePos.x > 630 && mousePos.y > 500 && mousePos.x < 820 && mousePos.y < 560)
+        {
+            texPos_x[0] = 1;
+        }
+        else
+        {
+            texPos_x[0] = 0;
+        }
+        if (mousePos.x > 590 && mousePos.y > 590 && mousePos.x < 865 && mousePos.y < 640)
+        {
+            texPos_x[1] = 1;
+        }
+        else
+        {
+            texPos_x[1] = 0;
+        }
+        if (mousePos.x > 510 && mousePos.y > 670 && mousePos.x < 1000 && mousePos.y < 725)
+        {
+            texPos_x[2] = 1;
+        }
+        else
+        {
+            texPos_x[2] = 0;
+        }
+
+        
         // マウスカーソル
         std::ostringstream oss;                                 // 文字列ストリーム
         POINT point;                                            // 位置用の変数を宣言する
@@ -174,6 +221,10 @@ void title_render()
     GameLib::clear(0, 0, 0);
 
     sprite_render(sprTitle, 0, 0);
+
+    sprite_render(sprPlay, 766, 532,1,1, 513*texPos_x[0],0,513,100,256.5f,50);
+    sprite_render(sprTutorial, 735, 621,1,1,318 * texPos_x[1],0,318,81,159,40.5f);
+    sprite_render(sprBooks, 766,705 ,1,1,513 * texPos_x[2],0,513,67,256.5f,38.5f);
 
     //sprite_render(sprTtitleAnime, Titile_A.pos.x, Titile_A.pos.y, 1, 1, Titile_A.texPos.x, Titile_A.texPos.y, 1536, 824);
 
