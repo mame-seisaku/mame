@@ -219,6 +219,16 @@ void stage3_update()
                 anime(&door, 7, 10, false, 0);
             }
 
+            if (mousePos.x > stage3[3].pos.x - 90 && mousePos.y > stage3[3].pos.y - 50 && mousePos.x < stage3[3].pos.x + 90 && mousePos.y < stage3[3].pos.y + 50||
+                mousePos.x > stage3[7].pos.x - 90 && mousePos.y > stage3[7].pos.y - 50 && mousePos.x < stage3[7].pos.x + 90 && mousePos.y < stage3[7].pos.y + 50)
+            {
+                MouseTexPos.x = 100;
+            }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
+
 
             // マウスでの憑依操作
             //昇降機1
@@ -503,7 +513,8 @@ void stage3_render()
     sprite_render(sprEV, stage3[4].position.x - 5, stage3[4].position.y - 653);
 
     
-
+    // デカ箱
+    sprite_render(sprBox, stage3[6].position.x, stage3[6].position.y);
 
     // 扉
     sprite_render(sprDoor, stage3[4].position.x, stage3[4].position.y, 1, 1, stage3[4].texPos.x, stage3[4].texPos.y, stage3[4].texSize.x, stage3[4].texSize.y);
@@ -521,9 +532,6 @@ void stage3_render()
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    // デカ箱
-    sprite_render(sprBox, stage3[6].position.x, stage3[6].position.y);
-
     // UI
     sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
 
@@ -535,5 +543,5 @@ void stage3_render()
     }
     sprite_render(sprHelp, 0, 0);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }

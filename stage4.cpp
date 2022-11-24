@@ -61,7 +61,7 @@ void stage4_update()
         ++stage_state[4];
     case 1:
         ///// パラメーターの設定 /////
-                
+
         // ポーズ
         pause = false;
 
@@ -228,6 +228,18 @@ void stage4_update()
                 // 扉しまる
                 anime(&door, 7, 10, false, 0);
             }
+
+            if (mousePos.x > stage4[2].pos.x - 90 && mousePos.y > stage4[2].pos.y - 50 && mousePos.x < stage4[2].pos.x + 90 && mousePos.y - 50 < stage4[2].pos.y + 110 ||
+                mousePos.x > stage4[3].pos.x - 90 && mousePos.y > stage4[3].pos.y - 50 && mousePos.x < stage4[3].pos.x + 90 && mousePos.y - 50 < stage4[3].pos.y + 110 ||
+                mousePos.x > stage4[4].pos.x - 90 && mousePos.y > stage4[4].pos.y - 50 && mousePos.x < stage4[4].pos.x + 90 && mousePos.y - 50 < stage4[4].pos.y + 110)
+            {
+                MouseTexPos.x = 100;
+            }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
+
 
             // マウスでの憑依操作
             for (int i = 2; i < 5; ++i)
@@ -561,5 +573,5 @@ void stage4_render()
     }
     sprite_render(sprHelp, 0, 0);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }

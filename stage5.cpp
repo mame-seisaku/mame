@@ -303,6 +303,18 @@ void stage5_update()
                 anime(&door, 7, 10, false, 0);
             }
 
+            if (mousePos.x > stage5[10].pos.x - 90 && mousePos.y > stage5[10].pos.y - 50 && mousePos.x < stage5[10].pos.x + 90 && mousePos.y - 50 < stage5[10].pos.y + 110||
+                mousePos.x > stage5[7].pos.x - 90 && mousePos.y > stage5[7].pos.y - 50 && mousePos.x < stage5[7].pos.x + 90 && mousePos.y - 50 < stage5[7].pos.y + 110||
+                mousePos.x > stage5[8].pos.x - 90 && mousePos.y > stage5[8].pos.y - 50 && mousePos.x < stage5[8].pos.x + 90 && mousePos.y - 50 < stage5[8].pos.y + 110||
+                mousePos.x > stage5[9].pos.x - 90 && mousePos.y > stage5[9].pos.y - 50 && mousePos.x < stage5[9].pos.x + 90 && mousePos.y - 50 < stage5[9].pos.y + 110)
+            {
+                MouseTexPos.x = 100;
+            }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
+
             // ƒ}ƒEƒX‚Å‚ÌœßˆË‘€ì
             if (mousePos.x > stage5[10].pos.x - 90 && mousePos.y > stage5[10].pos.y - 50 && mousePos.x < stage5[10].pos.x + 90 && mousePos.y - 50 < stage5[10].pos.y + 110)
             {
@@ -767,7 +779,7 @@ void stage5_render()
     }
     sprite_render(sprHelp, 0, 0);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }
 
 #if 0

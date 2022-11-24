@@ -268,6 +268,16 @@ void stage6_update()
             }
 #endif
 
+            if (mousePos.x > stage6[3].pos.x - 90 && mousePos.y > stage6[3].pos.y - 50 && mousePos.x < stage6[3].pos.x + 90 && mousePos.y < stage6[3].pos.y + 50||
+                mousePos.x > stage6[4].pos.x - 42 && mousePos.y > stage6[4].pos.y - 42 && mousePos.x < stage6[4].pos.x + 42 && mousePos.y < stage6[4].pos.y + 42)
+            {
+                MouseTexPos.x = 100;
+            }
+            else
+            {
+                MouseTexPos.x = 0;
+            }
+
             // マウスでの憑依操作
             //昇降機1
             if (mousePos.x > stage6[3].pos.x - 90 && mousePos.y > stage6[3].pos.y - 50 && mousePos.x < stage6[3].pos.x + 90 && mousePos.y < stage6[3].pos.y + 50)
@@ -652,6 +662,12 @@ void stage6_render()
     // エレベーター
     sprite_render(sprEV, stage6[1].position.x - 5, stage6[1].position.y - 653);
 
+    //動く箱
+    sprite_render(sprBoxMove, stage6[4].pos.x - 46, stage6[4].pos.y - 46, 1, 1, stage6[4].texPos.x, 0, 90, 90);
+
+    // デカ箱
+    sprite_render(sprBox, stage6[2].position.x, stage6[2].position.y);
+
     // 扉
     sprite_render(sprDoor, stage6[1].position.x, stage6[1].position.y, 1, 1, stage6[1].texPos.x, stage6[1].texPos.y, stage6[1].texSize.x, stage6[1].texSize.y);
 
@@ -665,15 +681,9 @@ void stage6_render()
     if (door.end)
         sprite_render(sprEvPlayer, EvPlayer.x + 35, EvPlayer.y);
 
-
     // 扉
     sprite_render(sprDoor, door.position.x, door.position.y, 1, 1, door.texPos.x, 177, door.texSize.x, door.texSize.y);
 
-    //動く箱
-    sprite_render(sprBoxMove, stage6[4].pos.x - 46, stage6[4].pos.y - 46, 1, 1, stage6[4].texPos.x, 0, 90, 90);
-
-    // デカ箱
-    sprite_render(sprBox, stage6[2].position.x, stage6[2].position.y);
 
     // UI
     sprite_render(sprUI, 30, 30, 1, 1, UI, 0, 105, 64);
@@ -686,5 +696,5 @@ void stage6_render()
     }
     sprite_render(sprHelp, 0, 0);
 
-    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, 0, 0, 100, 100, 50, 50);
+    sprite_render(sprMouse, mousePos.x, mousePos.y, 1, 1, MouseTexPos.x, MouseTexPos.y, 100, 100, 50, 50);
 }
